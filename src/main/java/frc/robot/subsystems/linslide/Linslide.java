@@ -16,12 +16,12 @@ public class Linslide extends SubsystemBase {
         Logger.processInputs("Linslide", inputs);
     }
 
-    public Command setDeployed() {
+    public Command deploy() {
         return runOnce(() -> io.setDeployed(LinslidePosition.DEPLOYED.getPosition()));
     }
 
-    public Command setStowed() {
-        return runOnce(() -> io.setDeployed(LinslidePosition.STOWED.getPosition()));
+    public Command stow() {
+        return runOnce(() -> io.setStowed(LinslidePosition.STOWED.getPosition()));
     }
 
 }

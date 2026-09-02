@@ -26,8 +26,8 @@ public class LinslideIOTalonFX implements LinslideIO{
 
     @Override
     public void updateInputs(LinslideIOInputs inputs) {
-        isStowed = Math.abs(LinslidePosition.STOWED-linSlideMotor.getPosition())>0.2;
-        isDeployed = false;
+        inputs.isStowed = linSlideMotor.getPosition().getValueAsDouble()<=0.2;
+        inputs.isDeployed = linSlideMotor.getPosition().getValueAsDouble()>=9.8;
         inputs.position = linSlideMotor.getPosition().getValueAsDouble();
     }
 

@@ -9,9 +9,7 @@ public enum LinslidePosition {
 
     private Angle position;
 
-    LinslidePosition(double position) {
-        this.position = Units.Rotations.of(position);
-    }
+    LinslidePosition(double position) {this.position = Units.Rotations.of(position);}
 
     public Angle getPosition() {
         return this.position;
