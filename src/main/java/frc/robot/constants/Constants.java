@@ -17,6 +17,5 @@ import com.ctre.phoenix6.CANBus;
  */
 public final class Constants {
     public static final int PRIMARY_CONTROLLER_PORT = 0;
-    public static final CANBus rioBus = new CANBus("rio");
-    public static final CANBus canivoreBus = new CANBus("canivore");
+    public static CANBus CAN_S1 = new CANBus("can_s1");
 }
