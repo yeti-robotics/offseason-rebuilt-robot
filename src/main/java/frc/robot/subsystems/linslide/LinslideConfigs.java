@@ -11,19 +11,19 @@ public class LinslideConfigs {
 
     private static Slot0Configs SLOT_0_CONFIGS = Robot.isReal()
             ? new Slot0Configs()
-                .withKP(0.0)
-                .withKI(0)
-                .withKD(0)
-                .withKA(0)
-                .withKV(0)
-                .withGravityType(GravityTypeValue.Elevator_Static)
+                    .withKP(0.0)
+                    .withKI(0)
+                    .withKD(0)
+                    .withKA(0)
+                    .withKV(0)
+                    .withGravityType(GravityTypeValue.Elevator_Static)
             : new Slot0Configs()
-                .withKP(0)
-                .withKI(0)
-                .withKD(0)
-                .withKA(0)
-                .withKV(0)
-                .withGravityType(GravityTypeValue.Elevator_Static);
+                    .withKP(0)
+                    .withKI(0)
+                    .withKD(0)
+                    .withKA(0)
+                    .withKV(0)
+                    .withGravityType(GravityTypeValue.Elevator_Static);
 
     static final TalonFXConfiguration linslideTalonFXConfigurations = new TalonFXConfiguration()
             .withSlot0(SLOT_0_CONFIGS)
@@ -32,13 +32,11 @@ public class LinslideConfigs {
                     .withMotionMagicCruiseVelocity(1)
                     .withMotionMagicJerk(0))
             .withMotorOutput(new MotorOutputConfigs()
-                    .withInverted(InvertedValue.CounterClockwise_Positive)//Might change later
+                    .withInverted(InvertedValue.CounterClockwise_Positive) // Might change later
                     .withNeutralMode(NeutralModeValue.Brake))
             .withSoftwareLimitSwitch(new SoftwareLimitSwitchConfigs()
                     .withReverseSoftLimitThreshold(0)
                     .withReverseSoftLimitEnable(true)
-                    .withForwardSoftLimitThreshold(10) //will need to change later
-                    .withForwardSoftLimitEnable(true)
-            );
-
+                    .withForwardSoftLimitThreshold(10) // will need to change later
+                    .withForwardSoftLimitEnable(true));
 }
