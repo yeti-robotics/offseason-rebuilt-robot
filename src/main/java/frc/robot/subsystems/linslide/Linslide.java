@@ -10,6 +10,10 @@ public class Linslide extends SubsystemBase {
     private LinslideIO io;
     private LinslideIOInputsAutoLogged inputs = new LinslideIOInputsAutoLogged();
 
+    public Linslide(LinslideIO io) {
+        this.io = io;
+    }
+
     @Override
     public void periodic() {
         io.updateInputs(inputs);
