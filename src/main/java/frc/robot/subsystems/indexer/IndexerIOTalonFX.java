@@ -12,7 +12,7 @@ public class IndexerIOTalonFX implements IndexerIO {
     private final DutyCycleOut dutyCycleOut = new DutyCycleOut(0);
 
 public IndexerIOTalonFX () {
-    indexerRoller = new TalonFX(IndexerConfigs.BETA_ROLLER_ID, Constants.CAN_51);
+    indexerRoller = new TalonFX(IndexerConfigs.BETA_ROLLER_ID, Constants.CAN_S1);
     if (Robot.isSimulation()) {
         PhysicsSim.getInstance().addTalonFX(indexerRoller);
     }
