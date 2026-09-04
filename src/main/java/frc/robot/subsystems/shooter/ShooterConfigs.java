@@ -5,30 +5,30 @@ import com.ctre.phoenix6.signals.InvertedValue;
 
 public class ShooterConfigs {
  public static final int FIRST_MOTOR_ID=14;
-    public static final int SECOND_MOTOR_ID=100;
-    public static final int THIRD_MOTOR_ID=20000;
+    public static final int SECOND_MOTOR_ID=10;
+    public static final int THIRD_MOTOR_ID=20;
     static final double ROTOR_TO_SENSOR = 1;
     static final double SENSOR_TO_MECHANISM = 1;
 
     public static final Slot0Configs SLOT_0_CONFIGS = new Slot0Configs()
-            .withKP(8)
+            .withKP(0)
             .withKI(0)
             .withKD(0)
-            .withKS(4)
-            .withKV(0.55)
-            .withKA(256);
+            .withKS(0)
+            .withKV(0)
+            .withKA(0);
 
     public static final Slot1Configs SLOT_1_CONFIGS = new Slot1Configs()
-            .withKP(7.9)
-            .withKI(1)
+            .withKP(0)
+            .withKI(0)
             .withKD(0)
-            .withKS(5)
-            .withKV(1.1)
-            .withKA(256);
+            .withKS(0)
+            .withKV(0)
+            .withKA(0);
 
     public static final MotionMagicConfigs MOTION_MAGIC_CONFIGS = new MotionMagicConfigs()
             .withMotionMagicCruiseVelocity(1)
-            .withMotionMagicAcceleration(256)
+            .withMotionMagicAcceleration(2)
             .withMotionMagicJerk(0);
 
     static final TalonFXConfiguration TOP_MOTOR_CONFIGS = new TalonFXConfiguration()

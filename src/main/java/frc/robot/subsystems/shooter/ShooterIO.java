@@ -15,6 +15,6 @@ public interface ShooterIO {
  }
 public default void updateInputs(ShooterIOInputs inputs){
 };
- public default void shooterCommand(double velocity)
+ public default void shooterCommand(double velocity){};
 
 }
