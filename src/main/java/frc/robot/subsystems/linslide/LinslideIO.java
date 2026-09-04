@@ -16,4 +16,6 @@ public interface LinslideIO {
     public default void setDeployed(Angle position) {}
 
     public default void setStowed(Angle position) {}
+
+    public default void applyPower(double percent) {}
 }
