@@ -21,7 +21,7 @@ import frc.robot.subsystems.linslide.LinslideIOTalonFX;
 public class RobotContainer {
 
     CommandXboxController primary;
-    Linslide linslide;
+    private final Linslide linslide;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -29,6 +29,7 @@ public class RobotContainer {
         linslide = new Linslide(new LinslideIOTalonFX());
         configureBindings();
     }
+
 
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the
