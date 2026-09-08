@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOTalonFX;
+import frc.robot.subsystems.linslide.Linslide;
+import frc.robot.subsystems.linslide.LinslideIOTalonFX;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,13 +24,16 @@ public class RobotContainer {
     private final Intake intake;
 
     CommandXboxController primary;
+    private final Linslide linslide;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         primary = new CommandXboxController(Constants.PRIMARY_CONTROLLER_PORT);
         intake = new Intake(new IntakeIOTalonFX());
+        linslide = new Linslide(new LinslideIOTalonFX());
         configureBindings();
     }
+
 
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the
