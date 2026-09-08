@@ -24,6 +24,7 @@ public class LinslideIOTalonFX implements LinslideIO {
 
         if (Robot.isSimulation()) {
             PhysicsSim.getInstance().addTalonFX(linslideMotor);
+            PhysicsSim.getInstance().addTalonFX(secondaryLinslideMotor);
         }
     }
 
