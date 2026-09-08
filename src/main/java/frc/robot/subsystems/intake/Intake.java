@@ -18,16 +18,8 @@ public class Intake extends SubsystemBase {
         this.io = io;
     }
 
-    public Command setIntake(double volts){
-        return startEnd(() -> io.setIntakeMotor(volts), () -> io.setIntakeMotor(0));
-    }
-
-    public Command rollIn() {
-        return setIntake(IntakeConfigs.INTAKE_VOLTAGE);
-    }
-
-    public Command rollOut() {
-        return setIntake(IntakeConfigs.OUTTAKE_VOLTAGE);
+    public Command setIntakeVoltage(double volts){
+        return startEnd(() -> io.setIntakeMotorVoltage(volts), () -> io.setIntakeMotorVoltage(0));
     }
 
     public Command applyPower(double percent) {
