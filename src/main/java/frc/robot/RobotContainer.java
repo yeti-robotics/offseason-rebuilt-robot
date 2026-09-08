@@ -5,10 +5,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.rollerbed.RollerBed;
+import frc.robot.subsystems.rollerbed.RollerBedIOTalonFX;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,11 +22,13 @@ import frc.robot.constants.Constants;
 public class RobotContainer {
 
     CommandXboxController primary;
+    RollerBed rollerBed;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         primary = new CommandXboxController(Constants.PRIMARY_CONTROLLER_PORT);
         configureBindings();
+        rollerBed = new RollerBed(new RollerBedIOTalonFX());
     }
 
     /**

@@ -3,7 +3,9 @@ package frc.robot.subsystems.rollerbed;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.TalonFX;
+import frc.robot.Robot;
 import frc.robot.constants.Constants;
+import frc.robot.util.sim.PhysicsSim;
 
 public class RollerBedIOTalonFX implements RollerbedIO {
     public final TalonFX rollerBed;
@@ -13,9 +15,8 @@ public class RollerBedIOTalonFX implements RollerbedIO {
     public RollerBedIOTalonFX() {
         rollerBed = new TalonFX(RollerBedConfigs.ROLLER_BED_ID, Constants.CAN_S1);
         rollerBed.getConfigurator().apply(RollerBedConfigs.TALON_FX_CONFIGS);
-           /* if (Robot.isSimulation)
+            if (Robot.isSimulation())
                 PhysicsSim.getInstance().addTalonFX(rollerBed);
-    */
     }
 
 

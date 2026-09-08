@@ -9,7 +9,7 @@ import static edu.wpi.first.wpilibj2.command.Commands.runEnd;
 public class RollerBed {
 
     private RollerbedIO io;
-    private RollerbedInputsAutoLogged inputs = new RollerbedInputsAutoLogged();
+    private RollerbedIOInputsAutoLogged inputs = new RollerbedIOInputsAutoLogged();
 
     @Override
     public void periodic() {
