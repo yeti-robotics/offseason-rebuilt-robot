@@ -24,5 +24,4 @@ public class RollerBedConfigs {
                     .withMotionMagicAcceleration(1)
                     .withMotionMagicCruiseVelocity(2)
                     .withMotionMagicJerk(0));
-
 }

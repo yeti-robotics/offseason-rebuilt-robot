@@ -4,19 +4,16 @@ import org.littletonrobotics.junction.AutoLog;
 
 public interface RollerbedIO {
     @AutoLog
-    public static class RollerbedIOinputs {
+    public static class RollerbedIOInputs {
         public double rollerSpeed = 0.0;
         public double motortemp = 0.0;
     }
-    public default void updateInputs (RollerbedIOinputs inputs) {
 
-    }
-    public default void spinRoller (double rps) {
+    public default void updateInputs(RollerbedIOInputs inputs) {}
 
-    }
-    public default void applyPower (double power) {
+    public default void spinRoller(double rps) {}
 
-    }
-    public default void stopMotor () {
-    }
+    public default void applyPower(double power) {}
+
+    public default void stopMotor() {}
 }
