@@ -21,16 +21,16 @@ import frc.robot.subsystems.linslide.LinslideIOTalonFX;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-    private final Intake intake;
 
     CommandXboxController primary;
     private final Linslide linslide;
+    private final Intake intake;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         primary = new CommandXboxController(Constants.PRIMARY_CONTROLLER_PORT);
-        intake = new Intake(new IntakeIOTalonFX());
         linslide = new Linslide(new LinslideIOTalonFX());
+        intake = new Intake(new IntakeIOTalonFX());
         configureBindings();
     }
 

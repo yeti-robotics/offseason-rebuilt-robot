@@ -19,7 +19,7 @@ public class Intake extends SubsystemBase {
     }
 
     public Command setIntakeVoltage(double volts){
-        return startEnd(() -> io.setIntakeMotorVoltage(volts), () -> io.setIntakeMotorVoltage(0));
+        return runEnd(() -> io.setIntakeMotorVoltage(volts), () -> io.setIntakeMotorVoltage(0));
     }
 
     public Command applyPower(double percent) {
