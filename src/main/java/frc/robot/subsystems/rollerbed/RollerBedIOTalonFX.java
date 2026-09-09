@@ -7,7 +7,7 @@ import frc.robot.Robot;
 import frc.robot.constants.Constants;
 import frc.robot.util.sim.PhysicsSim;
 
-public class RollerBedIOTalonFX implements RollerbedIO {
+public class RollerBedIOTalonFX implements RollerBedIO {
     public final TalonFX rollerBed;
     private final DutyCycleOut dutyCycleOut = new DutyCycleOut(0);
     private final MotionMagicVelocityTorqueCurrentFOC velocityRequest = new MotionMagicVelocityTorqueCurrentFOC(0);
@@ -19,7 +19,7 @@ public class RollerBedIOTalonFX implements RollerbedIO {
     }
 
     @Override
-    public void updateInputs(RollerbedIOInputs inputs) {
+    public void updateInputs(RollerBedIOInputs inputs) {
         inputs.rollerSpeed = rollerBed.getVelocity().getValueAsDouble();
         inputs.motortemp = rollerBed.getDeviceTemp().getValueAsDouble();
     }

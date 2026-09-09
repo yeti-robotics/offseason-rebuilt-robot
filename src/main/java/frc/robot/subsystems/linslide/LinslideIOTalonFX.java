@@ -49,5 +49,4 @@ public class LinslideIOTalonFX implements LinslideIO {
     public void setStowed(Angle position) {
         linslideMotor.setControl(motionMagic.withPosition(position));
     }
-
 }
