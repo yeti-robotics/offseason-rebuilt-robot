@@ -15,13 +15,16 @@ public class RollerBedIOTalonFX implements RollerBedIO {
     public RollerBedIOTalonFX() {
         rollerBed = new TalonFX(RollerBedConfigs.ROLLER_BED_ID, Constants.CAN_S1);
         rollerBed.getConfigurator().apply(RollerBedConfigs.TALON_FX_CONFIGS);
-        if (Robot.isSimulation()) PhysicsSim.getInstance().addTalonFX(rollerBed);
+        if (Robot.isSimulation()) {
+            PhysicsSim.getInstance().addTalonFX(rollerBed);
+        }
     }
 
     @Override
     public void updateInputs(RollerBedIOInputs inputs) {
         inputs.rollerSpeed = rollerBed.getVelocity().getValueAsDouble();
-        inputs.motortemp = rollerBed.getDeviceTemp().getValueAsDouble();
+        inputs.motorTemp = rollerBed.getDeviceTemp().getValueAsDouble();
+        inputs.supplyCurrent = rollerBed.getSupplyCurrent().getValueAsDouble();
     }
 
     @Override
