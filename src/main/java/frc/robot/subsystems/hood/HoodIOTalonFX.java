@@ -8,8 +8,8 @@ import frc.robot.subsystems.linslide.LinslideConfigs;
 import frc.robot.util.sim.PhysicsSim;
 
 public class HoodIOTalonFX implements HoodIO{
-    TalonFX hoodMotor;
-    PositionVoltage positionVoltage;
+    private TalonFX hoodMotor;
+    private PositionVoltage positionVoltage;
 
     public HoodIOTalonFX() {
         hoodMotor = new TalonFX(HoodConfigs.MOTOR_ID, Constants.CAN_S3);
