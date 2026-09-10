@@ -15,6 +15,9 @@ import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.linslide.Linslide;
 import frc.robot.subsystems.linslide.LinslideIO;
 import frc.robot.subsystems.linslide.LinslideIOTalonFX;
+import frc.robot.subsystems.rollerbed.RollerBed;
+import frc.robot.subsystems.rollerbed.RollerBedIO;
+import frc.robot.subsystems.rollerbed.RollerBedIOTalonFX;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,6 +30,7 @@ public class RobotContainer {
     CommandXboxController primary;
     private final Linslide linslide;
     private final Intake intake;
+    private final RollerBed rollerBed;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -36,6 +40,7 @@ public class RobotContainer {
             case REAL:
                 linslide = new Linslide(new LinslideIOTalonFX());
                 intake = new Intake(new IntakeIOTalonFX());
+                rollerBed = new RollerBed(new RollerBedIOTalonFX());
 
                 break;
 
@@ -43,11 +48,13 @@ public class RobotContainer {
                 linslide = new Linslide(new LinslideIOTalonFX());
                 intake = new Intake(new IntakeIOTalonFX());
 
+                rollerBed = new RollerBed(new RollerBedIOTalonFX());
                 break;
 
             default:
                 linslide = new Linslide(new LinslideIO() {});
                 intake = new Intake(new IntakeIO() {});
+                rollerBed = new RollerBed(new RollerBedIO() {});
 
                 break;
         }
