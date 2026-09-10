@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.hood.Hood;
+import frc.robot.subsystems.hood.HoodIOTalonFX;
 import frc.robot.subsystems.linslide.Linslide;
 import frc.robot.subsystems.linslide.LinslideIO;
 import frc.robot.subsystems.linslide.LinslideIOTalonFX;
@@ -23,6 +25,7 @@ public class RobotContainer {
 
     CommandXboxController primary;
     private final Linslide linslide;
+    private final Hood hood;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -31,16 +34,19 @@ public class RobotContainer {
         switch (Constants.currentMode) {
             case REAL:
                 linslide = new Linslide(new LinslideIOTalonFX());
+                hood = new Hood(new HoodIOTalonFX());
 
                 break;
 
             case SIM:
                 linslide = new Linslide(new LinslideIOTalonFX());
+                hood = new Hood(new HoodIOTalonFX());
 
                 break;
 
             default:
                 linslide = new Linslide(new LinslideIO() {});
+                hood = new Hood(new HoodIOTalonFX());
 
                 break;
         }

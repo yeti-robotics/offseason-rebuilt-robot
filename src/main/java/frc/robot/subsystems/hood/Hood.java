@@ -9,7 +9,7 @@ public class Hood extends SubsystemBase {
     private HoodIO io;
     private LoggableIOInputsAutoLogged inputs;
 
-    Hood(HoodIO io) {
+    public Hood(HoodIO io) {
         this.io = io;
         this.inputs = new LoggableIOInputsAutoLogged();
     }

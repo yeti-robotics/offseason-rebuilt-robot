@@ -11,7 +11,7 @@ public class HoodIOTalonFX implements HoodIO{
     TalonFX hoodMotor;
     PositionVoltage positionVoltage;
 
-    HoodIOTalonFX() {
+    public HoodIOTalonFX() {
         hoodMotor = new TalonFX(HoodConfigs.MOTOR_ID, Constants.CAN_S3);
         hoodMotor.getConfigurator().apply(HoodConfigs.HOOD_MOTOR_CONFIGS);
         if(Robot.isSimulation()) {
