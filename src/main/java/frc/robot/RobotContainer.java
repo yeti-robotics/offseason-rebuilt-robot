@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeIO;
+import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.linslide.Linslide;
 import frc.robot.subsystems.linslide.LinslideIO;
 import frc.robot.subsystems.linslide.LinslideIOTalonFX;
@@ -26,6 +29,7 @@ public class RobotContainer {
 
     CommandXboxController primary;
     private final Linslide linslide;
+    private final Intake intake;
     private final RollerBed rollerBed;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -35,17 +39,21 @@ public class RobotContainer {
         switch (Constants.currentMode) {
             case REAL:
                 linslide = new Linslide(new LinslideIOTalonFX());
+                intake = new Intake(new IntakeIOTalonFX());
                 rollerBed = new RollerBed(new RollerBedIOTalonFX());
 
                 break;
 
             case SIM:
                 linslide = new Linslide(new LinslideIOTalonFX());
+                intake = new Intake(new IntakeIOTalonFX());
+
                 rollerBed = new RollerBed(new RollerBedIOTalonFX());
                 break;
 
             default:
                 linslide = new Linslide(new LinslideIO() {});
+                intake = new Intake(new IntakeIO() {});
                 rollerBed = new RollerBed(new RollerBedIO() {});
 
                 break;
@@ -53,6 +61,7 @@ public class RobotContainer {
 
         configureBindings();
     }
+
 
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the
