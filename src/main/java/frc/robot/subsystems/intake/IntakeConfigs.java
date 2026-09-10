@@ -19,13 +19,13 @@ public class IntakeConfigs {
     public static double ROLLER_SPEED = -1.0;
     public static double INNER_ROLLER_SPEED = -2.0;
 
-    static TalonFXConfiguration RIGHT_TALONFX_CONFIGS = new TalonFXConfiguration()
+    static TalonFXConfiguration INTAKE_TALONFX_CONFIGS = new TalonFXConfiguration()
             .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
             .withCurrentLimits(new CurrentLimitsConfigs()
                     .withStatorCurrentLimit(0)
                     .withSupplyCurrentLimit(0)
-                    .withStatorCurrentLimitEnable(true)
-                    .withSupplyCurrentLimitEnable(true)
+                    .withStatorCurrentLimitEnable(false)
+                    .withSupplyCurrentLimitEnable(false)
                     .withSupplyCurrentLowerLimit(0)
                     .withSupplyCurrentLowerTime(0));
 }

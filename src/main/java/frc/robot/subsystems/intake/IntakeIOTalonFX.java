@@ -4,7 +4,6 @@ import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.MotorArrangementValue;
 import frc.robot.Robot;
 import frc.robot.constants.Constants;
 import frc.robot.util.sim.PhysicsSim;
@@ -24,8 +23,8 @@ public class IntakeIOTalonFX implements IntakeIO {
             PhysicsSim.getInstance().addTalonFX(leftIntakeMotor);
         }
 
-        rightIntakeMotor.getConfigurator().apply(IntakeConfigs.RIGHT_TALONFX_CONFIGS);
-        leftIntakeMotor.getConfigurator().apply(IntakeConfigs.RIGHT_TALONFX_CONFIGS);
+        rightIntakeMotor.getConfigurator().apply(IntakeConfigs.INTAKE_TALONFX_CONFIGS);
+        leftIntakeMotor.getConfigurator().apply(IntakeConfigs.INTAKE_TALONFX_CONFIGS);
         leftIntakeMotor.setControl(new Follower(IntakeConfigs.RIGHT_INTAKE_MOTOR_ID, true));
     }
     @Override

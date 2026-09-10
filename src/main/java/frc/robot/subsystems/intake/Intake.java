@@ -26,8 +26,5 @@ public class Intake extends SubsystemBase {
         return runEnd(() -> io.applyPower(percent), () -> io.applyPower(0));
     }
 
-    public double getRPM() {
-        return inputs.primaryMotorRPM;
-    }
 }
 
