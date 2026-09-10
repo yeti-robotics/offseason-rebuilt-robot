@@ -7,11 +7,11 @@ import org.littletonrobotics.junction.inputs.LoggableInputs;
 
 public class Hood extends SubsystemBase {
     private HoodIO io;
-    private HoodIOInputsLogged inputs;
+    private HoodIOInputsAutoLogged inputs;
 
     public Hood(HoodIO io) {
         this.io = io;
-        this.inputs = new HoodIOInputsLogged();
+        this.inputs = new HoodIOInputsAutoLogged();
     }
 
     @Override
