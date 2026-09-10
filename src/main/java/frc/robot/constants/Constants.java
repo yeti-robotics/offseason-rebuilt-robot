@@ -7,7 +7,6 @@ package frc.robot.constants;
 
 import com.ctre.phoenix6.CANBus;
 import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.Robot;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
