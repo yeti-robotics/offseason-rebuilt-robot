@@ -13,7 +13,7 @@ public class HoodIOTalonFX implements HoodIO{
 
     HoodIOTalonFX() {
         hoodMotor = new TalonFX(HoodConfigs.MOTOR_ID, Constants.CAN_S3);
-        hoodMotor.getConfigurator().apply(HoodConfigs.hoodTalonFXConfigurations);
+        hoodMotor.getConfigurator().apply(HoodConfigs.HOOD_MOTOR_CONFIGS);
         if(Robot.isSimulation()) {
             PhysicsSim.getInstance().addTalonFX(hoodMotor);
         }
