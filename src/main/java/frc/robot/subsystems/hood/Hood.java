@@ -3,7 +3,6 @@ package frc.robot.subsystems.hood;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.inputs.LoggableInputs;
 
 public class Hood extends SubsystemBase {
     private HoodIO io;
@@ -21,7 +20,6 @@ public class Hood extends SubsystemBase {
     }
 
     public Command setPosition(double position) {
-        return(runOnce(()-> io.setPosition(position)));
+        return (runOnce(() -> io.setPosition(position)));
     }
-
 }

@@ -9,11 +9,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.hood.Hood;
+import frc.robot.subsystems.hood.HoodIOTalonFX;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.intake.IntakeIOTalonFX;
-import frc.robot.subsystems.hood.Hood;
-import frc.robot.subsystems.hood.HoodIOTalonFX;
 import frc.robot.subsystems.linslide.Linslide;
 import frc.robot.subsystems.linslide.LinslideIO;
 import frc.robot.subsystems.linslide.LinslideIOTalonFX;
@@ -67,7 +67,6 @@ public class RobotContainer {
 
         configureBindings();
     }
-
 
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the
