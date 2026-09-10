@@ -12,6 +12,7 @@ import frc.robot.constants.Constants;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.linslide.Linslide;
+import frc.robot.subsystems.linslide.LinslideIO;
 import frc.robot.subsystems.linslide.LinslideIOTalonFX;
 
 /**
@@ -29,8 +30,24 @@ public class RobotContainer {
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         primary = new CommandXboxController(Constants.PRIMARY_CONTROLLER_PORT);
-        linslide = new Linslide(new LinslideIOTalonFX());
-        intake = new Intake(new IntakeIOTalonFX());
+
+        switch (Constants.currentMode) {
+            case REAL:
+                linslide = new Linslide(new LinslideIOTalonFX());
+
+                break;
+
+            case SIM:
+                linslide = new Linslide(new LinslideIOTalonFX());
+
+                break;
+
+            default:
+                linslide = new Linslide(new LinslideIO() {});
+
+                break;
+        }
+
         configureBindings();
     }
 
