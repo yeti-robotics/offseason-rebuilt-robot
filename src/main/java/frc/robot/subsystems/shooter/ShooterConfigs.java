@@ -2,11 +2,14 @@ package frc.robot.subsystems.shooter;
 
 import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.signals.InvertedValue;
+import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
+import edu.wpi.first.math.interpolation.InverseInterpolator;
+import edu.wpi.first.units.Units;
+import frc.robot.util.ShooterStateData;
 
 public class ShooterConfigs {
  public static final int FIRST_MOTOR_ID=14;
     public static final int SECOND_MOTOR_ID=100;
-    public static final int THIRD_MOTOR_ID=20000;
     static final double ROTOR_TO_SENSOR = 1;
     static final double SENSOR_TO_MECHANISM = 1;
 
@@ -46,5 +49,13 @@ public class ShooterConfigs {
                     .withRotorToSensorRatio(ROTOR_TO_SENSOR))
             .withSlot0(SLOT_0_CONFIGS)
             .withMotionMagic(MOTION_MAGIC_CONFIGS);
+
+   public static final InterpolatingTreeMap<Double, ShooterStateData> SHOOTER_MAP =
+           new InterpolatingTreeMap<>(InverseInterpolator.forDouble(), ShooterStateData.interpolator);
+
+   static {
+      SHOOTER_MAP.put(0.0, new ShooterStateData(Units.Rotations.of(0), 0, 0.0));
+   }
+
 
 }
