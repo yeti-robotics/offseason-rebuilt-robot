@@ -18,6 +18,9 @@ import frc.robot.subsystems.linslide.LinslideIOTalonFX;
 import frc.robot.subsystems.rollerbed.RollerBed;
 import frc.robot.subsystems.rollerbed.RollerBedIO;
 import frc.robot.subsystems.rollerbed.RollerBedIOTalonFX;
+import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.TurretIO;
+import frc.robot.subsystems.turret.TurretIOTalonFX;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -31,6 +34,7 @@ public class RobotContainer {
     private final Linslide linslide;
     private final Intake intake;
     private final RollerBed rollerBed;
+    private final Turret turret;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -41,6 +45,7 @@ public class RobotContainer {
                 linslide = new Linslide(new LinslideIOTalonFX());
                 intake = new Intake(new IntakeIOTalonFX());
                 rollerBed = new RollerBed(new RollerBedIOTalonFX());
+                turret = new Turret(new TurretIOTalonFX());
 
                 break;
 
@@ -49,12 +54,14 @@ public class RobotContainer {
                 intake = new Intake(new IntakeIOTalonFX());
 
                 rollerBed = new RollerBed(new RollerBedIOTalonFX());
+                turret = new Turret(new TurretIOTalonFX());
                 break;
 
             default:
                 linslide = new Linslide(new LinslideIO() {});
                 intake = new Intake(new IntakeIO() {});
                 rollerBed = new RollerBed(new RollerBedIO() {});
+                turret = new Turret(new TurretIO() {});
 
                 break;
         }
