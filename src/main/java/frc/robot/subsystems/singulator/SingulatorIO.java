@@ -2,12 +2,12 @@ package frc.robot.subsystems.singulator;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface SingulatorIO {
+public interface SingulatorIO  {
 
     @AutoLog
     public static class SingulatorIOInputs {
         public double rollerSpeed = 0.0;
-        public double motorTemp = 0.0;
+        public double supplyCurrent = 0.0;
     }
 
     public default void rollerSpin(double rps){}
