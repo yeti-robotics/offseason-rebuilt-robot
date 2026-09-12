@@ -8,29 +8,29 @@ import frc.robot.Robot;
 
 public class TurretConfigs {
 
-    //Need to change IDs
+    // Need to change IDs
     static final int TURRET_MOTOR_ID = 78;
     static final int MOTOR_TO_SENSOR_RATIO = 89;
     static final int SENSOR_TO_MEHCANISM_RATIO = 64;
 
-    //Need to change IDs
+    // Need to change IDs
     static final Slot0Configs SLOT_0_CONFIGS = Robot.isReal()
             ? new Slot0Configs()
-            .withKP(0)
-            .withKI(0)
-            .withKD(0)
-            .withKV(0)
-            .withKA(0)
-            .withKS(0)
-            .withGravityType(GravityTypeValue.Elevator_Static)
+                    .withKP(0)
+                    .withKI(0)
+                    .withKD(0)
+                    .withKV(0)
+                    .withKA(0)
+                    .withKS(0)
+                    .withGravityType(GravityTypeValue.Elevator_Static)
             : new Slot0Configs()
-            .withKP(0)
-            .withKI(0)
-            .withKD(0)
-            .withKV(0)
-            .withKA(0)
-            .withKS(1)
-            .withGravityType(GravityTypeValue.Elevator_Static);
+                    .withKP(0)
+                    .withKI(0)
+                    .withKD(0)
+                    .withKV(0)
+                    .withKA(0)
+                    .withKS(1)
+                    .withGravityType(GravityTypeValue.Elevator_Static);
 
     static final TalonFXConfiguration TURRET_CONFIGS = new TalonFXConfiguration()
             .withSlot0(SLOT_0_CONFIGS)
@@ -46,6 +46,4 @@ public class TurretConfigs {
                     .withReverseSoftLimitEnable(true)
                     .withForwardSoftLimitThreshold(0)
                     .withForwardSoftLimitEnable(true));
-
-
 }
