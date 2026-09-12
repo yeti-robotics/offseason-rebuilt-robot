@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.hood.Hood;
+import frc.robot.subsystems.hood.HoodIOTalonFX;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.intake.IntakeIOTalonFX;
@@ -34,6 +36,7 @@ public class RobotContainer {
     private final Linslide linslide;
     private final Intake intake;
     private final RollerBed rollerBed;
+    private final Hood hood;
     private final Turret turret;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -45,6 +48,7 @@ public class RobotContainer {
                 linslide = new Linslide(new LinslideIOTalonFX());
                 intake = new Intake(new IntakeIOTalonFX());
                 rollerBed = new RollerBed(new RollerBedIOTalonFX());
+                hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIOTalonFX());
 
                 break;
@@ -52,6 +56,7 @@ public class RobotContainer {
             case SIM:
                 linslide = new Linslide(new LinslideIOTalonFX());
                 intake = new Intake(new IntakeIOTalonFX());
+                hood = new Hood(new HoodIOTalonFX());
 
                 rollerBed = new RollerBed(new RollerBedIOTalonFX());
                 turret = new Turret(new TurretIOTalonFX());
@@ -61,6 +66,7 @@ public class RobotContainer {
                 linslide = new Linslide(new LinslideIO() {});
                 intake = new Intake(new IntakeIO() {});
                 rollerBed = new RollerBed(new RollerBedIO() {});
+                hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIO() {});
 
                 break;
@@ -68,7 +74,6 @@ public class RobotContainer {
 
         configureBindings();
     }
-
 
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the

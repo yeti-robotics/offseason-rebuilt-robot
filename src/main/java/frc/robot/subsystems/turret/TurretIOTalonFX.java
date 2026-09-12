@@ -20,7 +20,6 @@ public class TurretIOTalonFX implements TurretIO{
     public TurretIOTalonFX() {
         turretMotor = new TalonFX(TurretConfigs.TURRET_MOTOR_ID, Constants.CAN_S1);
         if (Robot.isSimulation()) {
-            if (Robot.isSimulation())
                 PhysicsSim.getInstance().addTalonFX(turretMotor);
         }
         turretMotor.getConfigurator().apply(TurretConfigs.TURRET_CONFIGS);

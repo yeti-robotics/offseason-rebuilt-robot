@@ -9,7 +9,7 @@ public class Intake extends SubsystemBase {
     private IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
     @Override
-    public void periodic(){
+    public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Intake", inputs);
     }
@@ -18,13 +18,11 @@ public class Intake extends SubsystemBase {
         this.io = io;
     }
 
-    public Command setIntakeVoltage(double volts){
+    public Command setIntakeVoltage(double volts) {
         return runEnd(() -> io.setIntakeMotorVoltage(volts), () -> io.setIntakeMotorVoltage(0));
     }
 
     public Command applyPower(double percent) {
         return runEnd(() -> io.applyPower(percent), () -> io.applyPower(0));
     }
-
 }
-
