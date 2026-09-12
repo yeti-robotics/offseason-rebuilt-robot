@@ -10,6 +10,8 @@ public class TurretConfigs {
 
     //Need to change IDs
     static final int TURRET_MOTOR_ID = 78;
+    static final int MOTOR_TO_SENSOR_RATIO = 89;
+    static final int SENSOR_TO_MEHCANISM_RATIO = 64;
 
     //Need to change IDs
     static final Slot0Configs SLOT_0_CONFIGS = Robot.isReal()

@@ -10,19 +10,21 @@ import static edu.wpi.first.units.Units.Degrees;
 
 public class Turret extends SubsystemBase {
     private final TurretIO io;
-    private final TurretIOTalonFXAutoLogged inputs = new TurretIOTalonFXAutoLogged();
+    private final TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
+
+    public Turret(TurretIO io){
+        this.io = io;
+    }
+
     @Override
     public void periodic(){
         io.updateInputs(inputs);
         Logger.processInputs("Turret", inputs);
     }
 
-    public Turret(TurretIO io){
-        this.io = io;
-    }
 
     public Command setPosition(Angle position){
-        return runEnd(() -> io.setPosition(position), () -> io.setPosition(Degrees.of(0)));
+        return runOnce(() -> io.setPosition(position));
     }
 
     public Command applyPower(double percent) {

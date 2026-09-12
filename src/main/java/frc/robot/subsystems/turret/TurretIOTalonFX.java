@@ -24,6 +24,12 @@ public class TurretIOTalonFX implements TurretIO{
         }
         turretMotor.getConfigurator().apply(TurretConfigs.TURRET_CONFIGS);
     }
+
+    @Override
+    public void updateInputs(TurretIO.TurretIOInputs inputs){
+        inputs.position = turretMotor.getPosition().getValueAsDouble();
+    }
+
     @Override
     public void applyPower(double percent){
         turretMotor.setControl(dutyCycleOut.withOutput(percent));
