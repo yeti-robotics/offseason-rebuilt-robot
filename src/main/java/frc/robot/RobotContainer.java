@@ -5,10 +5,15 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.swerve.SwerveModule;
+import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.Constants;
+// import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
+import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
+import frc.robot.subsystems.drivetrain.TunerConstants;
 import frc.robot.subsystems.hood.Hood;
 import frc.robot.subsystems.hood.HoodIOTalonFX;
 import frc.robot.subsystems.intake.Intake;
@@ -39,12 +44,20 @@ public class RobotContainer {
     private final Hood hood;
     private final Turret turret;
 
+    private final CommandSwerveDrivetrain drive;
+
+    private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric()
+            .withDeadband(TunerConstants.MAX_VELOCITY_METERS_PER_SECOND * 0.1)
+            .withRotationalDeadband(TunerConstants.MaFxAngularRate * 0.1)
+            .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         primary = new CommandXboxController(Constants.PRIMARY_CONTROLLER_PORT);
 
         switch (Constants.currentMode) {
             case REAL:
+                drive = TunerConstants.createDrivetrain();
                 linslide = new Linslide(new LinslideIOTalonFX());
                 intake = new Intake(new IntakeIOTalonFX());
                 rollerBed = new RollerBed(new RollerBedIOTalonFX());
@@ -54,15 +67,16 @@ public class RobotContainer {
                 break;
 
             case SIM:
+                drive = TunerConstants.createDrivetrain();
                 linslide = new Linslide(new LinslideIOTalonFX());
                 intake = new Intake(new IntakeIOTalonFX());
                 hood = new Hood(new HoodIOTalonFX());
-
                 rollerBed = new RollerBed(new RollerBedIOTalonFX());
                 turret = new Turret(new TurretIOTalonFX());
                 break;
 
             default:
+                drive = TunerConstants.createDrivetrain();
                 linslide = new Linslide(new LinslideIO() {});
                 intake = new Intake(new IntakeIO() {});
                 rollerBed = new RollerBed(new RollerBedIO() {});
@@ -84,7 +98,12 @@ public class RobotContainer {
      * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
      * joysticks}.
      */
-    private void configureBindings() {}
+    private void configureBindings() {
+        drive.setDefaultCommand(drive.applyRequest(() -> driveRequest
+                .withVelocityX(-primary.getLeftY() * TunerConstants.kSpeedAt12Volts.magnitude())
+                .withVelocityY(-primary.getLeftX() * TunerConstants.kSpeedAt12Volts.magnitude())
+                .withRotationalRate(-primary.getRightX() * TunerConstants.MaFxAngularRate)));
+    }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
