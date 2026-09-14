@@ -29,5 +29,3 @@ public class IntakeConfigs {
                     .withSupplyCurrentLowerLimit(0)
                     .withSupplyCurrentLowerTime(0));
 }
-
-

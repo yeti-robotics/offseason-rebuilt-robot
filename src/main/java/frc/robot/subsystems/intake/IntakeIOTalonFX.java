@@ -27,8 +27,9 @@ public class IntakeIOTalonFX implements IntakeIO {
         leftIntakeMotor.getConfigurator().apply(IntakeConfigs.INTAKE_TALONFX_CONFIGS);
         leftIntakeMotor.setControl(new Follower(IntakeConfigs.RIGHT_INTAKE_MOTOR_ID, true));
     }
+
     @Override
-    public void updateInputs(IntakeIO.IntakeIOInputs inputs){
+    public void updateInputs(IntakeIO.IntakeIOInputs inputs) {
         inputs.primaryMotorRPM = rightIntakeMotor.getVelocity().getValueAsDouble();
         inputs.primaryMotorVoltage = rightIntakeMotor.getMotorVoltage().getValueAsDouble();
         inputs.secondaryMotorRPM = leftIntakeMotor.getVelocity().getValueAsDouble();
@@ -36,12 +37,12 @@ public class IntakeIOTalonFX implements IntakeIO {
     }
 
     @Override
-    public void setIntakeMotorVoltage(double volts){
+    public void setIntakeMotorVoltage(double volts) {
         rightIntakeMotor.setControl(voltageRequest.withOutput(volts));
     }
 
     @Override
-    public void applyPower(double percent){
+    public void applyPower(double percent) {
         rightIntakeMotor.setControl(dutyCycleOut.withOutput(percent));
     }
 }
