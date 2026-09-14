@@ -17,6 +17,9 @@ import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.linslide.Linslide;
 import frc.robot.subsystems.linslide.LinslideIO;
 import frc.robot.subsystems.linslide.LinslideIOTalonFX;
+import frc.robot.subsystems.miniindexer.MiniIndexer;
+import frc.robot.subsystems.miniindexer.MiniIndexerIO;
+import frc.robot.subsystems.miniindexer.MiniIndexerIOTalonFX;
 import frc.robot.subsystems.rollerbed.RollerBed;
 import frc.robot.subsystems.rollerbed.RollerBedIO;
 import frc.robot.subsystems.rollerbed.RollerBedIOTalonFX;
@@ -36,6 +39,7 @@ public class RobotContainer {
     private final Linslide linslide;
     private final Intake intake;
     private final RollerBed rollerBed;
+    private final MiniIndexer miniIndexer;
     private final Hood hood;
     private final Turret turret;
 
@@ -48,6 +52,7 @@ public class RobotContainer {
                 linslide = new Linslide(new LinslideIOTalonFX());
                 intake = new Intake(new IntakeIOTalonFX());
                 rollerBed = new RollerBed(new RollerBedIOTalonFX());
+                miniIndexer = new MiniIndexer(new MiniIndexerIOTalonFX());
                 hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIOTalonFX());
 
@@ -56,9 +61,9 @@ public class RobotContainer {
             case SIM:
                 linslide = new Linslide(new LinslideIOTalonFX());
                 intake = new Intake(new IntakeIOTalonFX());
-                hood = new Hood(new HoodIOTalonFX());
-
                 rollerBed = new RollerBed(new RollerBedIOTalonFX());
+                miniIndexer = new MiniIndexer(new MiniIndexerIOTalonFX());
+                hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIOTalonFX());
                 break;
 
@@ -66,6 +71,7 @@ public class RobotContainer {
                 linslide = new Linslide(new LinslideIO() {});
                 intake = new Intake(new IntakeIO() {});
                 rollerBed = new RollerBed(new RollerBedIO() {});
+                miniIndexer = new MiniIndexer(new MiniIndexerIO() {});
                 hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIO() {});
 
