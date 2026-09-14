@@ -15,6 +15,9 @@ import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.linslide.Linslide;
 import frc.robot.subsystems.linslide.LinslideIO;
 import frc.robot.subsystems.linslide.LinslideIOTalonFX;
+import frc.robot.subsystems.miniindexer.MiniIndexer;
+import frc.robot.subsystems.miniindexer.MiniIndexerIO;
+import frc.robot.subsystems.miniindexer.MiniIndexerIOTalonFX;
 import frc.robot.subsystems.rollerbed.RollerBed;
 import frc.robot.subsystems.rollerbed.RollerBedIO;
 import frc.robot.subsystems.rollerbed.RollerBedIOTalonFX;
@@ -31,7 +34,7 @@ public class RobotContainer {
     private final Linslide linslide;
     private final Intake intake;
     private final RollerBed rollerBed;
-
+    private final MiniIndexer miniIndexer;
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         primary = new CommandXboxController(Constants.PRIMARY_CONTROLLER_PORT);
@@ -41,27 +44,27 @@ public class RobotContainer {
                 linslide = new Linslide(new LinslideIOTalonFX());
                 intake = new Intake(new IntakeIOTalonFX());
                 rollerBed = new RollerBed(new RollerBedIOTalonFX());
+                miniIndexer = new MiniIndexer(new MiniIndexerIOTalonFX());
 
                 break;
 
             case SIM:
                 linslide = new Linslide(new LinslideIOTalonFX());
                 intake = new Intake(new IntakeIOTalonFX());
-
                 rollerBed = new RollerBed(new RollerBedIOTalonFX());
+                miniIndexer = new MiniIndexer(new MiniIndexerIOTalonFX());
                 break;
 
             default:
                 linslide = new Linslide(new LinslideIO() {});
                 intake = new Intake(new IntakeIO() {});
                 rollerBed = new RollerBed(new RollerBedIO() {});
-
+                miniIndexer = new MiniIndexer(new MiniIndexerIO() {});
                 break;
         }
 
         configureBindings();
     }
-
 
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the
