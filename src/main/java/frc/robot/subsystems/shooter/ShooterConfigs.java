@@ -9,7 +9,7 @@ import frc.robot.util.ShooterStateData;
 
 public class ShooterConfigs {
  public static final int FIRST_MOTOR_ID=14;
-    public static final int SECOND_MOTOR_ID=100;
+    public static final int SECOND_MOTOR_ID=10;
     static final double ROTOR_TO_SENSOR = 1;
     static final double SENSOR_TO_MECHANISM = 1;
 

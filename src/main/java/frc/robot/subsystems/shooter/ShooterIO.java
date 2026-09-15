@@ -15,4 +15,7 @@ public default void updateInputs(ShooterIOInputs inputs){
 };
  public default void shoot (double velocity){}
 public default void applyPower(double power){}
+public default void updateInputs(ShooterIOInputs inputs){};
+ public default void shooterCommand(double velocity){};
+
 }
