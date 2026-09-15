@@ -9,6 +9,23 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.hood.Hood;
+import frc.robot.subsystems.hood.HoodIOTalonFX;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeIO;
+import frc.robot.subsystems.intake.IntakeIOTalonFX;
+import frc.robot.subsystems.linslide.Linslide;
+import frc.robot.subsystems.linslide.LinslideIO;
+import frc.robot.subsystems.linslide.LinslideIOTalonFX;
+import frc.robot.subsystems.miniindexer.MiniIndexer;
+import frc.robot.subsystems.miniindexer.MiniIndexerIO;
+import frc.robot.subsystems.miniindexer.MiniIndexerIOTalonFX;
+import frc.robot.subsystems.rollerbed.RollerBed;
+import frc.robot.subsystems.rollerbed.RollerBedIO;
+import frc.robot.subsystems.rollerbed.RollerBedIOTalonFX;
+import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.TurretIO;
+import frc.robot.subsystems.turret.TurretIOTalonFX;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,10 +36,48 @@ import frc.robot.constants.Constants;
 public class RobotContainer {
 
     CommandXboxController primary;
+    private final Linslide linslide;
+    private final Intake intake;
+    private final RollerBed rollerBed;
+    private final MiniIndexer miniIndexer;
+    private final Hood hood;
+    private final Turret turret;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         primary = new CommandXboxController(Constants.PRIMARY_CONTROLLER_PORT);
+
+        switch (Constants.currentMode) {
+            case REAL:
+                linslide = new Linslide(new LinslideIOTalonFX());
+                intake = new Intake(new IntakeIOTalonFX());
+                rollerBed = new RollerBed(new RollerBedIOTalonFX());
+                miniIndexer = new MiniIndexer(new MiniIndexerIOTalonFX());
+                hood = new Hood(new HoodIOTalonFX());
+                turret = new Turret(new TurretIOTalonFX());
+
+                break;
+
+            case SIM:
+                linslide = new Linslide(new LinslideIOTalonFX());
+                intake = new Intake(new IntakeIOTalonFX());
+                rollerBed = new RollerBed(new RollerBedIOTalonFX());
+                miniIndexer = new MiniIndexer(new MiniIndexerIOTalonFX());
+                hood = new Hood(new HoodIOTalonFX());
+                turret = new Turret(new TurretIOTalonFX());
+                break;
+
+            default:
+                linslide = new Linslide(new LinslideIO() {});
+                intake = new Intake(new IntakeIO() {});
+                rollerBed = new RollerBed(new RollerBedIO() {});
+                miniIndexer = new MiniIndexer(new MiniIndexerIO() {});
+                hood = new Hood(new HoodIOTalonFX());
+                turret = new Turret(new TurretIO() {});
+
+                break;
+        }
+
         configureBindings();
     }
 
