@@ -6,6 +6,7 @@
 package frc.robot;
 
 import choreo.auto.AutoFactory;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -40,7 +41,6 @@ import frc.robot.subsystems.singulator.SingulatorIOTalonFX;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIO;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -68,6 +68,9 @@ public class RobotContainer {
 
     private final CommandSwerveDrivetrain drive;
 
+    private final LoggedDashboardChooser<Command> autoChooser;
+
+    /** The container for the robot. Contains subsystems, OI devices, and commands. */
     private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric()
             .withDeadband(TunerConstants.MAX_VELOCITY_METERS_PER_SECOND * 0.1)
             .withRotationalDeadband(TunerConstants.MaFxAngularRate * 0.1)
@@ -127,6 +130,8 @@ public class RobotContainer {
         autoChooser.addOption("Right Choreo", autoCommands.autoRightChoreo());
         autoChooser.addOption("Left PathPlanner", autoCommands.leftAutoPathPlanner());
         autoChooser.addOption("Right PathPlanner", autoCommands.rightAutoPathPlanner());
+
+        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
         configureBindings();
         configureDebugBindings();
