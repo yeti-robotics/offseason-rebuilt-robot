@@ -1,4 +1,5 @@
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystems.shooter;//*nithya was here //*
+
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -9,29 +10,28 @@ import org.littletonrobotics.junction.Logger;
 
 import static org.littletonrobotics.junction.Logger.processInputs;
 
-//*nithya was here //*
 public class Shooter extends SubsystemBase {
- private ShooterIO io;
- public ShooterIOInputsAutoLog inputs = new ShooterIOInputsAutoLog ();
- public Shooter(ShooterIO io) {
-     this.io = io;
- }
- @Override
-public void periodic(){
-     io.updateInputs(inputs);
-     Logger.processInputs("Shooter", inputs);
-     Logger.recordOutput("Shooter/Target Speed", targetSpeed);
-     Logger.recordOutput("Shooter/Target Is At Speed", isAtSpeed);
+    private ShooterIO io;
+    public ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
 
-public AngularVelocity getVelocity(){
-    return Units.RotationsPerSecond.of(inputs.topMotorRPM);
+    public Shooter(ShooterIO io) {
+        this.io = io;
+    }
+
+    public Command shoot(double velocity) {
+        return runOnce(() -> this.targetSpeed = velocity);
+    }
+
+    public AngularVelocity getVelocity() {
+        return Units.RotationsPerSecond.of(inputs.topMotorRPM);
+    }
+
+    @Override
+    public void periodic() {
+        io.updateInputs(inputs);
+        Logger.processInputs("Shooter", inputs);
 
 
-     }
-public Command shoot(double velocity){
-    return runOnce(() ->this.targetSpeed = velocity)
-
-     }
-}
+    }
 
 }
