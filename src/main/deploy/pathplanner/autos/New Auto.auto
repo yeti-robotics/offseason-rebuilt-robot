@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "OSB_Right1"
+            "pathName": "Hailstorm_Left1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "OSB_Right2"
+            "pathName": "Hailstorm_Left2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "OSB_Right3"
+            "pathName": "Hailstorm_Left3"
           }
         }
       ]
