@@ -6,6 +6,7 @@
 package frc.robot.constants;
 
 import com.ctre.phoenix6.CANBus;
+import edu.wpi.first.wpilibj.RobotBase;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -22,4 +23,25 @@ public final class Constants {
     public static CANBus CAN_S3 = CANBus.systemCore(3);
     public static CANBus CAN_S4 = CANBus.systemCore(4);
     public static CANBus CAN_S5 = CANBus.systemCore(5);
+
+    public static final Mode currentMode;
+
+    static {
+        if (RobotBase.isReal()) {
+            currentMode = Mode.REAL;
+        } else {
+            currentMode = Mode.SIM;
+        }
+    }
+
+    public static enum Mode {
+        // Running on a real robot
+        REAL,
+
+        // Running a physics simulator
+        SIM,
+
+        // Replaying from a log file
+        REPLAY
+    }
 }
