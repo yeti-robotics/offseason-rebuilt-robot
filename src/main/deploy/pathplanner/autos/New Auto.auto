@@ -7,19 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Hailstorm_Left1"
+            "pathName": "Trench_Neutral_L1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Hailstorm_Left2"
+            "pathName": "Neutral_Shoot_L2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Hailstorm_Left3"
+            "pathName": "Shoot_Neutral_L3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Neutral_Shoot_L4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shoot_Neutral_L5"
           }
         }
       ]
