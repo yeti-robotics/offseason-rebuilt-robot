@@ -4,27 +4,16 @@ import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.signals.InvertedValue;
 
 public class ShooterConfigs {
- public static final int FIRST_MOTOR_ID=14;
-    public static final int SECOND_MOTOR_ID=10;
-    public static final int THIRD_MOTOR_ID=20;
+    public static final int FIRST_MOTOR_ID = 14;
+    public static final int SECOND_MOTOR_ID = 10;
     static final double ROTOR_TO_SENSOR = 1;
     static final double SENSOR_TO_MECHANISM = 1;
 
-    public static final Slot0Configs SLOT_0_CONFIGS = new Slot0Configs()
-            .withKP(0)
-            .withKI(0)
-            .withKD(0)
-            .withKS(0)
-            .withKV(0)
-            .withKA(0);
+    public static final Slot0Configs SLOT_0_CONFIGS =
+            new Slot0Configs().withKP(0).withKI(0).withKD(0).withKS(0).withKV(0).withKA(0);
 
-    public static final Slot1Configs SLOT_1_CONFIGS = new Slot1Configs()
-            .withKP(0)
-            .withKI(0)
-            .withKD(0)
-            .withKS(0)
-            .withKV(0)
-            .withKA(0);
+    public static final Slot1Configs SLOT_1_CONFIGS =
+            new Slot1Configs().withKP(0).withKI(0).withKD(0).withKS(0).withKV(0).withKA(0);
 
     public static final MotionMagicConfigs MOTION_MAGIC_CONFIGS = new MotionMagicConfigs()
             .withMotionMagicCruiseVelocity(1)
@@ -46,5 +35,4 @@ public class ShooterConfigs {
                     .withRotorToSensorRatio(ROTOR_TO_SENSOR))
             .withSlot0(SLOT_0_CONFIGS)
             .withMotionMagic(MOTION_MAGIC_CONFIGS);
-
 }
