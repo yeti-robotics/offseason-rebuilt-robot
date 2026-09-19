@@ -24,7 +24,7 @@ public class ShooterConfigs {
             .withMotionMagicAcceleration(2)
             .withMotionMagicJerk(0);
 
-    static final TalonFXConfiguration TOP_MOTOR_CONFIGS = new TalonFXConfiguration()
+    public static final TalonFXConfiguration TOP_MOTOR_CONFIGS = new TalonFXConfiguration()
             .withFeedback(new FeedbackConfigs()
                     .withSensorToMechanismRatio(SENSOR_TO_MECHANISM)
                     .withRotorToSensorRatio(ROTOR_TO_SENSOR))

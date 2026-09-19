@@ -19,8 +19,8 @@ public class ShooterIOTalonFX implements ShooterIO {
             PhysicsSim.getInstance().addTalonFX(motorOne);
             PhysicsSim.getInstance().addTalonFX(motorTwo);
         }
-        motorOne.getConfigurator().apply(ShooterConfigs.MOTION_MAGIC_CONFIGS);
-        motorTwo.getConfigurator().apply(ShooterConfigs.MOTION_MAGIC_CONFIGS);
+        motorOne.getConfigurator().apply(ShooterConfigs.TOP_MOTOR_CONFIGS);
+        motorTwo.getConfigurator().apply(ShooterConfigs.BOTTOM_MOTOR_CONFIGS);
         motorTwo.setControl(new Follower(ShooterConfigs.FIRST_MOTOR_ID, true));
     }
 
@@ -36,5 +36,10 @@ public class ShooterIOTalonFX implements ShooterIO {
     @Override
     public void shoot(double velocity) {
         motorOne.setControl(magicRequest.withVelocity(velocity));
+    }
+
+    @Override
+    public void applyPower(double power) {
+        motorOne.setControl(dutyCycleOut.withOutput(power));
     }
 }
