@@ -8,30 +8,20 @@ import edu.wpi.first.units.Units;
 import frc.robot.util.ShooterStateData;
 
 public class ShooterConfigs {
- public static final int FIRST_MOTOR_ID=14;
-    public static final int SECOND_MOTOR_ID=10;
+    public static final int FIRST_MOTOR_ID = 14;
+    public static final int SECOND_MOTOR_ID = 10;
     static final double ROTOR_TO_SENSOR = 1;
     static final double SENSOR_TO_MECHANISM = 1;
 
-    public static final Slot0Configs SLOT_0_CONFIGS = new Slot0Configs()
-            .withKP(8)
-            .withKI(0)
-            .withKD(0)
-            .withKS(4)
-            .withKV(0.55)
-            .withKA(256);
+    public static final Slot0Configs SLOT_0_CONFIGS =
+            new Slot0Configs().withKP(0).withKI(0).withKD(0).withKS(0).withKV(0).withKA(0);
 
-    public static final Slot1Configs SLOT_1_CONFIGS = new Slot1Configs()
-            .withKP(7.9)
-            .withKI(1)
-            .withKD(0)
-            .withKS(5)
-            .withKV(1.1)
-            .withKA(256);
+    public static final Slot1Configs SLOT_1_CONFIGS =
+            new Slot1Configs().withKP(0).withKI(0).withKD(0).withKS(0).withKV(0).withKA(0);
 
     public static final MotionMagicConfigs MOTION_MAGIC_CONFIGS = new MotionMagicConfigs()
             .withMotionMagicCruiseVelocity(1)
-            .withMotionMagicAcceleration(256)
+            .withMotionMagicAcceleration(2)
             .withMotionMagicJerk(0);
 
     static final TalonFXConfiguration TOP_MOTOR_CONFIGS = new TalonFXConfiguration()
@@ -50,12 +40,10 @@ public class ShooterConfigs {
             .withSlot0(SLOT_0_CONFIGS)
             .withMotionMagic(MOTION_MAGIC_CONFIGS);
 
-   public static final InterpolatingTreeMap<Double, ShooterStateData> SHOOTER_MAP =
-           new InterpolatingTreeMap<>(InverseInterpolator.forDouble(), ShooterStateData.interpolator);
+    public static final InterpolatingTreeMap<Double, ShooterStateData> SHOOTER_MAP =
+            new InterpolatingTreeMap<>(InverseInterpolator.forDouble(), ShooterStateData.interpolator);
 
-   static {
-      SHOOTER_MAP.put(0.0, new ShooterStateData(Units.Rotations.of(0), 0, 0.0));
-   }
-
-
+    static {
+        SHOOTER_MAP.put(0.0, new ShooterStateData(Units.Rotations.of(0), 0, 0.0));
+    }
 }
