@@ -24,6 +24,8 @@ import frc.robot.subsystems.rollerbed.RollerBed;
 import frc.robot.subsystems.rollerbed.RollerBedIO;
 import frc.robot.subsystems.rollerbed.RollerBedIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIO;
+import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIO;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
@@ -57,6 +59,7 @@ public class RobotContainer {
                 miniIndexer = new MiniIndexer(new MiniIndexerIOTalonFX());
                 hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIOTalonFX());
+                shooter = new Shooter(new ShooterIOTalonFX());
 
                 break;
 
@@ -67,6 +70,8 @@ public class RobotContainer {
                 miniIndexer = new MiniIndexer(new MiniIndexerIOTalonFX());
                 hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIOTalonFX());
+                shooter = new Shooter(new ShooterIOTalonFX());
+
                 break;
 
             default:
@@ -76,6 +81,7 @@ public class RobotContainer {
                 miniIndexer = new MiniIndexer(new MiniIndexerIO() {});
                 hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIO() {});
+                shooter = new Shooter(new ShooterIO() {});
 
                 break;
         }
