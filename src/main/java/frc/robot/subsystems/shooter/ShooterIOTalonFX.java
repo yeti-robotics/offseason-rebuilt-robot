@@ -25,7 +25,7 @@ public class ShooterIOTalonFX implements ShooterIO {
     }
 
     @Override
-    public void updateInputs(ShooterIO.ShooterIOInputs inputs) {
+    public void updateInputs(ShooterIOInputs inputs) {
         inputs.velocityFIRST_MOTOR = motorOne.getVelocity().getValueAsDouble();
         inputs.velocitySECOND_MOTOR = motorTwo.getVelocity().getValueAsDouble();
 
