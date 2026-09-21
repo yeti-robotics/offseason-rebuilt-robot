@@ -1,5 +1,6 @@
 package frc.robot.subsystems.hood;
 
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
@@ -21,5 +22,9 @@ public class Hood extends SubsystemBase {
 
     public Command setPosition(double position) {
         return (runOnce(() -> io.setPosition(position)));
+    }
+
+    public void moveTo(Angle position) {
+        io.setPosition(position.magnitude());
     }
 }

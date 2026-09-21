@@ -5,11 +5,14 @@
 
 package frc.robot;
 
+import static frc.robot.constants.FieldConstants.Hub.centerHubOpening;
+
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.SOTMCommand;
 import frc.robot.constants.Constants;
 // import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
@@ -51,8 +54,9 @@ public class RobotContainer {
     private final Hood hood;
     private final Turret turret;
     private final Shooter shooter;
-
     private final CommandSwerveDrivetrain drive;
+
+    private final SOTMCommand sotmCommand;
 
     private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric()
             .withDeadband(TunerConstants.MAX_VELOCITY_METERS_PER_SECOND * 0.1)
@@ -100,6 +104,8 @@ public class RobotContainer {
 
                 break;
         }
+
+        sotmCommand = new SOTMCommand(drive, shooter, hood, turret, centerHubOpening.toTranslation2d());
 
         configureBindings();
     }
