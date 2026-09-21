@@ -15,6 +15,7 @@ import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretConfigs;
 import frc.robot.util.AllianceFlipUtil;
 import frc.robot.util.ShooterStateData;
+import org.littletonrobotics.junction.Logger;
 
 public class SOTMCommand extends Command {
 
@@ -68,6 +69,9 @@ public class SOTMCommand extends Command {
         double targetRPS = compensatedState.rps;
         Angle targetHoodAngle = compensatedState.hoodPos;
         Angle targetTurretAngle = calcDesiredTurretHeading();
+        Logger.recordOutput("SOTM/Target RPS", targetRPS);
+        Logger.recordOutput("SOTM/Target Hood Angle", targetHoodAngle.magnitude());
+        Logger.recordOutput("SOTM/Target Turret Angle", targetTurretAngle.magnitude());
 
         turret.moveTo(targetTurretAngle);
         hood.moveTo(targetHoodAngle);

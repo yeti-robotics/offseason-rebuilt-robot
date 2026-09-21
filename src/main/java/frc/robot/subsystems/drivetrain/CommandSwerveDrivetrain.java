@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.io.IOException;
 import java.util.function.Supplier;
 import org.json.simple.parser.ParseException;
+import org.littletonrobotics.junction.Logger;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements Subsystem so it can easily
@@ -282,6 +283,16 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
                 m_hasAppliedOperatorPerspective = true;
             });
         }
+        Logger.recordOutput("Drive/ChassisSpeeds", getChassisSpeeds());
+        Logger.recordOutput("Drive/Gyro/Connected", getPigeon2().isConnected());
+        Logger.recordOutput("Drive/Gyro/YawPosition", getState().Pose.getRotation());
+        Logger.recordOutput(
+                "Drive/Gyro/YawVelocityRadPerSec",
+                getPigeon2().getAngularVelocityZWorld().getValueAsDouble());
+        Logger.recordOutput("Odometry/Robot", getState().Pose);
+        Logger.recordOutput("Drive/OdometryPeriod", getState().OdometryPeriod);
+        Logger.recordOutput("SwerveStates/Measured", getState().ModuleStates);
+        Logger.recordOutput("SwerveChassisSpeeds/Measured", getChassisSpeeds());
     }
 
     private void startSimThread() {

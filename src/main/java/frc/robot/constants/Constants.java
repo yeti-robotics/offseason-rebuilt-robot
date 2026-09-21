@@ -18,11 +18,11 @@ import edu.wpi.first.wpilibj.RobotBase;
  */
 public final class Constants {
     public static final int PRIMARY_CONTROLLER_PORT = 0;
-    public static CANBus CAN_S1 = CANBus.systemCore(1);
-    public static CANBus CAN_S2 = CANBus.systemCore(2);
-    public static CANBus CAN_S3 = CANBus.systemCore(3);
-    public static CANBus CAN_S4 = CANBus.systemCore(4);
-    public static CANBus CAN_S5 = CANBus.systemCore(5);
+    public static CANBus CAN_S1 = CANBus.systemCore(0);
+    public static CANBus CAN_S2 = CANBus.systemCore(1);
+    public static CANBus CAN_S3 = CANBus.systemCore(2);
+    public static CANBus CAN_S4 = CANBus.systemCore(3);
+    public static CANBus CAN_S5 = CANBus.systemCore(4);
 
     public static final Mode currentMode;
 

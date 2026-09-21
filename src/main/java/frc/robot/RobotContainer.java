@@ -18,6 +18,7 @@ import frc.robot.constants.Constants;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.TunerConstants;
 import frc.robot.subsystems.hood.Hood;
+import frc.robot.subsystems.hood.HoodIO;
 import frc.robot.subsystems.hood.HoodIOTalonFX;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIO;
@@ -98,7 +99,7 @@ public class RobotContainer {
                 intake = new Intake(new IntakeIO() {});
                 rollerBed = new RollerBed(new RollerBedIO() {});
                 miniIndexer = new MiniIndexer(new MiniIndexerIO() {});
-                hood = new Hood(new HoodIOTalonFX());
+                hood = new Hood(new HoodIO() {});
                 turret = new Turret(new TurretIO() {});
                 shooter = new Shooter(new ShooterIO() {});
 
