@@ -69,6 +69,7 @@ public class SOTMCommand extends Command {
         double targetRPS = compensatedState.rps;
         Angle targetHoodAngle = compensatedState.hoodPos;
         Angle targetTurretAngle = calcDesiredTurretHeading();
+
         Logger.recordOutput("SOTM/Target RPS", targetRPS);
         Logger.recordOutput("SOTM/Target Hood Angle", targetHoodAngle.magnitude());
         Logger.recordOutput("SOTM/Target Turret Angle", targetTurretAngle.magnitude());
