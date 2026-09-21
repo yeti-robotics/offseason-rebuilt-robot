@@ -18,15 +18,16 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 
 public class VisionConstants {
     // AprilTag layout
     public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
     // Camera names, must match names configured on coprocessor
-    public static String frontCam = "limelight-front";
-    public static String leftCam = "limelight-left";
-    public static String rightCam = "limelight-right";
+    public static String backCam = "arducam-back";
+    public static String frontCam = "arducam-front";
+    public static String sideCam = "arducam-right";
 
     // Basic filtering thresholds
     public static double maxAmbiguity = 0.3;
@@ -51,11 +52,11 @@ public class VisionConstants {
     public static double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
     public static double angularStdDevMegatag2Factor = Double.POSITIVE_INFINITY; // No rotation data available
 
+    public static Transform3d backCamTrans = new Transform3d(
+            new Translation3d(Units.inchesToMeters(9.5), Units.inchesToMeters(17.8), Units.inchesToMeters(6.356)), new Rotation3d(0,Math.toRadians(75), Math.toRadians(0)));
     public static Transform3d frontCamTrans = new Transform3d(
-            new Translation3d(0.4, 0, 0.33655), new Rotation3d(0, Math.toRadians(15), Math.toRadians(0)));
-    public static Transform3d leftCamTrans = new Transform3d(
-            new Translation3d(0.3429, -0.0381, 0.5715), new Rotation3d(0, Math.toRadians(15), Math.toRadians(90)));
-    public static Transform3d rightCamTrans = new Transform3d(
-            new Translation3d(-0.32258, 0.00635, 0.4445),
-            new Rotation3d(Math.toRadians(180), Math.toRadians(15), Math.toRadians(-90)));
+            new Translation3d(Units.inchesToMeters(8.8994), Units.inchesToMeters(9.67), Units.inchesToMeters(12.95)), new Rotation3d(180, Math.toRadians(39.78), Math.toRadians(45)));
+    public static Transform3d sideCamTrans = new Transform3d(
+            new Translation3d(Units.inchesToMeters(4.04), Units.inchesToMeters(9.67), Units.inchesToMeters(12.39)),
+            new Rotation3d(Math.toRadians(180), Math.toRadians(39.7), Math.toRadians(135)));
 }

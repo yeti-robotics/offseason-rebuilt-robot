@@ -33,6 +33,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.io.IOException;
 import java.util.function.Supplier;
+
+import frc.robot.subsystems.vision.Vision;
 import org.json.simple.parser.ParseException;
 
 /**
@@ -40,7 +42,7 @@ import org.json.simple.parser.ParseException;
  * be used in command-based projects.
  */
 @Logged
-public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrain implements Subsystem {
+public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrain implements Subsystem, Vision.VisionConsumer {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
@@ -333,5 +335,10 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
 
     private CANcoder getCANcoder(int id) {
         return getModule(id).getEncoder();
+    }
+
+    @Override
+    public void accept(Pose2d visionRobotPoseMeters, double timestampSeconds, Matrix<N3, N1> visionMeasurementStdDevs) {
+        addVisionMeasurement(visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
     }
 }
