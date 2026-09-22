@@ -6,10 +6,15 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.ctre.phoenix6.swerve.SwerveModule;
+import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.Constants;
+// import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
+import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
+import frc.robot.subsystems.drivetrain.TunerConstants;
 import frc.robot.subsystems.hood.Hood;
 import frc.robot.subsystems.hood.HoodIOTalonFX;
 import frc.robot.subsystems.intake.Intake;
@@ -24,6 +29,9 @@ import frc.robot.subsystems.miniindexer.MiniIndexerIOTalonFX;
 import frc.robot.subsystems.rollerbed.RollerBed;
 import frc.robot.subsystems.rollerbed.RollerBedIO;
 import frc.robot.subsystems.rollerbed.RollerBedIOTalonFX;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIO;
+import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIO;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
@@ -44,6 +52,14 @@ public class RobotContainer {
     private final MiniIndexer miniIndexer;
     private final Hood hood;
     private final Turret turret;
+    private final Shooter shooter;
+
+    private final CommandSwerveDrivetrain drive;
+
+    private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric()
+            .withDeadband(TunerConstants.MAX_VELOCITY_METERS_PER_SECOND * 0.1)
+            .withRotationalDeadband(TunerConstants.MaFxAngularRate * 0.1)
+            .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
 
     private final LoggedDashboardChooser<Command> autoChooser;
 
@@ -53,31 +69,38 @@ public class RobotContainer {
 
         switch (Constants.currentMode) {
             case REAL:
+                drive = TunerConstants.createDrivetrain();
                 linslide = new Linslide(new LinslideIOTalonFX());
                 intake = new Intake(new IntakeIOTalonFX());
                 rollerBed = new RollerBed(new RollerBedIOTalonFX());
                 miniIndexer = new MiniIndexer(new MiniIndexerIOTalonFX());
                 hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIOTalonFX());
+                shooter = new Shooter(new ShooterIOTalonFX());
 
                 break;
 
             case SIM:
+                drive = TunerConstants.createDrivetrain();
                 linslide = new Linslide(new LinslideIOTalonFX());
                 intake = new Intake(new IntakeIOTalonFX());
                 rollerBed = new RollerBed(new RollerBedIOTalonFX());
                 miniIndexer = new MiniIndexer(new MiniIndexerIOTalonFX());
                 hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIOTalonFX());
+                shooter = new Shooter(new ShooterIOTalonFX());
+
                 break;
 
             default:
+                drive = TunerConstants.createDrivetrain();
                 linslide = new Linslide(new LinslideIO() {});
                 intake = new Intake(new IntakeIO() {});
                 rollerBed = new RollerBed(new RollerBedIO() {});
                 miniIndexer = new MiniIndexer(new MiniIndexerIO() {});
                 hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIO() {});
+                shooter = new Shooter(new ShooterIO() {});
 
                 break;
         }
@@ -96,7 +119,12 @@ public class RobotContainer {
      * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
      * joysticks}.
      */
-    private void configureBindings() {}
+    private void configureBindings() {
+        drive.setDefaultCommand(drive.applyRequest(() -> driveRequest
+                .withVelocityX(-primary.getLeftY() * TunerConstants.kSpeedAt12Volts.magnitude())
+                .withVelocityY(-primary.getLeftX() * TunerConstants.kSpeedAt12Volts.magnitude())
+                .withRotationalRate(-primary.getRightX() * TunerConstants.MaFxAngularRate)));
+    }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
