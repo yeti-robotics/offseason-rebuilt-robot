@@ -1,4 +1,4 @@
 package frc.robot.commands;
 
-public class AutoCommands {
-}
+
+public class AutoCommands {}
