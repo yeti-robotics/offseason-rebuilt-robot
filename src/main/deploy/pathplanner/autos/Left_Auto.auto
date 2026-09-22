@@ -33,6 +33,12 @@
           "data": {
             "pathName": "Shoot_Neutral_L5"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Neutral_Shoot_L6"
+          }
         }
       ]
     }
