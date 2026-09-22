@@ -53,10 +53,10 @@ public class VisionConstants {
     public static double angularStdDevMegatag2Factor = Double.POSITIVE_INFINITY; // No rotation data available
 
     public static Transform3d backCamTrans = new Transform3d(
-            new Translation3d(Units.inchesToMeters(9.5), Units.inchesToMeters(17.8), Units.inchesToMeters(6.356)), new Rotation3d(0,Math.toRadians(75), Math.toRadians(0)));
+            new Translation3d(Units.inchesToMeters(-9.5), Units.inchesToMeters(6.356), Units.inchesToMeters(17.8)), new Rotation3d(0,Math.toRadians(-25), Math.toRadians(180)));
     public static Transform3d frontCamTrans = new Transform3d(
-            new Translation3d(Units.inchesToMeters(8.8994), Units.inchesToMeters(9.67), Units.inchesToMeters(12.95)), new Rotation3d(180, Math.toRadians(39.78), Math.toRadians(45)));
+            new Translation3d(Units.inchesToMeters(8.8994), Units.inchesToMeters(9.67), Units.inchesToMeters(12.95)), new Rotation3d(180, Math.toRadians(-39.78), Math.toRadians(45)));
     public static Transform3d sideCamTrans = new Transform3d(
             new Translation3d(Units.inchesToMeters(4.04), Units.inchesToMeters(9.67), Units.inchesToMeters(12.39)),
-            new Rotation3d(Math.toRadians(180), Math.toRadians(39.7), Math.toRadians(135)));
+            new Rotation3d(Math.toRadians(180), Math.toRadians(-39.7), Math.toRadians(135)));
 }
