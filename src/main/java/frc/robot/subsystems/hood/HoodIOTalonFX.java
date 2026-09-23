@@ -32,6 +32,7 @@ public class HoodIOTalonFX implements HoodIO {
         hoodMotor.setControl(positionVoltage.withPosition(position));
     }
 
+
     @Override
     public void applyPower(double power) {
         hoodMotor.setControl(dutyRequest.withOutput(power));
