@@ -35,6 +35,9 @@ import frc.robot.subsystems.rollerbed.RollerBedIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
+import frc.robot.subsystems.singulator.Singulator;
+import frc.robot.subsystems.singulator.SingulatorIO;
+import frc.robot.subsystems.singulator.SingulatorIOTalonFX;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIO;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
@@ -55,6 +58,8 @@ public class RobotContainer {
     private final Hood hood;
     private final Turret turret;
     private final Shooter shooter;
+    private final Singulator singulator;
+
     private final CommandSwerveDrivetrain drive;
 
     private final SOTMCommand sotmCommand;
@@ -78,7 +83,7 @@ public class RobotContainer {
                 hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIOTalonFX());
                 shooter = new Shooter(new ShooterIOTalonFX());
-
+                singulator = new Singulator(new SingulatorIOTalonFX());
                 break;
 
             case SIM:
@@ -90,7 +95,7 @@ public class RobotContainer {
                 hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIOTalonFX());
                 shooter = new Shooter(new ShooterIOTalonFX());
-
+                singulator = new Singulator(new SingulatorIOTalonFX());
                 break;
 
             default:
@@ -102,7 +107,7 @@ public class RobotContainer {
                 hood = new Hood(new HoodIO() {});
                 turret = new Turret(new TurretIO() {});
                 shooter = new Shooter(new ShooterIO() {});
-
+                singulator = new Singulator(new SingulatorIO() {});
                 break;
         }
 
