@@ -38,6 +38,9 @@ import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import frc.robot.subsystems.singulator.Singulator;
 import frc.robot.subsystems.singulator.SingulatorIO;
 import frc.robot.subsystems.singulator.SingulatorIOTalonFX;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIO;
+import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIO;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
@@ -67,6 +70,14 @@ public class RobotContainer {
     private final LoggedDashboardChooser<Command> autoChooser;
 
     private final CommandSwerveDrivetrain drive;
+    private final Shooter shooter;
+
+    private final CommandSwerveDrivetrain drive;
+
+    private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric()
+            .withDeadband(TunerConstants.MAX_VELOCITY_METERS_PER_SECOND * 0.1)
+            .withRotationalDeadband(TunerConstants.MaFxAngularRate * 0.1)
+            .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
 
     private final LoggedDashboardChooser<Command> autoChooser;
 
@@ -93,6 +104,8 @@ public class RobotContainer {
                 hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIOTalonFX());
                 shooter = new Shooter(new ShooterIOTalonFX());
+
+                shooter = new Shooter(new ShooterIOTalonFX());
                 singulator = new Singulator(new SingulatorIOTalonFX());
                 break;
 
@@ -106,6 +119,8 @@ public class RobotContainer {
                 turret = new Turret(new TurretIOTalonFX());
                 shooter = new Shooter(new ShooterIOTalonFX());
                 singulator = new Singulator(new SingulatorIOTalonFX());
+                shooter = new Shooter(new ShooterIOTalonFX());
+
                 break;
 
             default:
@@ -118,6 +133,8 @@ public class RobotContainer {
                 turret = new Turret(new TurretIO() {});
                 shooter = new Shooter(new ShooterIO() {});
                 singulator = new Singulator(new SingulatorIO() {});
+                shooter = new Shooter(new ShooterIO() {});
+
                 break;
         }
 
@@ -162,6 +179,12 @@ public class RobotContainer {
         debugController.rightTrigger().whileTrue(hood.applyPower(0.5));
         debugController.povDown().whileTrue(rollerBed.applyPower(0.5));
         debugController.povUp().whileTrue(singulator.usePower(0.5));
+    }
+    private void configureBindings() {
+        drive.setDefaultCommand(drive.applyRequest(() -> driveRequest
+                .withVelocityX(-primary.getLeftY() * TunerConstants.kSpeedAt12Volts.magnitude())
+                .withVelocityY(-primary.getLeftX() * TunerConstants.kSpeedAt12Volts.magnitude())
+                .withRotationalRate(-primary.getRightX() * TunerConstants.MaFxAngularRate)));
     }
 
     /**
