@@ -1,5 +1,8 @@
 package frc.robot.commands;
 
+import choreo.auto.AutoFactory;
+import choreo.auto.AutoRoutine;
+import choreo.auto.AutoTrajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
@@ -24,8 +27,9 @@ public class AutoCommands {
     private final Shooter shooter;
     private final Turret turret;
     private final Vision vision;
+    private final AutoFactory autoFactory;
 
-    public AutoCommands(CommandSwerveDrivetrain drivetrain, Hood hood, Intake intake, Linslide linslide, MiniIndexer miniIndexer, RollerBed rollerBed, Shooter shooter, Turret turret, Vision vision) {
+    public AutoCommands(CommandSwerveDrivetrain drivetrain, Hood hood, Intake intake, Linslide linslide, MiniIndexer miniIndexer, RollerBed rollerBed, Shooter shooter, Turret turret, Vision vision, AutoFactory autoFactory) {
         this.drivetrain = drivetrain;
         this.hood = hood;
         this.intake = intake;
@@ -35,6 +39,7 @@ public class AutoCommands {
         this.shooter = shooter;
         this.turret = turret;
         this.vision = vision;
+        this.autoFactory = autoFactory;
     }
 
     public Command linSlideOut() {
