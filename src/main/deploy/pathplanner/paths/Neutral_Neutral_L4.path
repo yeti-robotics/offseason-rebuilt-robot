@@ -40,18 +40,6 @@
     },
     {
       "name": "End Intake",
-      "waypointRelativePos": 0.47796610169491555,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "Shoot",
-      "waypointRelativePos": 0.7830508474576252,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "End Shoot",
       "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": null
