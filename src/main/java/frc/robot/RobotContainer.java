@@ -5,6 +5,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,12 +32,10 @@ import frc.robot.subsystems.rollerbed.RollerBedIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
-import frc.robot.subsystems.singulator.Singulator;
-import frc.robot.subsystems.singulator.SingulatorIO;
-import frc.robot.subsystems.singulator.SingulatorIOTalonFX;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIO;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -54,7 +53,6 @@ public class RobotContainer {
     private final Hood hood;
     private final Turret turret;
     private final Shooter shooter;
-    private final Singulator singulator;
 
     private final CommandSwerveDrivetrain drive;
 
@@ -62,6 +60,8 @@ public class RobotContainer {
             .withDeadband(TunerConstants.MAX_VELOCITY_METERS_PER_SECOND * 0.1)
             .withRotationalDeadband(TunerConstants.MaFxAngularRate * 0.1)
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
+
+    private final LoggedDashboardChooser<Command> autoChooser;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -77,7 +77,7 @@ public class RobotContainer {
                 hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIOTalonFX());
                 shooter = new Shooter(new ShooterIOTalonFX());
-                singulator = new Singulator(new SingulatorIOTalonFX());
+
                 break;
 
             case SIM:
@@ -89,7 +89,7 @@ public class RobotContainer {
                 hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIOTalonFX());
                 shooter = new Shooter(new ShooterIOTalonFX());
-                singulator = new Singulator(new SingulatorIOTalonFX());
+
                 break;
 
             default:
@@ -101,9 +101,11 @@ public class RobotContainer {
                 hood = new Hood(new HoodIOTalonFX());
                 turret = new Turret(new TurretIO() {});
                 shooter = new Shooter(new ShooterIO() {});
-                singulator = new Singulator(new SingulatorIO() {});
+
                 break;
         }
+
+        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
         configureBindings();
     }
@@ -130,6 +132,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return null;
+        return autoChooser.get();
     }
 }
