@@ -128,19 +128,19 @@ public class AutoCommands {
         AutoTrajectory intake_blue_R_4Traj = autoRoutine.trajectory("intakeRFour");
 
         start_blue_RTraj.atTime(1.1).onTrue(linSlideOut().andThen(intakeOn().until(start_blue_RTraj.doneFor(0.5))));
-        intake_blue_R_1Traj.atTime(0).onTrue(shoot().until(intake_blue_R_1Traj.doneFor(3.5))));
+        intake_blue_R_1Traj.atTime(0).onTrue(shoot().until(intake_blue_R_1Traj.doneFor(3.5)));
         intake_blue_R_1Traj.atTime(4.3).onTrue(linSlideOut().andThen(intakeOn().until(intake_blue_R_1Traj.doneFor(0.4))));
         intake_blue_R_2Traj.atTime(0).onTrue(shoot().until(intake_blue_R_2Traj.doneFor(4)));
         intake_blue_R_2Traj.atTime(4.8).onTrue(linSlideOut().andThen(intakeOn().until(intake_blue_R_2Traj.doneFor(1))));
-        intake_blue_R_3Traj.atTime(0).onTrue(shoot().until(intake_blue_R_3Traj.doneFor(4))));
-        intake_blue_R_3Traj.atTime(4.8).onTrue(linSlideOut().andThen(intakeOn().until(intake_blue_R_3Traj.doneFor(1)));
+        intake_blue_R_3Traj.atTime(0).onTrue(shoot().until(intake_blue_R_3Traj.doneFor(4)));
+        intake_blue_R_3Traj.atTime(4.8).onTrue(linSlideOut().andThen(intakeOn().until(intake_blue_R_3Traj.doneFor(1))));
         intake_blue_R_4Traj.atTime(0).onTrue(shoot().until(intake_blue_R_4Traj.doneFor(3.7)));
         intake_blue_R_4Traj.atTime(4.4).onTrue(linSlideOut().andThen(intakeOn().until(intake_blue_R_4Traj.doneFor(1.3))));
 
         autoRoutine
                 .active()
-                .onTrue(Commands.sequence(intakeOneTraj.resetOdometry(), intakeOneTraj.cmd(), shootOneTraj.cmd(), intakeTwoTraj.cmd(), shootTwoTraj.cmd())
-                        .onlyIf(() -> trajectoryValid(intakeOneTraj) && trajectoryValid(intakeTwoTraj) && trajectoryValid(shootOneTraj) && trajectoryValid(shootTwoTraj)) );
+                .onTrue(Commands.sequence(start_blue_RTraj.resetOdometry(), start_blue_RTraj.cmd(), intake_blue_R_1Traj.cmd(), intake_blue_R_2Traj.cmd(), intake_blue_R_3Traj.cmd(), intake_blue_R_4Traj.cmd())
+                        .onlyIf(() -> trajectoryValid(start_blue_RTraj) && trajectoryValid(intake_blue_R_1Traj) && trajectoryValid(intake_blue_R_2Traj) && trajectoryValid(intake_blue_R_3Traj) && trajectoryValid(intake_blue_R_4Traj)));
 
         return autoRoutine.cmd();
 
