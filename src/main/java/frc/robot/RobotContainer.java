@@ -78,6 +78,7 @@ public class RobotContainer {
                 turret = new Turret(new TurretIOTalonFX());
                 shooter = new Shooter(new ShooterIOTalonFX());
                 singulator = new Singulator(new SingulatorIOTalonFX());
+
                 break;
 
             case SIM:
