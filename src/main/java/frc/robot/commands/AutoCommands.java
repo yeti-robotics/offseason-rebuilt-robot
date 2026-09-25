@@ -79,7 +79,7 @@ public class AutoCommands {
         return trajectory.getInitialPose().isPresent();
     }
 
-    public Command autoLeft() {
+    public Command autoLeftChoreo() {
         AutoRoutine autoRoutine = autoFactory.newRoutine("leftAuto");
         AutoTrajectory intakeOneTraj = autoRoutine.trajectory("intakeOne");
         AutoTrajectory shootOneTraj = autoRoutine.trajectory("shootOne");
@@ -99,7 +99,7 @@ public class AutoCommands {
         return autoRoutine.cmd();
 
     }
-    public Command autoRight() {
+    public Command autoRightChoreo() {
 
         AutoRoutine autoRoutine = autoFactory.newRoutine("rightAuto");
         AutoTrajectory start_blue_RTraj = autoRoutine.trajectory("startROne");
