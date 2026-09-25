@@ -13,8 +13,10 @@ import frc.robot.subsystems.rollerbed.RollerBed;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.util.PathPlannerUtils;
-
 import java.util.Optional;
+
+import static edu.wpi.first.wpilibj2.command.Commands.runEnd;
+import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 
 public class AutoCommands {
     private final CommandSwerveDrivetrain drivetrain;
@@ -26,7 +28,15 @@ public class AutoCommands {
     private final MiniIndexer miniIndexer;
     private final RollerBed rollerBed;
 
-    public AutoCommands(CommandSwerveDrivetrain drivetrain, Intake intake, Shooter shooter, Turret turret, Linslide linslide, Hood hood, MiniIndexer miniIndexer, RollerBed rollerBed) {
+    public AutoCommands(
+            CommandSwerveDrivetrain drivetrain,
+            Intake intake,
+            Shooter shooter,
+            Turret turret,
+            Linslide linslide,
+            Hood hood,
+            MiniIndexer miniIndexer,
+            RollerBed rollerBed) {
         this.drivetrain = drivetrain;
         this.intake = intake;
         this.shooter = shooter;
@@ -37,7 +47,40 @@ public class AutoCommands {
         this.rollerBed = rollerBed;
     }
 
-    public Command LeftAuto(){
+    public Command linSlideOut() {
+        return linslide.deploy();
+    }
+
+    public Command linSlideIn() {
+        return linslide.stow();
+    }
+
+    public Command intakeOn() {
+        return intake.intakeOn(100);
+    }
+
+    public Command intakeOff() {
+        return intake.intakeOff();
+    }
+
+    public Command hoodTop() {
+        return hood.top();
+    }
+
+    public Command hoodMid() {
+        return hood.mid();
+    }
+
+    public Command hoodBottom() {
+        return hood.bottom();
+    }
+
+    public Command shoot() {
+        //Filler vaulues
+        return shooter.shoot(0);
+    }
+
+    public Command LeftAutoPathPlanner() {
         Optional<PathPlannerPath> Trench_Neutral_L1 = PathPlannerUtils.loadPathByName("Trench_Neutral_L1");
         Optional<PathPlannerPath> Neutral_Shoot_L2 = PathPlannerUtils.loadPathByName("Trench_Neutral_L2");
         Optional<PathPlannerPath> Shoot_Neutral_L3 = PathPlannerUtils.loadPathByName("Shoot_Neutral_L3");
@@ -47,14 +90,22 @@ public class AutoCommands {
 
         PathPlannerAuto Auto;
 
-        var cmd = Trench_Neutral_L1.isEmpty() || Neutral_Shoot_L2.isEmpty() || Shoot_Neutral_L3.isEmpty() || Neutral_Neutral_L4.isEmpty() || Shoot_Neutral_L5.isEmpty() || Neutral_Shoot_L6.isEmpty()
+        var cmd = Trench_Neutral_L1.isEmpty()
+                || Neutral_Shoot_L2.isEmpty()
+                || Shoot_Neutral_L3.isEmpty()
+                || Neutral_Neutral_L4.isEmpty()
+                || Shoot_Neutral_L5.isEmpty()
+                || Neutral_Shoot_L6.isEmpty()
                 ? Commands.none()
-                : Commands.sequence();
+                : Commands.sequence(
+
+        );
 
         Auto = new PathPlannerAuto(cmd);
 
         return Auto;
     }
 
-
 }
+
+
