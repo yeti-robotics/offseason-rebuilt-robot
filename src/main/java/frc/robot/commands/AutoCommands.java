@@ -173,4 +173,30 @@ public class AutoCommands {
         return Auto;
     }
 
+    public Command RightAutoPathPlanner() {
+        Optional<PathPlannerPath> start_neutral_R1 = PathPlannerUtils.loadPathByName("start_neutral_R1");
+        Optional<PathPlannerPath> neutral_home_R2 = PathPlannerUtils.loadPathByName("neutral_home_R2");
+        Optional<PathPlannerPath> home_trench_R3 = PathPlannerUtils.loadPathByName("home_trench_R3");
+        Optional<PathPlannerPath> trench_neutral_R4 = PathPlannerUtils.loadPathByName("trench_neutral_R4");
+        Optional<PathPlannerPath> neutral_trench_R5 = PathPlannerUtils.loadPathByName("neutral_trench_R5");
+        Optional<PathPlannerPath> trench_home_R6 = PathPlannerUtils.loadPathByName("trench_home_R6");
+
+        PathPlannerAuto Auto;
+
+        var cmd = start_neutral_R1.isEmpty()
+                || neutral_home_R2.isEmpty()
+                || home_trench_R3.isEmpty()
+                || trench_neutral_R4.isEmpty()
+                || neutral_trench_R5.isEmpty()
+                || trench_home_R6.isEmpty()
+                ? Commands.none()
+                : Commands.sequence(
+
+        );
+
+        Auto = new PathPlannerAuto(cmd);
+
+        return Auto;
+    }
+
 }
