@@ -7,6 +7,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -37,6 +38,8 @@ import frc.robot.subsystems.singulator.SingulatorIOTalonFX;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIO;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
+import frc.robot.subsystems.vision.*;
+import org.littletonrobotics.junction.Logger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -55,6 +58,7 @@ public class RobotContainer {
     private final Turret turret;
     private final Shooter shooter;
     private final Singulator singulator;
+    private final Vision vision;
 
     private final CommandSwerveDrivetrain drive;
 
@@ -78,6 +82,11 @@ public class RobotContainer {
                 turret = new Turret(new TurretIOTalonFX());
                 shooter = new Shooter(new ShooterIOTalonFX());
                 singulator = new Singulator(new SingulatorIOTalonFX());
+                vision = new Vision(drive,
+                        new VisionIOPhotonVision(VisionConstants.frontCam, VisionConstants.frontCamTrans),
+                        new VisionIOPhotonVision(VisionConstants.backCam, VisionConstants.backCamTrans),
+                        new VisionIOPhotonVision(VisionConstants.sideCam, VisionConstants.sideCamTrans));
+
                 break;
 
             case SIM:
@@ -90,6 +99,11 @@ public class RobotContainer {
                 turret = new Turret(new TurretIOTalonFX());
                 shooter = new Shooter(new ShooterIOTalonFX());
                 singulator = new Singulator(new SingulatorIOTalonFX());
+                vision = new Vision(drive,
+                        new VisionIOPhotonVisionSim(VisionConstants.frontCam, VisionConstants.frontCamTrans, () -> drive.getState().Pose),
+                        new VisionIOPhotonVisionSim(VisionConstants.backCam, VisionConstants.backCamTrans, () -> drive.getState().Pose),
+                        new VisionIOPhotonVisionSim(VisionConstants.sideCam, VisionConstants.sideCamTrans, () -> drive.getState().Pose));
+
                 break;
 
             default:
@@ -102,10 +116,21 @@ public class RobotContainer {
                 turret = new Turret(new TurretIO() {});
                 shooter = new Shooter(new ShooterIO() {});
                 singulator = new Singulator(new SingulatorIO() {});
+                vision = new Vision(drive, new VisionIO() {}, new VisionIO() {});
+
                 break;
         }
 
         configureBindings();
+    }
+
+    public void updateVisionSim() {
+        Pose3d sideCameraPose = new Pose3d(drive.getState().Pose).transformBy(VisionConstants.sideCamTrans);
+        Pose3d frontCameraPose = new Pose3d(drive.getState().Pose).transformBy(VisionConstants.frontCamTrans);
+        Pose3d backCameraPose = new Pose3d(drive.getState().Pose).transformBy(VisionConstants.backCamTrans);
+        Logger.recordOutput("Side Cam Transform", sideCameraPose);
+        Logger.recordOutput("Front Cam Transform", frontCameraPose);
+        Logger.recordOutput("Back Cam Transform", backCameraPose);
     }
 
     /**

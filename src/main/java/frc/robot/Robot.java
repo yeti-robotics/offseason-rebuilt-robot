@@ -152,5 +152,7 @@ public class Robot extends LoggedRobot {
 
     /** This method is called periodically whilst in simulation. */
     @Override
-    public void simulationPeriodic() {}
+    public void simulationPeriodic() {
+        robotContainer.updateVisionSim();
+    }
 }
