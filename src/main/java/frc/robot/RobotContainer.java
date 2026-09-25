@@ -63,7 +63,9 @@ public class RobotContainer {
             .withRotationalDeadband(TunerConstants.MaFxAngularRate * 0.1)
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
 
-    /** The container for the robot. Contains subsystems, OI devices, and commands. */
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
     public RobotContainer() {
         primary = new CommandXboxController(Constants.PRIMARY_CONTROLLER_PORT);
 
@@ -94,14 +96,21 @@ public class RobotContainer {
 
             default:
                 drive = TunerConstants.createDrivetrain();
-                linslide = new Linslide(new LinslideIO() {});
-                intake = new Intake(new IntakeIO() {});
-                rollerBed = new RollerBed(new RollerBedIO() {});
-                miniIndexer = new MiniIndexer(new MiniIndexerIO() {});
+                linslide = new Linslide(new LinslideIO() {
+                });
+                intake = new Intake(new IntakeIO() {
+                });
+                rollerBed = new RollerBed(new RollerBedIO() {
+                });
+                miniIndexer = new MiniIndexer(new MiniIndexerIO() {
+                });
                 hood = new Hood(new HoodIOTalonFX());
-                turret = new Turret(new TurretIO() {});
-                shooter = new Shooter(new ShooterIO() {});
-                singulator = new Singulator(new SingulatorIO() {});
+                turret = new Turret(new TurretIO() {
+                });
+                shooter = new Shooter(new ShooterIO() {
+                });
+                singulator = new Singulator(new SingulatorIO() {
+                });
                 break;
         }
 
@@ -124,6 +133,17 @@ public class RobotContainer {
                 .withRotationalRate(-primary.getRightX() * TunerConstants.MaFxAngularRate)));
     }
 
+    private void configureBindings(){
+        primary.a().whileTrue(intake.applyPower(0.5);
+        primary.b().whileTrue(turret.applyPower(0.5));
+        primary.x().whileTrue(linslide.applyPower(0.5));
+        primary.y().whileTrue(miniIndexer.applyPower(0.5);
+        primary.leftTrigger().whileTrue(shooter.applyPower(0.5)));
+        primary.rightTrigger().whileTrue(hood.applyPower(0.5);)
+        primary.povDown().whileTrue(rollerBed.applyPower(0.5));
+        primary.povUp().whileTrue(singulator.usePower(0.5));]
+}
+
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
@@ -132,4 +152,6 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return null;
     }
+
+
 }

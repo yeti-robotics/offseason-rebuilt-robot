@@ -28,4 +28,9 @@ public class RollerBed extends SubsystemBase {
     public Command useMotor(double power) {
         return runEnd(() -> io.applyPower(power), () -> io.stopMotor());
     }
+
+    public Command applyPower(double percent) {
+        return runEnd(() -> io.applyPower(percent), () -> io.applyPower(0));
+    }
+
 }

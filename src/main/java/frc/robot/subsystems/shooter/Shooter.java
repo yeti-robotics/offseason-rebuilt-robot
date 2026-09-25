@@ -26,5 +26,9 @@ public class Shooter extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Shooter", inputs);
-    }
+
+
+
+        }
+        public Command applyPower(double percent) {return runEnd(() -> io.applyPower(percent), () -> io.applyPower(0);}
 }
