@@ -99,4 +99,33 @@ public class AutoCommands {
         return autoRoutine.cmd();
 
     }
+    public Command autoRight() {
+
+        AutoRoutine autoRoutine = autoFactory.newRoutine("rightAuto");
+        AutoTrajectory start_blue_RTraj = autoRoutine.trajectory("startROne");
+
+        AutoTrajectory intake_blue_R_1Traj = autoRoutine.trajectory("intakeROne");
+        AutoTrajectory intake_blue_R_2Traj = autoRoutine.trajectory("intakeRTwo");
+        AutoTrajectory intake_blue_R_3Traj = autoRoutine.trajectory("intakeRThree");
+        AutoTrajectory intake_blue_R_4Traj = autoRoutine.trajectory("intakeRFour");
+
+        startROneTraj.atTime(1.1).onTrue(linSlideOut().andThen(intakeOn().until(startROneTraj.doneFor(0.5))));
+        intakeROneTraj.atTime(0).onTrue(shoot().until(intakeROneTraj.doneFor(3.5))));
+        intakeROne.atTime(4.3).onTrue(linSlideOut().andThen(intakeOn().until(intakeROneTraj.doneFor(0.4))));
+        intakeRTwoTraj.atTime(0).onTrue(shoot().until(intakeRTwoTraj.doneFor(4)));
+        intakeRTwoTraj.atTime(4.8).onTrue(linSlideOut().andThen(intakeOn().until(startROneTraj.doneFor(1))));
+        intakeRThreeTraj.atTime(0).onTrue(shoot().until(intakeThreeTraj.doneFor(4))));
+        intakeRThreeTraj.atTime(4.8).onTrue(linSlideOut().andThen(intakeOn().until(intakeRThreeTraj.doneFor(1)));
+        intakeRFourTraj.atTime(0).onTrue(shoot().until(shootTwoTraj.doneFor(3.7)));
+        intakeRFourTraj.atTime(4.4).onTrue(linSlideOut().andThen(intakeOn().until(intakeRFourTraj.doneFor(1.3))));
+
+        autoRoutine
+                .active()
+                .onTrue(Commands.sequence(intakeOneTraj.resetOdometry(), intakeOneTraj.cmd(), shootOneTraj.cmd(), intakeTwoTraj.cmd(), shootTwoTraj.cmd())
+                        .onlyIf(() -> trajectoryValid(intakeOneTraj) && trajectoryValid(intakeTwoTraj) && trajectoryValid(shootOneTraj) && trajectoryValid(shootTwoTraj)) );
+
+        return autoRoutine.cmd();
+
+
+    }
 }

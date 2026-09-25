@@ -5,6 +5,7 @@
   "waypoints":[
     {"x":7.714183807373047, "y":2.334427833557129, "heading":1.3542452206073343, "intervals":25, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":5.145477294921875, "y":2.7317967414855957, "heading":0.0, "intervals":23, "split":false, "fixTranslation":true, "fixHeading":false, "overrideIntervals":false},
+    {"x":3.0876739025115967, "y":2.675029754638672, "heading":1.0251410530719678, "intervals":0, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":3.0876739025115967, "y":2.675029754638672, "heading":1.0251410530719678, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
   "constraints":[
     {"from":"first", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
@@ -16,6 +17,7 @@
   "waypoints":[
     {"x":{"exp":"endpoint2.x", "val":7.714183807373047}, "y":{"exp":"endpoint2.y", "val":2.334427833557129}, "heading":{"exp":"endpoint2.heading", "val":1.3542452206073343}, "intervals":25, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":{"exp":"5.145477294921875 m", "val":5.145477294921875}, "y":{"exp":"2.7317967414855957 m", "val":2.7317967414855957}, "heading":{"exp":"0 deg", "val":0.0}, "intervals":23, "split":false, "fixTranslation":true, "fixHeading":false, "overrideIntervals":false},
+    {"x":{"exp":"shootpoint2.x", "val":3.0876739025115967}, "y":{"exp":"shootpoint2.y", "val":2.675029754638672}, "heading":{"exp":"shootpoint2.heading", "val":1.0251410530719678}, "intervals":0, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":{"exp":"shootpoint2.x", "val":3.0876739025115967}, "y":{"exp":"shootpoint2.y", "val":2.675029754638672}, "heading":{"exp":"shootpoint2.heading", "val":1.0251410530719678}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
   "constraints":[
     {"from":"first", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
@@ -51,7 +53,7 @@
    "differentialTrackWidth":0.5588
   },
   "sampleType":"Swerve",
-  "waypoints":[0.0,0.80281,1.49547],
+  "waypoints":[0.0,0.80281,1.49547,1.49547],
   "samples":[
     {"t":0.0, "x":7.71418, "y":2.33443, "heading":1.35425, "vx":0.0, "vy":0.0, "omega":0.0, "ax":-8.88608, "ay":1.44978, "alpha":-1.45673, "fx":[-149.89436,-149.90057,-152.32108,-152.48239], "fy":[32.30524,32.37149,17.79522,16.16972]},
     {"t":0.03211, "x":7.7096, "y":2.33518, "heading":1.35349, "vx":-0.28535, "vy":0.04656, "omega":-0.04678, "ax":-8.88576, "ay":1.44973, "alpha":-1.43029, "fx":[-149.91376,-149.91577,-152.29446,-152.45281], "fy":[32.15265,32.24297,17.91791,16.32426]},
