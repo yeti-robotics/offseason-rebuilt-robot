@@ -89,28 +89,28 @@ public class AutoCommands {
 
     public Command autoLeftChoreo() {
         AutoRoutine autoRoutine = autoFactory.newRoutine("leftAuto");
-        AutoTrajectory intakeOneTraj = autoRoutine.trajectory("intakeOne");
-        AutoTrajectory shootOneTraj = autoRoutine.trajectory("shootOne");
-        AutoTrajectory intakeTwoTraj = autoRoutine.trajectory("intakeTwo");
-        AutoTrajectory shootTwoTraj = autoRoutine.trajectory("shootTwo");
+        AutoTrajectory start_neutral_l1 = autoRoutine.trajectory("start_neutral_l1");
+        AutoTrajectory neutral_start_l2 = autoRoutine.trajectory("neutral_start_l2");
+        AutoTrajectory start_neutral_l3 = autoRoutine.trajectory("start_neutral_l3");
+        AutoTrajectory neutral_neutral_l4 = autoRoutine.trajectory("neutral_neutral_l4");
 
-        intakeOneTraj.atTime(0.88).onTrue(linSlideOut().andThen(intakeOn().until(intakeOneTraj.doneFor(0.5))));
-        shootOneTraj.atTime(1.38).onTrue(shoot().until(shootOneTraj.doneFor(0)));
-        intakeTwoTraj.atTime(0.97).onTrue(linSlideOut().andThen(intakeOn().until(intakeTwoTraj.doneFor(0.5))));
-        shootTwoTraj.atTime(1.25).onTrue(shoot().until(shootTwoTraj.doneFor(0)));
+        start_neutral_l1.atTime(0.88).onTrue(linSlideOut().andThen(intakeOn().until(start_neutral_l1.doneFor(0.5))));
+        neutral_start_l2.atTime(1.38).onTrue(shoot().until(neutral_start_l2.doneFor(0)));
+        start_neutral_l3.atTime(0.97).onTrue(linSlideOut().andThen(intakeOn().until(start_neutral_l3.doneFor(0.5))));
+        neutral_neutral_l4.atTime(1.25).onTrue(shoot().until(neutral_neutral_l4.doneFor(0)));
 
         autoRoutine
                 .active()
                 .onTrue(Commands.sequence(
-                                intakeOneTraj.resetOdometry(),
-                                intakeOneTraj.cmd(),
-                                shootOneTraj.cmd(),
-                                intakeTwoTraj.cmd(),
-                                shootTwoTraj.cmd())
-                        .onlyIf(() -> trajectoryValid(intakeOneTraj)
-                                && trajectoryValid(intakeTwoTraj)
-                                && trajectoryValid(shootOneTraj)
-                                && trajectoryValid(shootTwoTraj)));
+                                start_neutral_l1.resetOdometry(),
+                                start_neutral_l1.cmd(),
+                                neutral_start_l2.cmd(),
+                                start_neutral_l3.cmd(),
+                                neutral_neutral_l4.cmd())
+                        .onlyIf(() -> trajectoryValid(start_neutral_l1)
+                                && trajectoryValid(neutral_start_l2)
+                                && trajectoryValid(start_neutral_l3)
+                                && trajectoryValid(neutral_neutral_l4)));
 
         return autoRoutine.cmd();
     }
