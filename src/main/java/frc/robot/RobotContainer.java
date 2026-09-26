@@ -46,7 +46,9 @@ import frc.robot.subsystems.turret.TurretIOTalonFX;
  */
 public class RobotContainer {
 
-    CommandXboxController primary;
+    CommandXboxController controller;
+    CommandXboxController debugController;
+
     private final Linslide linslide;
     private final Intake intake;
     private final RollerBed rollerBed;
@@ -63,9 +65,12 @@ public class RobotContainer {
             .withRotationalDeadband(TunerConstants.MaFxAngularRate * 0.1)
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
 
-    /** The container for the robot. Contains subsystems, OI devices, and commands. */
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
     public RobotContainer() {
-        primary = new CommandXboxController(Constants.PRIMARY_CONTROLLER_PORT);
+        controller = new CommandXboxController(Constants.PRIMARY_CONTROLLER_PORT);
+        debugController = new CommandXboxController(Constants.DEBUG_CONTROLLER_PORT);
 
         switch (Constants.currentMode) {
             case REAL:
@@ -106,6 +111,7 @@ public class RobotContainer {
         }
 
         configureBindings();
+        configureDebugBindings();
     }
 
     /**
@@ -119,9 +125,20 @@ public class RobotContainer {
      */
     private void configureBindings() {
         drive.setDefaultCommand(drive.applyRequest(() -> driveRequest
-                .withVelocityX(-primary.getLeftY() * TunerConstants.kSpeedAt12Volts.magnitude())
-                .withVelocityY(-primary.getLeftX() * TunerConstants.kSpeedAt12Volts.magnitude())
-                .withRotationalRate(-primary.getRightX() * TunerConstants.MaFxAngularRate)));
+                .withVelocityX(-controller.getLeftY() * TunerConstants.kSpeedAt12Volts.magnitude())
+                .withVelocityY(-controller.getLeftX() * TunerConstants.kSpeedAt12Volts.magnitude())
+                .withRotationalRate(-controller.getRightX() * TunerConstants.MaFxAngularRate)));
+    }
+
+    private void configureDebugBindings() {
+        debugController.a().whileTrue(intake.applyPower(0.5));
+        debugController.b().whileTrue(turret.applyPower(0.5));
+        debugController.x().whileTrue(linslide.applyPower(0.5));
+        debugController.y().whileTrue(miniIndexer.applyPower(0.5));
+        debugController.leftTrigger().whileTrue(shooter.applyPower(0.5));
+        debugController.rightTrigger().whileTrue(hood.applyPower(0.5));
+        debugController.povDown().whileTrue(rollerBed.applyPower(0.5));
+        debugController.povUp().whileTrue(singulator.usePower(0.5));
     }
 
     /**
