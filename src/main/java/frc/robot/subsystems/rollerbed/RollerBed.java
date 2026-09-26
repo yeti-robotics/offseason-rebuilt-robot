@@ -32,5 +32,4 @@ public class RollerBed extends SubsystemBase {
     public Command applyPower(double percent) {
         return runEnd(() -> io.applyPower(percent), () -> io.applyPower(0));
     }
-
 }

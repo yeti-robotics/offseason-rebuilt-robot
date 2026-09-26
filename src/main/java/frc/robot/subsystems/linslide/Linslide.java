@@ -23,6 +23,7 @@ public class Linslide extends SubsystemBase {
     public Command deploy() {
         return runOnce(() -> io.setDeployed(LinslidePosition.DEPLOYED.getPosition()));
     }
+
     public Command applyPower(double percent) {
         return runEnd(() -> io.applyPower(percent), () -> io.applyPower(0));
     }
@@ -30,5 +31,4 @@ public class Linslide extends SubsystemBase {
     public Command stow() {
         return runOnce(() -> io.setStowed(LinslidePosition.STOWED.getPosition()));
     }
-
 }

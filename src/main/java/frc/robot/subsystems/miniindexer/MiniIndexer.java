@@ -28,8 +28,8 @@ public class MiniIndexer extends SubsystemBase {
     public Command spinMiniIndexerRaw(double power) {
         return runEnd(() -> io.runAtPower(power), () -> io.stopMotor());
     }
-    public Command applyPower(double percent) {
-        return runEnd(() -> io.applyPower(percent), () -> io.applyPower(0));
-    }
 
+    public Command applyPower(double percent) {
+        return runEnd(() -> io.runAtPower(percent), () -> io.runAtPower(0));
+    }
 }
