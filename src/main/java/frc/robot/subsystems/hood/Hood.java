@@ -20,14 +20,18 @@ public class Hood extends SubsystemBase {
     }
 
     public Command top() {
-        return runOnce(()-> io.setPosition(HoodPosition.TOP.getAngle()));
+        return runOnce(() -> io.setPosition(HoodPosition.TOP.getAngle()));
     }
 
     public Command mid() {
-        return runOnce(()-> io.setPosition(HoodPosition.MID.getAngle()));
+        return runOnce(() -> io.setPosition(HoodPosition.MID.getAngle()));
     }
 
     public Command bottom() {
-        return runOnce(()-> io.setPosition(HoodPosition.BOTTOM.getAngle()));
+        return runOnce(() -> io.setPosition(HoodPosition.BOTTOM.getAngle()));
+    }
+
+    public Command applyPower(double percent) {
+        return runEnd(() -> io.applyPower(percent), () -> io.applyPower(0));
     }
 }

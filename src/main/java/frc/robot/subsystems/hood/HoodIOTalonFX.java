@@ -1,5 +1,6 @@
 package frc.robot.subsystems.hood;
 
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.Angle;
@@ -10,6 +11,7 @@ import frc.robot.util.sim.PhysicsSim;
 public class HoodIOTalonFX implements HoodIO {
     private TalonFX hoodMotor;
     private PositionVoltage positionVoltage;
+    private DutyCycleOut dutyRequest = new DutyCycleOut(0);
 
     public HoodIOTalonFX() {
         hoodMotor = new TalonFX(HoodConfigs.MOTOR_ID, Constants.CAN_S3);
@@ -30,4 +32,8 @@ public class HoodIOTalonFX implements HoodIO {
         hoodMotor.setControl(positionVoltage.withPosition(position));
     }
 
+    @Override
+    public void applyPower(double power) {
+        hoodMotor.setControl(dutyRequest.withOutput(power));
+    }
 }

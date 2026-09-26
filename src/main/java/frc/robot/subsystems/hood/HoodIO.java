@@ -13,4 +13,6 @@ public interface HoodIO {
     public default void updateInputs(HoodIOInputs inputs) {}
 
     public default void setPosition(Angle position) {}
+
+    public default void applyPower(double power) {}
 }
