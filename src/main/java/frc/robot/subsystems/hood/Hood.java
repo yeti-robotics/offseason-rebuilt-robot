@@ -19,8 +19,16 @@ public class Hood extends SubsystemBase {
         Logger.processInputs("Hood", inputs);
     }
 
-    public Command setPosition(double position) {
-        return (runOnce(() -> io.setPosition(position)));
+    public Command top() {
+        return runOnce(() -> io.setPosition(HoodPosition.TOP.getAngle()));
+    }
+
+    public Command mid() {
+        return runOnce(() -> io.setPosition(HoodPosition.MID.getAngle()));
+    }
+
+    public Command bottom() {
+        return runOnce(() -> io.setPosition(HoodPosition.BOTTOM.getAngle()));
     }
 
     public Command applyPower(double percent) {
