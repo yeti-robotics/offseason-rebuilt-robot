@@ -102,12 +102,12 @@ public class AutoCommands {
     public Command autoRight() {
 
         AutoRoutine autoRoutine = autoFactory.newRoutine("rightAuto");
-        AutoTrajectory start_blue_RTraj = autoRoutine.trajectory("startROne");
+        AutoTrajectory start_blue_RTraj = autoRoutine.trajectory("start_blue_RTraj");
 
-        AutoTrajectory intake_blue_R_1Traj = autoRoutine.trajectory("intakeROne");
-        AutoTrajectory intake_blue_R_2Traj = autoRoutine.trajectory("intakeRTwo");
-        AutoTrajectory intake_blue_R_3Traj = autoRoutine.trajectory("intakeRThree");
-        AutoTrajectory intake_blue_R_4Traj = autoRoutine.trajectory("intakeRFour");
+        AutoTrajectory intake_blue_R_1Traj = autoRoutine.trajectory("intake_blue_R_1Traj");
+        AutoTrajectory intake_blue_R_2Traj = autoRoutine.trajectory("intake_blue_R_2Traj");
+        AutoTrajectory intake_blue_R_3Traj = autoRoutine.trajectory("intake_blue_R_3Traj");
+        AutoTrajectory intake_blue_R_4Traj = autoRoutine.trajectory("intake_blue_R_4Traj");
 
         start_blue_RTraj.atTime(1.1).onTrue(linSlideOut().andThen(intakeOn().until(start_blue_RTraj.doneFor(0.5))));
         intake_blue_R_1Traj.atTime(0).onTrue(shoot().until(intake_blue_R_1Traj.doneFor(3.5))));
