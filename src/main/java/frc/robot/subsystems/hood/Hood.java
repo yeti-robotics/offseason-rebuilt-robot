@@ -24,6 +24,10 @@ public class Hood extends SubsystemBase {
         return (runOnce(() -> io.setPosition(position)));
     }
 
+    public Command applyPower(double percent) {
+        return runEnd(() -> io.applyPower(percent), () -> io.applyPower(0));
+    }
+
     public void moveTo(Angle position) {
         io.setPosition(position.magnitude());
     }

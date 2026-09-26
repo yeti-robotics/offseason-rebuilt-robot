@@ -26,6 +26,10 @@ public class Shooter extends SubsystemBase {
         return Units.RotationsPerSecond.of(inputs.velocityFIRST_MOTOR);
     }
 
+    public Command applyPower(double percent) {
+        return runEnd(() -> io.applyPower(percent), () -> io.applyPower(0));
+    }
+
     @Override
     public void periodic() {
         io.updateInputs(inputs);
