@@ -5,12 +5,14 @@
 
 package frc.robot;
 
+import choreo.auto.AutoFactory;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AutoCommands;
 import frc.robot.constants.Constants;
 // import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
@@ -48,7 +50,9 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  */
 public class RobotContainer {
 
-    CommandXboxController primary;
+    CommandXboxController controller;
+    CommandXboxController debugController;
+
     private final Linslide linslide;
     private final Intake intake;
     private final RollerBed rollerBed;
@@ -58,6 +62,8 @@ public class RobotContainer {
     private final Shooter shooter;
     private final Singulator singulator;
 
+    private final AutoFactory autoFactory;
+    private final AutoCommands autoCommands;
     private final LoggedDashboardChooser<Command> autoChooser;
 
     private final CommandSwerveDrivetrain drive;
@@ -67,9 +73,12 @@ public class RobotContainer {
             .withRotationalDeadband(TunerConstants.MaFxAngularRate * 0.1)
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
 
-    /** The container for the robot. Contains subsystems, OI devices, and commands. */
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
     public RobotContainer() {
-        primary = new CommandXboxController(Constants.PRIMARY_CONTROLLER_PORT);
+        controller = new CommandXboxController(Constants.PRIMARY_CONTROLLER_PORT);
+        debugController = new CommandXboxController(Constants.DEBUG_CONTROLLER_PORT);
 
         switch (Constants.currentMode) {
             case REAL:
@@ -109,9 +118,18 @@ public class RobotContainer {
                 break;
         }
 
+        autoFactory = new AutoFactory(() -> drive.getState().Pose, drive::resetPose, drive::followPath, true, drive);
+        autoCommands =
+                new AutoCommands(drive, hood, intake, linslide, miniIndexer, rollerBed, shooter, turret, autoFactory);
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
+        autoChooser.addOption("Left Choreo", autoCommands.autoLeftChoreo());
+        autoChooser.addOption("Right Choreo", autoCommands.autoRightChoreo());
+        autoChooser.addOption("Left PathPlanner", autoCommands.leftAutoPathPlanner());
+        autoChooser.addOption("Right PathPlanner", autoCommands.rightAutoPathPlanner());
+
         configureBindings();
+        configureDebugBindings();
     }
 
     /**
@@ -125,9 +143,20 @@ public class RobotContainer {
      */
     private void configureBindings() {
         drive.setDefaultCommand(drive.applyRequest(() -> driveRequest
-                .withVelocityX(-primary.getLeftY() * TunerConstants.kSpeedAt12Volts.magnitude())
-                .withVelocityY(-primary.getLeftX() * TunerConstants.kSpeedAt12Volts.magnitude())
-                .withRotationalRate(-primary.getRightX() * TunerConstants.MaFxAngularRate)));
+                .withVelocityX(-controller.getLeftY() * TunerConstants.kSpeedAt12Volts.magnitude())
+                .withVelocityY(-controller.getLeftX() * TunerConstants.kSpeedAt12Volts.magnitude())
+                .withRotationalRate(-controller.getRightX() * TunerConstants.MaFxAngularRate)));
+    }
+
+    private void configureDebugBindings() {
+        debugController.a().whileTrue(intake.applyPower(0.5));
+        debugController.b().whileTrue(turret.applyPower(0.5));
+        debugController.x().whileTrue(linslide.applyPower(0.5));
+        debugController.y().whileTrue(miniIndexer.applyPower(0.5));
+        debugController.leftTrigger().whileTrue(shooter.applyPower(0.5));
+        debugController.rightTrigger().whileTrue(hood.applyPower(0.5));
+        debugController.povDown().whileTrue(rollerBed.applyPower(0.5));
+        debugController.povUp().whileTrue(singulator.usePower(0.5));
     }
 
     /**
