@@ -18,6 +18,10 @@ public class Shooter extends SubsystemBase {
         return runEnd(() -> io.shoot(velocity), () -> io.shoot(0));
     }
 
+    public void spinAt(double velocity) {
+        io.shoot(velocity);
+    }
+
     public AngularVelocity getVelocity() {
         return Units.RotationsPerSecond.of(inputs.velocityFIRST_MOTOR);
     }
