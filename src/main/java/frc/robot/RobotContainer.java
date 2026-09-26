@@ -5,12 +5,14 @@
 
 package frc.robot;
 
+import choreo.auto.AutoFactory;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AutoCommands;
 import frc.robot.constants.Constants;
 // import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
@@ -58,6 +60,8 @@ public class RobotContainer {
     private final Shooter shooter;
     private final Singulator singulator;
 
+    private final AutoFactory autoFactory;
+    private final AutoCommands autoCommands;
     private final LoggedDashboardChooser<Command> autoChooser;
 
     private final CommandSwerveDrivetrain drive;
@@ -109,7 +113,15 @@ public class RobotContainer {
                 break;
         }
 
+        autoFactory = new AutoFactory(() -> drive.getState().Pose, drive::resetPose, drive::followPath, true, drive);
+        autoCommands = new AutoCommands(drive, hood, intake, linslide, miniIndexer, rollerBed, shooter, turret, autoFactory);
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+
+        autoChooser.addOption("Left Choreo", autoCommands.autoLeftChoreo());
+        autoChooser.addOption("Right Choreo", autoCommands.autoRightChoreo());
+        autoChooser.addOption("Left PathPlanner", autoCommands.leftAutoPathPlanner());
+        autoChooser.addOption("Right PathPlanner", autoCommands.rightAutoPathPlanner());
+
 
         configureBindings();
     }

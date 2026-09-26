@@ -44,10 +44,9 @@ public class AutoCommands {
     private final RollerBed rollerBed;
     private final Shooter shooter;
     private final Turret turret;
-    private final Vision vision;
     private final AutoFactory autoFactory;
 
-    public AutoCommands(CommandSwerveDrivetrain drivetrain, Hood hood, Intake intake, Linslide linslide, MiniIndexer miniIndexer, RollerBed rollerBed, Shooter shooter, Turret turret, Vision vision, AutoFactory autoFactory) {
+    public AutoCommands(CommandSwerveDrivetrain drivetrain, Hood hood, Intake intake, Linslide linslide, MiniIndexer miniIndexer, RollerBed rollerBed, Shooter shooter, Turret turret, AutoFactory autoFactory) {
         this.drivetrain = drivetrain;
         this.hood = hood;
         this.intake = intake;
@@ -56,8 +55,8 @@ public class AutoCommands {
         this.rollerBed = rollerBed;
         this.shooter = shooter;
         this.turret = turret;
-        this.vision = vision;
         this.autoFactory = autoFactory;
+
     }
 
     public Command linSlideOut() {
@@ -147,7 +146,7 @@ public class AutoCommands {
 
     }
 
-    public Command LeftAutoPathPlanner() {
+    public Command leftAutoPathPlanner() {
         Optional<PathPlannerPath> Trench_Neutral_L1 = PathPlannerUtils.loadPathByName("Trench_Neutral_L1");
         Optional<PathPlannerPath> Neutral_Shoot_L2 = PathPlannerUtils.loadPathByName("Trench_Neutral_L2");
         Optional<PathPlannerPath> Shoot_Neutral_L3 = PathPlannerUtils.loadPathByName("Shoot_Neutral_L3");
@@ -173,7 +172,7 @@ public class AutoCommands {
         return Auto;
     }
 
-    public Command RightAutoPathPlanner() {
+    public Command rightAutoPathPlanner() {
         Optional<PathPlannerPath> start_neutral_R1 = PathPlannerUtils.loadPathByName("start_neutral_R1");
         Optional<PathPlannerPath> neutral_home_R2 = PathPlannerUtils.loadPathByName("neutral_home_R2");
         Optional<PathPlannerPath> home_trench_R3 = PathPlannerUtils.loadPathByName("home_trench_R3");
