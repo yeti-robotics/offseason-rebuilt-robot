@@ -364,6 +364,14 @@ public class AutoCommands {
                 AutoBuilder.followPath(neutral_trench_R5.get()),
                 AutoBuilder.followPath(trench_home_R6.get())
         );
+                : Commands.sequence(
+                AutoBuilder.followPath(start_neutral_R1.get()),
+                AutoBuilder.followPath(neutral_home_R2.get()),
+                AutoBuilder.followPath(home_trench_R3.get()),
+                AutoBuilder.followPath(trench_neutral_R4.get()),
+                AutoBuilder.followPath(neutral_trench_R5.get()),
+                AutoBuilder.followPath(trench_home_R6.get())
+        );
 
         Auto = new PathPlannerAuto(cmd);
 
