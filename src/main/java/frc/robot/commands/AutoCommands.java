@@ -3,6 +3,8 @@ package frc.robot.commands;
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -48,6 +50,10 @@ public class AutoCommands {
         this.shooter = shooter;
         this.turret = turret;
         this.autoFactory = autoFactory;
+
+        NamedCommands.registerCommand("shoot", shoot());
+        NamedCommands.registerCommand("intake", intakeOn());
+        NamedCommands.registerCommand("intake end", intakeOff());
     }
 
     public Command linSlideOut() {
@@ -174,7 +180,14 @@ public class AutoCommands {
                         || Shoot_Neutral_L5.isEmpty()
                         || Neutral_Shoot_L6.isEmpty()
                 ? Commands.none()
-                : Commands.sequence();
+                : Commands.sequence(
+                AutoBuilder.followPath(Trench_Neutral_L1.get()),
+                AutoBuilder.followPath(Neutral_Shoot_L2.get()),
+                AutoBuilder.followPath(Shoot_Neutral_L3.get()),
+                AutoBuilder.followPath(Neutral_Neutral_L4.get()),
+                AutoBuilder.followPath(Shoot_Neutral_L5.get()),
+                AutoBuilder.followPath(Neutral_Shoot_L6.get())
+        );
 
         Auto = new PathPlannerAuto(cmd);
 
