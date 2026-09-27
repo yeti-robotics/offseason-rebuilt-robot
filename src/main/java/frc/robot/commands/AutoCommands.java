@@ -186,12 +186,13 @@ public class AutoCommands {
                         || Neutral_Shoot_L6.isEmpty()
                 ? Commands.none()
                 : Commands.sequence(
-                        AutoBuilder.followPath(Trench_Neutral_L1.get()),
-                        AutoBuilder.followPath(Neutral_Shoot_L2.get()),
-                        AutoBuilder.followPath(Shoot_Neutral_L3.get()),
-                        AutoBuilder.followPath(Neutral_Neutral_L4.get()),
-                        AutoBuilder.followPath(Shoot_Neutral_L5.get()),
-                        AutoBuilder.followPath(Neutral_Shoot_L6.get()));
+                AutoBuilder.followPath(Trench_Neutral_L1.get()),
+                AutoBuilder.followPath(Neutral_Shoot_L2.get()),
+                AutoBuilder.followPath(Shoot_Neutral_L3.get()),
+                AutoBuilder.followPath(Neutral_Neutral_L4.get()),
+                AutoBuilder.followPath(Shoot_Neutral_L5.get()),
+                AutoBuilder.followPath(Neutral_Shoot_L6.get())
+        );
 
         Auto = new PathPlannerAuto(cmd);
 
