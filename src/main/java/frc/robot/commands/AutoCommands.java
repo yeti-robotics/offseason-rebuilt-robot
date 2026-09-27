@@ -227,6 +227,10 @@ public class AutoCommands {
         return shooter.shoot(0);
     }
 
+    public Command shootOff() {
+        return shooter.shoot(0);
+    }
+
     public Boolean trajectoryValid(AutoTrajectory trajectory) {
         return trajectory.getInitialPose().isPresent();
     }
