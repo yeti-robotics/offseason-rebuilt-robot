@@ -39,7 +39,7 @@
       "command": null
     },
     {
-      "name": "Stop Intake",
+      "name": "End Intake",
       "waypointRelativePos": 0.9306348629568106,
       "endWaypointRelativePos": null,
       "command": null
