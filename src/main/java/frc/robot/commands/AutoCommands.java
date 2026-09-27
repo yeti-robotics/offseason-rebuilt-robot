@@ -216,7 +216,14 @@ public class AutoCommands {
                         || neutral_trench_R5.isEmpty()
                         || trench_home_R6.isEmpty()
                 ? Commands.none()
-                : Commands.sequence();
+                : Commands.sequence(
+                AutoBuilder.followPath(start_neutral_R1.get()),
+                AutoBuilder.followPath(neutral_home_R2.get()),
+                AutoBuilder.followPath(home_trench_R3.get()),
+                AutoBuilder.followPath(trench_neutral_R4.get()),
+                AutoBuilder.followPath(neutral_trench_R5.get()),
+                AutoBuilder.followPath(trench_home_R6.get())
+        );
 
         Auto = new PathPlannerAuto(cmd);
 
