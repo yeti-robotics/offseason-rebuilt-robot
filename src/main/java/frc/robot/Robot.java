@@ -119,7 +119,6 @@ public class Robot extends LoggedRobot {
             // autonomousCommand.schedule(); // deprecated version (revert to this if new one doesn't behave right)
         }
         Elastic.selectTab("Autonomous");
-
     }
 
     /** This method is called periodically during autonomous. */
@@ -136,7 +135,6 @@ public class Robot extends LoggedRobot {
             autonomousCommand.cancel();
         }
         Elastic.selectTab("Teleoperated");
-
     }
 
     /** This method is called periodically during operator control. */
