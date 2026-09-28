@@ -118,12 +118,12 @@ public class AutoCommands {
     public Command autoRightChoreo() {
 
         AutoRoutine autoRoutine = autoFactory.newRoutine("rightAuto");
-        AutoTrajectory start_blue_RTraj = autoRoutine.trajectory("start_blue_RTraj");
+        AutoTrajectory start_blue_RTraj = autoRoutine.trajectory("start_blue_R");
 
-        AutoTrajectory intake_blue_R_1Traj = autoRoutine.trajectory("intake_blue_R_1Traj");
-        AutoTrajectory intake_blue_R_2Traj = autoRoutine.trajectory("intake_blue_R_2Traj");
-        AutoTrajectory intake_blue_R_3Traj = autoRoutine.trajectory("intake_blue_R_3Traj");
-        AutoTrajectory intake_blue_R_4Traj = autoRoutine.trajectory("intake_blue_R_4Traj");
+        AutoTrajectory intake_blue_R_1Traj = autoRoutine.trajectory("intake_blue_R_1");
+        AutoTrajectory intake_blue_R_2Traj = autoRoutine.trajectory("intake_blue_R_2");
+        AutoTrajectory intake_blue_R_3Traj = autoRoutine.trajectory("intake_blue_R_3");
+        AutoTrajectory intake_blue_R_4Traj = autoRoutine.trajectory("intake_blue_R_4");
 
         start_blue_RTraj.atTime(1.1).onTrue(linSlideOut().andThen(intakeOn().until(start_blue_RTraj.doneFor(0.5))));
         intake_blue_R_1Traj.atTime(0).onTrue(shoot().until(intake_blue_R_1Traj.doneFor(3.5)));
