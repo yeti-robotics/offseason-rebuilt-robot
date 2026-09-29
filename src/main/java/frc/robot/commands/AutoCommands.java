@@ -127,9 +127,7 @@ public class AutoCommands {
 
         start_blue_RTraj.atTime(1.1).onTrue(linSlideOut().andThen(intakeOn().until(start_blue_RTraj.doneFor(0.5))));
         intake_blue_R_1Traj.atTime(0).onTrue(shoot().until(intake_blue_R_1Traj.doneFor(3.5)));
-        intake_blue_R_1Traj
-                .atTime(4.3)
-                .onTrue(linSlideOut().andThen(intakeOn().until(intake_blue_R_1Traj.doneFor(0.4))));
+        intake_blue_R_1Traj.atTime(4.3.onTrue(linSlideOut().andThen(intakeOn().until(intake_blue_R_1Traj.doneFor(0.4))));
         intake_blue_R_2Traj.atTime(0).onTrue(shoot().until(intake_blue_R_2Traj.doneFor(4)));
         intake_blue_R_2Traj.atTime(4.8).onTrue(linSlideOut().andThen(intakeOn().until(intake_blue_R_2Traj.doneFor(1))));
         intake_blue_R_3Traj.atTime(0).onTrue(shoot().until(intake_blue_R_3Traj.doneFor(4)));
