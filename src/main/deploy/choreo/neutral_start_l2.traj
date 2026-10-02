@@ -1,6 +1,6 @@
 {
  "name":"neutral_start_l2",
- "version":3,
+ "version":1,
  "snapshot":{
   "waypoints":[
     {"x":7.631871223449707, "y":4.514280796051025, "heading":-1.67463848223645, "intervals":29, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},

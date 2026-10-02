@@ -99,6 +99,11 @@ public class AutoCommands {
         start_neutral_l3.atTime(0.97).onTrue(linSlideOut().andThen(intakeOn().until(start_neutral_l3.doneFor(0.5))));
         neutral_neutral_l4.atTime(1.25).onTrue(shoot().until(neutral_neutral_l4.doneFor(0)));
 
+        System.out.println("start_neutral_l1: " + trajectoryValid(start_neutral_l1));
+        System.out.println("neutral_start_l2: " + trajectoryValid(start_neutral_l1));
+        System.out.println("start_neutral_l3: " + trajectoryValid(start_neutral_l1));
+        System.out.println("neutral_neutral_l4: " + trajectoryValid(start_neutral_l1));
+
         autoRoutine
                 .active()
                 .onTrue(Commands.sequence(
@@ -111,8 +116,8 @@ public class AutoCommands {
                                 && trajectoryValid(neutral_start_l2)
                                 && trajectoryValid(start_neutral_l3)
                                 && trajectoryValid(neutral_neutral_l4)));
-
         return autoRoutine.cmd();
+
     }
 
     public Command autoRightChoreo() {

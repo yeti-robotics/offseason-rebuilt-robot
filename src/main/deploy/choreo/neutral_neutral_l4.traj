@@ -1,6 +1,6 @@
 {
  "name":"neutral_neutral_l4",
- "version":3,
+ "version":1,
  "snapshot":{
   "waypoints":[
     {"x":5.900477886199951, "y":4.400747299194336, "heading":2.23810227140711, "intervals":17, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
