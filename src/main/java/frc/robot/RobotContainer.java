@@ -5,11 +5,14 @@
 
 package frc.robot;
 
+import choreo.auto.AutoFactory;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AutoCommands;
 import frc.robot.constants.Constants;
 // import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
@@ -37,6 +40,7 @@ import frc.robot.subsystems.singulator.SingulatorIOTalonFX;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIO;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -57,6 +61,10 @@ public class RobotContainer {
     private final Turret turret;
     private final Shooter shooter;
     private final Singulator singulator;
+
+    private final AutoFactory autoFactory;
+    private final AutoCommands autoCommands;
+    private final LoggedDashboardChooser<Command> autoChooser;
 
     private final CommandSwerveDrivetrain drive;
 
@@ -110,6 +118,16 @@ public class RobotContainer {
                 break;
         }
 
+        autoFactory = new AutoFactory(() -> drive.getState().Pose, drive::resetPose, drive::followPath, true, drive);
+        autoCommands =
+                new AutoCommands(drive, hood, intake, linslide, miniIndexer, rollerBed, shooter, turret, autoFactory);
+        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+
+        autoChooser.addOption("Left Choreo", autoCommands.autoLeftChoreo());
+        autoChooser.addOption("Right Choreo", autoCommands.autoRightChoreo());
+        autoChooser.addOption("Left PathPlanner", autoCommands.leftAutoPathPlanner());
+        autoChooser.addOption("Right PathPlanner", autoCommands.rightAutoPathPlanner());
+
         configureBindings();
         configureDebugBindings();
     }
@@ -147,6 +165,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return null;
+        return autoChooser.get();
     }
 }
