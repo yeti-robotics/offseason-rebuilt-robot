@@ -26,15 +26,9 @@ public class Linslide extends SubsystemBase {
 
     public Command stow() {return runOnce(() -> io.setStowed(LinslidePosition.STOWED.getPosition()));}
 
-    public Command applyPower(double power) {return run( ()-> io.applyPower(power));}
     public Command applyPower(double percent) {
         return runEnd(() -> io.applyPower(percent), () -> io.applyPower(0));
     }
 
-    public Command stow() {
-        return runOnce(() -> io.setStowed(LinslidePosition.STOWED.getPosition()));
-    }
-    public Command stow() {return runOnce(() -> io.setStowed(LinslidePosition.STOWED.getPosition()));}
 
-    public Command applyPower(double power) {return run( ()-> io.applyPower(power));}
 }

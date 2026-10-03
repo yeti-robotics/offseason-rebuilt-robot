@@ -34,12 +34,3 @@ public class Intake extends SubsystemBase {
         return run(() -> applyPower(0));
     }
 }
-
-    public Command intakeOn(double percent) {
-        return run(() -> applyPower(percent));
-    }
-
-    public Command intakeOff() {
-        return run(() -> applyPower(0));
-    }
-}

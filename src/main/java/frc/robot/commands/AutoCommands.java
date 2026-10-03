@@ -47,6 +47,7 @@ public class AutoCommands {
     private final Hood hood;
     private final MiniIndexer miniIndexer;
     private final RollerBed rollerBed;
+    private final AutoFactory autoFactory;
 
     public AutoCommands(
             CommandSwerveDrivetrain drivetrain,
@@ -56,7 +57,8 @@ public class AutoCommands {
             Linslide linslide,
             Hood hood,
             MiniIndexer miniIndexer,
-            RollerBed rollerBed) {
+            RollerBed rollerBed,
+            AutoFactory autoFactory) {
         this.drivetrain = drivetrain;
         this.intake = intake;
         this.shooter = shooter;
@@ -65,6 +67,7 @@ public class AutoCommands {
         this.hood = hood;
         this.miniIndexer = miniIndexer;
         this.rollerBed = rollerBed;
+        this.autoFactory = autoFactory;
     }
 
     public Command linSlideOut() {
@@ -97,137 +100,6 @@ public class AutoCommands {
 
     public Command shoot() {
         //Filler vaulues
-        return shooter.shoot(0);
-    }
-
-    public Command LeftAutoPathPlanner() {
-        Optional<PathPlannerPath> Trench_Neutral_L1 = PathPlannerUtils.loadPathByName("Trench_Neutral_L1");
-        Optional<PathPlannerPath> Neutral_Shoot_L2 = PathPlannerUtils.loadPathByName("Trench_Neutral_L2");
-        Optional<PathPlannerPath> Shoot_Neutral_L3 = PathPlannerUtils.loadPathByName("Shoot_Neutral_L3");
-        Optional<PathPlannerPath> Neutral_Neutral_L4 = PathPlannerUtils.loadPathByName("Neutral_Neutral_L4");
-        Optional<PathPlannerPath> Shoot_Neutral_L5 = PathPlannerUtils.loadPathByName("Shoot_Neutral_L5");
-        Optional<PathPlannerPath> Neutral_Shoot_L6 = PathPlannerUtils.loadPathByName("Neutral_Shoot_L6");
-
-        PathPlannerAuto Auto;
-
-        var cmd = Trench_Neutral_L1.isEmpty()
-                || Neutral_Shoot_L2.isEmpty()
-                || Shoot_Neutral_L3.isEmpty()
-                || Neutral_Neutral_L4.isEmpty()
-                || Shoot_Neutral_L5.isEmpty()
-                || Neutral_Shoot_L6.isEmpty()
-                ? Commands.none()
-                : Commands.sequence(
-
-        );
-
-        Auto = new PathPlannerAuto(cmd);
-
-        return Auto;
-    }
-
-    public Command RightAutoPathPlanner() {
-        Optional<PathPlannerPath> start_neutral_R1 = PathPlannerUtils.loadPathByName("start_neutral_R1");
-        Optional<PathPlannerPath> neutral_home_R2 = PathPlannerUtils.loadPathByName("neutral_home_R2");
-        Optional<PathPlannerPath> home_trench_R3 = PathPlannerUtils.loadPathByName("home_trench_R3");
-        Optional<PathPlannerPath> trench_neutral_R4 = PathPlannerUtils.loadPathByName("trench_neutral_R4");
-        Optional<PathPlannerPath> neutral_trench_R5 = PathPlannerUtils.loadPathByName("neutral_trench_R5");
-        Optional<PathPlannerPath> trench_home_R6 = PathPlannerUtils.loadPathByName("trench_home_R6");
-
-        PathPlannerAuto Auto;
-
-        var cmd = start_neutral_R1.isEmpty()
-                || neutral_home_R2.isEmpty()
-                || home_trench_R3.isEmpty()
-                || trench_neutral_R4.isEmpty()
-                || neutral_trench_R5.isEmpty()
-                || trench_home_R6.isEmpty()
-                ? Commands.none()
-                : Commands.sequence(
-
-        );
-
-        Auto = new PathPlannerAuto(cmd);
-
-        return Auto;
-    }
-
-}
-
-    private final CommandSwerveDrivetrain drivetrain;
-    private final Hood hood;
-    private final Intake intake;
-    private final Linslide linslide;
-    private final MiniIndexer miniIndexer;
-    private final RollerBed rollerBed;
-    private final Shooter shooter;
-    private final Turret turret;
-    private final AutoFactory autoFactory;
-
-    public AutoCommands(
-            CommandSwerveDrivetrain drivetrain,
-            Hood hood,
-            Intake intake,
-            Linslide linslide,
-            MiniIndexer miniIndexer,
-            RollerBed rollerBed,
-            Shooter shooter,
-            Turret turret,
-            AutoFactory autoFactory) {
-        this.drivetrain = drivetrain;
-        this.hood = hood;
-        this.intake = intake;
-        this.linslide = linslide;
-        this.miniIndexer = miniIndexer;
-        this.rollerBed = rollerBed;
-        this.shooter = shooter;
-        this.turret = turret;
-        this.autoFactory = autoFactory;
-
-        NamedCommands.registerCommand("Shoot", shoot());
-        NamedCommands.registerCommand("End Shoot", shootOff());
-        NamedCommands.registerCommand("Intake", intakeOn());
-        NamedCommands.registerCommand("End Intake", intakeOff());
-    }
-
-    public Command linSlideOut() {
-        return linslide.deploy();
-    }
-
-    public Command linSlideIn() {
-        return linslide.stow();
-    }
-
-    public Command intakeOn() {
-        return intake.intakeOn(100);
-    }
-
-    public Command intakeOff() {
-        return intake.intakeOff();
-    }
-
-    public Command hoodTop() {
-        return hood.top();
-    }
-
-    public Command hoodMid() {
-        return hood.mid();
-    }
-
-    public Command hoodBottom() {
-        return hood.bottom();
-    }
-
-    public Command shoot() {
-        // Filler vaulues
-        return shooter.shoot(0);
-    }
-
-    public Command shootOff() {
-        return shooter.shoot(0);
-    }
-
-    public Command shootOff() {
         return shooter.shoot(0);
     }
 
@@ -305,13 +177,13 @@ public class AutoCommands {
         return autoRoutine.cmd();
     }
 
-    public Command leftAutoPathPlanner() {
+    public Command LeftAutoPathPlanner() {
         Optional<PathPlannerPath> Trench_Neutral_L1 = PathPlannerUtils.loadPathByName("Trench_Neutral_L1");
-        Optional<PathPlannerPath> Neutral_Shoot_L2  = PathPlannerUtils.loadPathByName("Neutral_Shoot_L2");
-        Optional<PathPlannerPath> Shoot_Neutral_L3  = PathPlannerUtils.loadPathByName("Shoot_Neutral_L3");
+        Optional<PathPlannerPath> Neutral_Shoot_L2 = PathPlannerUtils.loadPathByName("Trench_Neutral_L2");
+        Optional<PathPlannerPath> Shoot_Neutral_L3 = PathPlannerUtils.loadPathByName("Shoot_Neutral_L3");
         Optional<PathPlannerPath> Neutral_Neutral_L4 = PathPlannerUtils.loadPathByName("Neutral_Neutral_L4");
-        Optional<PathPlannerPath> Shoot_Neutral_L5  = PathPlannerUtils.loadPathByName("Shoot_Neutral_L5");
-        Optional<PathPlannerPath> Neutral_Shoot_L6  = PathPlannerUtils.loadPathByName("Neutral_Shoot_L6");
+        Optional<PathPlannerPath> Shoot_Neutral_L5 = PathPlannerUtils.loadPathByName("Shoot_Neutral_L5");
+        Optional<PathPlannerPath> Neutral_Shoot_L6 = PathPlannerUtils.loadPathByName("Neutral_Shoot_L6");
 
         PathPlannerAuto Auto;
 
@@ -323,12 +195,7 @@ public class AutoCommands {
                 || Neutral_Shoot_L6.isEmpty()
                 ? Commands.none()
                 : Commands.sequence(
-                AutoBuilder.followPath(Trench_Neutral_L1.get()),
-                AutoBuilder.followPath(Neutral_Shoot_L2.get()),
-                AutoBuilder.followPath(Shoot_Neutral_L3.get()),
-                AutoBuilder.followPath(Neutral_Neutral_L4.get()),
-                AutoBuilder.followPath(Shoot_Neutral_L5.get()),
-                AutoBuilder.followPath(Neutral_Shoot_L6.get())
+
         );
 
         Auto = new PathPlannerAuto(cmd);
@@ -336,10 +203,7 @@ public class AutoCommands {
         return Auto;
     }
 
-
-
-
-    public Command rightAutoPathPlanner() {
+    public Command RightAutoPathPlanner() {
         Optional<PathPlannerPath> start_neutral_R1 = PathPlannerUtils.loadPathByName("start_neutral_R1");
         Optional<PathPlannerPath> neutral_home_R2 = PathPlannerUtils.loadPathByName("neutral_home_R2");
         Optional<PathPlannerPath> home_trench_R3 = PathPlannerUtils.loadPathByName("home_trench_R3");
@@ -350,61 +214,22 @@ public class AutoCommands {
         PathPlannerAuto Auto;
 
         var cmd = start_neutral_R1.isEmpty()
-                        || neutral_home_R2.isEmpty()
-                        || home_trench_R3.isEmpty()
-                        || trench_neutral_R4.isEmpty()
-                        || neutral_trench_R5.isEmpty()
-                        || trench_home_R6.isEmpty()
+                || neutral_home_R2.isEmpty()
+                || home_trench_R3.isEmpty()
+                || trench_neutral_R4.isEmpty()
+                || neutral_trench_R5.isEmpty()
+                || trench_home_R6.isEmpty()
                 ? Commands.none()
                 : Commands.sequence(
-                AutoBuilder.followPath(start_neutral_R1.get()),
-                AutoBuilder.followPath(neutral_home_R2.get()),
-                AutoBuilder.followPath(home_trench_R3.get()),
-                AutoBuilder.followPath(trench_neutral_R4.get()),
-                AutoBuilder.followPath(neutral_trench_R5.get()),
-                AutoBuilder.followPath(trench_home_R6.get())
-        );
-                : Commands.sequence(
-                AutoBuilder.followPath(start_neutral_R1.get()),
-                AutoBuilder.followPath(neutral_home_R2.get()),
-                AutoBuilder.followPath(home_trench_R3.get()),
-                AutoBuilder.followPath(trench_neutral_R4.get()),
-                AutoBuilder.followPath(neutral_trench_R5.get()),
-                AutoBuilder.followPath(trench_home_R6.get())
+
         );
 
         Auto = new PathPlannerAuto(cmd);
 
         return Auto;
     }
-    public Command autoRight() {
 
-        AutoRoutine autoRoutine = autoFactory.newRoutine("rightAuto");
-        AutoTrajectory start_blue_RTraj = autoRoutine.trajectory("startROne");
-
-        AutoTrajectory intake_blue_R_1Traj = autoRoutine.trajectory("intakeROne");
-        AutoTrajectory intake_blue_R_2Traj = autoRoutine.trajectory("intakeRTwo");
-        AutoTrajectory intake_blue_R_3Traj = autoRoutine.trajectory("intakeRThree");
-        AutoTrajectory intake_blue_R_4Traj = autoRoutine.trajectory("intakeRFour");
-
-        startROneTraj.atTime(1.1).onTrue(linSlideOut().andThen(intakeOn().until(startROneTraj.doneFor(0.5))));
-        intakeROneTraj.atTime(0).onTrue(shoot().until(intakeROneTraj.doneFor(3.5))));
-        intakeROne.atTime(4.3).onTrue(linSlideOut().andThen(intakeOn().until(intakeROneTraj.doneFor(0.4))));
-        intakeRTwoTraj.atTime(0).onTrue(shoot().until(intakeRTwoTraj.doneFor(4)));
-        intakeRTwoTraj.atTime(4.8).onTrue(linSlideOut().andThen(intakeOn().until(startROneTraj.doneFor(1))));
-        intakeRThreeTraj.atTime(0).onTrue(shoot().until(intakeThreeTraj.doneFor(4))));
-        intakeRThreeTraj.atTime(4.8).onTrue(linSlideOut().andThen(intakeOn().until(intakeRThreeTraj.doneFor(1)));
-        intakeRFourTraj.atTime(0).onTrue(shoot().until(shootTwoTraj.doneFor(3.7)));
-        intakeRFourTraj.atTime(4.4).onTrue(linSlideOut().andThen(intakeOn().until(intakeRFourTraj.doneFor(1.3))));
-
-        autoRoutine
-                .active()
-                .onTrue(Commands.sequence(intakeOneTraj.resetOdometry(), intakeOneTraj.cmd(), shootOneTraj.cmd(), intakeTwoTraj.cmd(), shootTwoTraj.cmd())
-                        .onlyIf(() -> trajectoryValid(intakeOneTraj) && trajectoryValid(intakeTwoTraj) && trajectoryValid(shootOneTraj) && trajectoryValid(shootTwoTraj)) );
-
-        return autoRoutine.cmd();
-
-
-    }
 }
+
+
 
