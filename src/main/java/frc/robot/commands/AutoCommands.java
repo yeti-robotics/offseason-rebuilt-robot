@@ -170,20 +170,20 @@ public class AutoCommands {
 
     public Command leftAutoPathPlanner() {
         Optional<PathPlannerPath> Trench_Neutral_L1 = PathPlannerUtils.loadPathByName("Trench_Neutral_L1");
-        Optional<PathPlannerPath> Neutral_Shoot_L2 = PathPlannerUtils.loadPathByName("Trench_Neutral_L2");
-        Optional<PathPlannerPath> Shoot_Neutral_L3 = PathPlannerUtils.loadPathByName("Shoot_Neutral_L3");
+        Optional<PathPlannerPath> Neutral_Shoot_L2  = PathPlannerUtils.loadPathByName("Neutral_Shoot_L2");
+        Optional<PathPlannerPath> Shoot_Neutral_L3  = PathPlannerUtils.loadPathByName("Shoot_Neutral_L3");
         Optional<PathPlannerPath> Neutral_Neutral_L4 = PathPlannerUtils.loadPathByName("Neutral_Neutral_L4");
-        Optional<PathPlannerPath> Shoot_Neutral_L5 = PathPlannerUtils.loadPathByName("Shoot_Neutral_L5");
-        Optional<PathPlannerPath> Neutral_Shoot_L6 = PathPlannerUtils.loadPathByName("Neutral_Shoot_L6");
+        Optional<PathPlannerPath> Shoot_Neutral_L5  = PathPlannerUtils.loadPathByName("Shoot_Neutral_L5");
+        Optional<PathPlannerPath> Neutral_Shoot_L6  = PathPlannerUtils.loadPathByName("Neutral_Shoot_L6");
 
         PathPlannerAuto Auto;
 
         var cmd = Trench_Neutral_L1.isEmpty()
-                        || Neutral_Shoot_L2.isEmpty()
-                        || Shoot_Neutral_L3.isEmpty()
-                        || Neutral_Neutral_L4.isEmpty()
-                        || Shoot_Neutral_L5.isEmpty()
-                        || Neutral_Shoot_L6.isEmpty()
+                || Neutral_Shoot_L2.isEmpty()
+                || Shoot_Neutral_L3.isEmpty()
+                || Neutral_Neutral_L4.isEmpty()
+                || Shoot_Neutral_L5.isEmpty()
+                || Neutral_Shoot_L6.isEmpty()
                 ? Commands.none()
                 : Commands.sequence(
                 AutoBuilder.followPath(Trench_Neutral_L1.get()),
@@ -198,6 +198,9 @@ public class AutoCommands {
 
         return Auto;
     }
+
+
+
 
     public Command rightAutoPathPlanner() {
         Optional<PathPlannerPath> start_neutral_R1 = PathPlannerUtils.loadPathByName("start_neutral_R1");
