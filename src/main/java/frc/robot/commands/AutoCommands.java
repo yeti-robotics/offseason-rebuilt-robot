@@ -179,7 +179,7 @@ public class AutoCommands {
 
     public Command LeftAutoPathPlanner() {
         Optional<PathPlannerPath> Trench_Neutral_L1 = PathPlannerUtils.loadPathByName("Trench_Neutral_L1");
-        Optional<PathPlannerPath> Neutral_Shoot_L2 = PathPlannerUtils.loadPathByName("Trench_Neutral_L2");
+        Optional<PathPlannerPath> Neutral_Shoot_L2 = PathPlannerUtils.loadPathByName("Neutral_Shoot_L2");
         Optional<PathPlannerPath> Shoot_Neutral_L3 = PathPlannerUtils.loadPathByName("Shoot_Neutral_L3");
         Optional<PathPlannerPath> Neutral_Neutral_L4 = PathPlannerUtils.loadPathByName("Neutral_Neutral_L4");
         Optional<PathPlannerPath> Shoot_Neutral_L5 = PathPlannerUtils.loadPathByName("Shoot_Neutral_L5");
@@ -195,8 +195,12 @@ public class AutoCommands {
                 || Neutral_Shoot_L6.isEmpty()
                 ? Commands.none()
                 : Commands.sequence(
-
-        );
+                AutoBuilder.followPath(Trench_Neutral_L1.get()),
+                AutoBuilder.followPath(Neutral_Shoot_L2.get()),
+                AutoBuilder.followPath(Shoot_Neutral_L3.get()),
+                AutoBuilder.followPath(Neutral_Neutral_L4.get()),
+                AutoBuilder.followPath(Shoot_Neutral_L5.get()),
+                AutoBuilder.followPath(Neutral_Shoot_L6.get()));
 
         Auto = new PathPlannerAuto(cmd);
 
