@@ -20,15 +20,20 @@
         "y": 2.194624565972223
       },
       "prevControl": {
-        "x": 4.953615254392386,
-        "y": 1.819529248261348
+        "x": 4.763654030929722,
+        "y": 1.5856310624084928
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "5th2"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6002004523026317,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
