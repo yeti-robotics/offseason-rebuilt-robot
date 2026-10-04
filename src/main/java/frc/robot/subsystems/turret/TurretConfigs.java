@@ -4,6 +4,8 @@ import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
 
 public class TurretConfigs {
@@ -12,6 +14,9 @@ public class TurretConfigs {
     static final int TURRET_MOTOR_ID = 78;
     static final int MOTOR_TO_SENSOR_RATIO = 89;
     static final int SENSOR_TO_MEHCANISM_RATIO = 64;
+
+    public static final Translation2d turretOffset =
+            new Translation2d(Units.inchesToMeters(10.5625), Units.inchesToMeters(4.66145));
 
     // Need to change IDs
     static final Slot0Configs SLOT_0_CONFIGS = Robot.isReal()
