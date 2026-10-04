@@ -33,7 +33,7 @@ public class SOTMCommand extends Command {
         this.target = target;
     }
 
-    private Angle calcDesiredTurretHeading() {
+    private Angle calcDesiredTurretHeading(Translation2d target) {
         Pose2d robotPose = drive.getState().Pose;
         Translation2d turretPosition = robotPose
                 .transformBy(new Transform2d(TurretConfigs.turretOffset, new Rotation2d()))
@@ -68,7 +68,7 @@ public class SOTMCommand extends Command {
 
         double targetRPS = compensatedState.rps;
         Angle targetHoodAngle = compensatedState.hoodPos;
-        Angle targetTurretAngle = calcDesiredTurretHeading();
+        Angle targetTurretAngle = calcDesiredTurretHeading(compensatedTarget);
 
         Logger.recordOutput("SOTM/Target RPS", targetRPS);
         Logger.recordOutput("SOTM/Target Hood Angle", targetHoodAngle.magnitude());
