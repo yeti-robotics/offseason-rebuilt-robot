@@ -1,5 +1,6 @@
 package frc.robot.subsystems.turret;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,6 +26,10 @@ public class Turret extends SubsystemBase {
 
     public void moveTo(Angle position) {
         io.setPosition(position);
+    }
+
+    public Angle getPosition() {
+        return Units.Rotations.of(inputs.position);
     }
 
     public Command applyPower(double percent) {
