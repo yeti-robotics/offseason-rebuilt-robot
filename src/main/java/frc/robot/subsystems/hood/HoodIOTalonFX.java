@@ -53,5 +53,3 @@ public class HoodIOTalonFX implements HoodIO {
     }
 
 }
-
-}
