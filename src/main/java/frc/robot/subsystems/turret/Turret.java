@@ -23,6 +23,10 @@ public class Turret extends SubsystemBase {
         return runOnce(() -> io.setPosition(position));
     }
 
+    public void moveTo(Angle position) {
+        io.setPosition(position);
+    }
+
     public Command applyPower(double percent) {
         return runEnd(() -> io.applyPower(percent), () -> io.applyPower(0));
     }

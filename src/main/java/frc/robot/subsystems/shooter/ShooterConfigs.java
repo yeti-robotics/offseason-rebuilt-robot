@@ -13,6 +13,8 @@ public class ShooterConfigs {
     static final double ROTOR_TO_SENSOR = 1;
     static final double SENSOR_TO_MECHANISM = 1;
 
+    public static final double SHOOTER_LATENCY_COMP = 0.15;
+
     public static final Slot0Configs SLOT_0_CONFIGS =
             new Slot0Configs().withKP(0).withKI(0).withKD(0).withKS(0).withKV(0).withKA(0);
 

@@ -5,16 +5,24 @@
 
 package frc.robot;
 
+import static frc.robot.constants.FieldConstants.Hub.centerHubOpening;
+
+import choreo.auto.AutoFactory;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AutoCommands;
+import frc.robot.commands.SOTMCommand;
 import frc.robot.constants.Constants;
 // import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.TunerConstants;
 import frc.robot.subsystems.hood.Hood;
+import frc.robot.subsystems.hood.HoodIO;
 import frc.robot.subsystems.hood.HoodIOTalonFX;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIO;
@@ -34,9 +42,13 @@ import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import frc.robot.subsystems.singulator.Singulator;
 import frc.robot.subsystems.singulator.SingulatorIO;
 import frc.robot.subsystems.singulator.SingulatorIOTalonFX;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIO;
+import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIO;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -58,8 +70,15 @@ public class RobotContainer {
     private final Shooter shooter;
     private final Singulator singulator;
 
+    private final AutoFactory autoFactory;
+    private final AutoCommands autoCommands;
+    private final LoggedDashboardChooser<Command> autoChooser;
+
     private final CommandSwerveDrivetrain drive;
 
+    private final SOTMCommand sotmCommand;
+
+    /** The container for the robot. Contains subsystems, OI devices, and commands. */
     private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric()
             .withDeadband(TunerConstants.MAX_VELOCITY_METERS_PER_SECOND * 0.1)
             .withRotationalDeadband(TunerConstants.MaFxAngularRate * 0.1)
@@ -95,6 +114,7 @@ public class RobotContainer {
                 turret = new Turret(new TurretIOTalonFX());
                 shooter = new Shooter(new ShooterIOTalonFX());
                 singulator = new Singulator(new SingulatorIOTalonFX());
+
                 break;
 
             default:
@@ -103,12 +123,24 @@ public class RobotContainer {
                 intake = new Intake(new IntakeIO() {});
                 rollerBed = new RollerBed(new RollerBedIO() {});
                 miniIndexer = new MiniIndexer(new MiniIndexerIO() {});
-                hood = new Hood(new HoodIOTalonFX());
+                hood = new Hood(new HoodIO() {});
                 turret = new Turret(new TurretIO() {});
                 shooter = new Shooter(new ShooterIO() {});
                 singulator = new Singulator(new SingulatorIO() {});
+
                 break;
         }
+
+        sotmCommand = new SOTMCommand(drive, shooter, hood, turret, centerHubOpening.toTranslation2d());
+
+        autoFactory = new AutoFactory(() -> drive.getState().Pose, drive::resetPose, drive::followPath, true, drive);
+        autoCommands = new AutoCommands(drive, intake, shooter, turret, linslide, hood, miniIndexer, rollerBed, autoFactory);
+        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+
+        autoChooser.addOption("Left Choreo", autoCommands.autoLeftChoreo());
+        autoChooser.addOption("Right Choreo", autoCommands.autoRightChoreo());
+        autoChooser.addOption("Left PathPlanner", autoCommands.LeftAutoPathPlanner());
+        autoChooser.addOption("Right PathPlanner", autoCommands.RightAutoPathPlanner());
 
         configureBindings();
         configureDebugBindings();
@@ -130,6 +162,7 @@ public class RobotContainer {
                 .withRotationalRate(-controller.getRightX() * TunerConstants.MaFxAngularRate)));
     }
 
+
     private void configureDebugBindings() {
         debugController.a().whileTrue(intake.applyPower(0.5));
         debugController.b().whileTrue(turret.applyPower(0.5));
@@ -147,6 +180,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return null;
+        return autoChooser.get();
     }
 }
