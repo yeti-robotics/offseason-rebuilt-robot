@@ -75,7 +75,7 @@ public class SOTMCommand extends Command {
         Logger.recordOutput("SOTM/Target Turret Angle", targetTurretAngle.magnitude());
 
         turret.moveTo(targetTurretAngle);
-        hood.moveTo(targetHoodAngle);
+        //hood.moveTo(targetHoodAngle);
         shooter.spinAt(targetRPS);
     }
 }

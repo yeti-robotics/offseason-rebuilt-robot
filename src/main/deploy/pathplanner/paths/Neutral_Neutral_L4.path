@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 7.9206176056000395,
-        "y": 3.9912190503459755
+        "y": 3.991219050345975
       },
       "isLocked": false,
       "linkedName": "3rd"
@@ -32,12 +32,6 @@
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
-    {
-      "name": "Intake",
-      "waypointRelativePos": 0.016949152542372888,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
     {
       "name": "End Intake",
       "waypointRelativePos": 1.0,
