@@ -34,6 +34,7 @@ public class SOTMCommand extends Command {
         this.hood = hood;
         this.turret = turret;
         this.target = target;
+        addRequirements(shooter, hood, turret);
     }
 
     private Translation2d getTurretPosition(Pose2d robotPose) {
@@ -51,22 +52,35 @@ public class SOTMCommand extends Command {
 
     private Angle resolveReachableTurretAngle(Rotation2d desiredHeading) {
         double currentRotations = turret.getPosition().in(Units.Rotations);
-        double delta = desiredHeading.getRotations() - currentRotations;
-        delta -= Math.round(delta);
-
-        double targetRotations = currentRotations + delta;
         double minRotations = TurretConfigs.MIN_ANGLE.in(Units.Rotations);
         double maxRotations = TurretConfigs.MAX_ANGLE.in(Units.Rotations);
-        targetRotations = Math.max(minRotations, Math.min(maxRotations, targetRotations));
+        double baseRotations = desiredHeading.getRotations();
 
-        return Units.Rotations.of(targetRotations);
+        long lowK = (long) Math.floor(minRotations - baseRotations) - 1;
+        long highK = (long) Math.ceil(maxRotations - baseRotations) + 1;
+
+        double bestRotations = Math.max(minRotations, Math.min(maxRotations, currentRotations));
+        double bestDistance = Double.POSITIVE_INFINITY;
+        for (long k = lowK; k <= highK; k++) {
+            double candidate = baseRotations + k;
+            if (candidate < minRotations || candidate > maxRotations) {
+                continue;
+            }
+            double distance = Math.abs(candidate - currentRotations);
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                bestRotations = candidate;
+            }
+        }
+
+        return Units.Rotations.of(bestRotations);
     }
 
     @Override
     public void execute() {
         Pose2d robotPose = drive.getState().Pose;
+        ChassisSpeeds robotRelativeSpeeds = drive.getState().Speeds;
         Translation2d turretPosition = getTurretPosition(robotPose);
-        Translation2d turretVelocity = getTurretFieldVelocity(robotPose, drive.getState().Speeds);
 
         Translation2d allianceTarget = AllianceFlipUtil.apply(target);
 
@@ -74,15 +88,23 @@ public class SOTMCommand extends Command {
                 .get(allianceTarget.getDistance(turretPosition))
                 .timeOfFlight;
 
-        Translation2d turretPositionAtRelease;
+        Rotation2d releaseRobotRotation = robotPose.getRotation()
+                .plus(Rotation2d.fromRadians(robotRelativeSpeeds.omega * ShooterConfigs.SHOOTER_LATENCY_COMP));
+        ChassisSpeeds currentFieldSpeeds = robotRelativeSpeeds.toFieldRelative(robotPose.getRotation());
+        Translation2d releaseRobotTranslation = robotPose.getTranslation()
+                .plus(new Translation2d(currentFieldSpeeds.vx, currentFieldSpeeds.vy)
+                        .times(ShooterConfigs.SHOOTER_LATENCY_COMP));
+        Pose2d releasePose = new Pose2d(releaseRobotTranslation, releaseRobotRotation);
+
+        Translation2d turretPositionAtRelease = getTurretPosition(releasePose);
+        Translation2d turretVelocityAtRelease = getTurretFieldVelocity(releasePose, robotRelativeSpeeds);
+
         Translation2d compensatedTarget;
         ShooterStateData state;
 
         int iteration = 0;
         while (true) {
-            turretPositionAtRelease = turretPosition.plus(turretVelocity.times(ShooterConfigs.SHOOTER_LATENCY_COMP));
-            double totalLeadTime = ShooterConfigs.SHOOTER_LATENCY_COMP + timeOfFlight;
-            compensatedTarget = allianceTarget.minus(turretVelocity.times(totalLeadTime));
+            compensatedTarget = allianceTarget.minus(turretVelocityAtRelease.times(timeOfFlight));
 
             double compensatedDistance = compensatedTarget.getDistance(turretPositionAtRelease);
             state = ShooterConfigs.SHOOTER_MAP.get(compensatedDistance);
@@ -101,7 +123,7 @@ public class SOTMCommand extends Command {
 
         Rotation2d desiredFieldHeading =
                 compensatedTarget.minus(turretPositionAtRelease).getAngle();
-        Rotation2d desiredTurretHeading = desiredFieldHeading.minus(robotPose.getRotation());
+        Rotation2d desiredTurretHeading = desiredFieldHeading.minus(releaseRobotRotation);
         Angle targetTurretAngle = resolveReachableTurretAngle(desiredTurretHeading);
 
         Logger.recordOutput("SOTM/Target RPS", targetRPS);
@@ -111,5 +133,10 @@ public class SOTMCommand extends Command {
         turret.moveTo(targetTurretAngle);
         hood.moveTo(targetHoodAngle);
         shooter.spinAt(targetRPS);
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        shooter.spinAt(0);
     }
 }
