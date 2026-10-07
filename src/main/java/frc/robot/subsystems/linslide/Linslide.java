@@ -31,4 +31,8 @@ public class Linslide extends SubsystemBase {
     public Command stow() {
         return runOnce(() -> io.setStowed(LinslidePosition.STOWED.getPosition()));
     }
+
+    public Boolean isDeployed() {
+        return inputs.isDeployed;
+    }
 }
