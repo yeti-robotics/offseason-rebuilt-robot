@@ -13,6 +13,8 @@ public class ShooterConfigs {
     static final double ROTOR_TO_SENSOR = 1;
     static final double SENSOR_TO_MECHANISM = 1;
 
+    public static final double SHOOTER_LATENCY_COMP = 0.15;
+
     public static double SHOOTER_SPEED = 0.5;
 
     public static final Slot0Configs SLOT_0_CONFIGS =

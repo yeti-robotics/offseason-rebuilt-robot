@@ -31,16 +31,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.subsystems.vision.Vision;
 import java.io.IOException;
 import java.util.function.Supplier;
 import org.json.simple.parser.ParseException;
+import org.littletonrobotics.junction.Logger;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements Subsystem so it can easily
  * be used in command-based projects.
  */
 @Logged
-public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrain implements Subsystem {
+public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrain
+        implements Subsystem, Vision.VisionConsumer {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
@@ -282,6 +285,16 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
                 m_hasAppliedOperatorPerspective = true;
             });
         }
+        Logger.recordOutput("Drive/ChassisSpeeds", getChassisSpeeds());
+        Logger.recordOutput("Drive/Gyro/Connected", getPigeon2().isConnected());
+        Logger.recordOutput("Drive/Gyro/YawPosition", getState().Pose.getRotation());
+        Logger.recordOutput(
+                "Drive/Gyro/YawVelocityRadPerSec",
+                getPigeon2().getAngularVelocityZWorld().getValueAsDouble());
+        Logger.recordOutput("Odometry/Robot", getState().Pose);
+        Logger.recordOutput("Drive/OdometryPeriod", getState().OdometryPeriod);
+        Logger.recordOutput("SwerveStates/Measured", getState().ModuleStates);
+        Logger.recordOutput("SwerveChassisSpeeds/Measured", getChassisSpeeds());
     }
 
     private void startSimThread() {
@@ -329,6 +342,11 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
             Pose2d visionRobotPoseMeters, double timestampSeconds, Matrix<N3, N1> visionMeasurementStdDevs) {
         super.addVisionMeasurement(
                 visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds), visionMeasurementStdDevs);
+    }
+
+    @Override
+    public void accept(Pose2d visionRobotPoseMeters, double timestampSeconds, Matrix<N3, N1> visionMeasurementStdDevs) {
+        addVisionMeasurement(visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
     }
 
     private CANcoder getCANcoder(int id) {
