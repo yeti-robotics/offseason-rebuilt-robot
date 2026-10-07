@@ -50,4 +50,12 @@ public class ShooterConfigs {
     static {
         SHOOTER_MAP.put(0.0, new ShooterStateData(Units.Rotations.of(0), 0, 0.0));
     }
+
+    public static final InterpolatingTreeMap<Double, ShooterStateData> SHUTTLE_MAP =
+            new InterpolatingTreeMap<>(InverseInterpolator.forDouble(), ShooterStateData.interpolator);
+
+    static {
+        SHUTTLE_MAP.put(0.0, new ShooterStateData(Units.Rotations.of(0), 0, 0.0));
+    }
+
 }

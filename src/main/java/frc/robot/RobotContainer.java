@@ -174,35 +174,25 @@ public class RobotContainer {
                         linslide.applyPower(LinslideConfigs.DEPLOY_SPEED)));
 
         controller
-                .leftBumper()
-                .whileTrue(Commands.either(
-                                AutoAimCommands.autoAim(
-                                                drive,
-                                                controller::getLeftY,
-                                                controller::getLeftX,
-                                                centerHubOpening.toTranslation2d())
-                                        .alongWith(AutoAimCommands.readyAim(
-                                                drive, shooter, hood, centerHubOpening.toTranslation2d())),
-                                AutoAimCommands.shuttleAim(drive, controller::getLeftY, controller::getLeftX)
-                                        .alongWith(AutoAimCommands.shuttleReadyAim(drive, shooter, hood)),
+                .rightTrigger()
+                .whileTrue(Commands.parallel(
+                        Commands.either(
+                            sotmCommand,
+                            sotmCommand,
                                 () -> AllianceFlipUtil.apply(
                                         drive.getState().Pose.getX())
-                                        < 4.9)
-                        .alongWith(linslide.applyPower(LinslideConfigs.DEPLOY_SPEED)))
+                                        < 4.9),
+                        linslide.applyPower(LinslideConfigs.DEPLOY_SPEED),
+                        Commands.wait(1.0).andThen(
+                                Commands.parallel(
+                                        miniIndexer.applyPower(MiniIndexerConfigs.MINI_INDEXER_SPEED),
+                                        intake.applyPower(IntakeConfigs.ROLLER_SPEED),
+                                        rollerBed.applyPower(RollerBedConfigs.ROLLER_BED_SPEED),
+                                        singulator.applyPower(1)))))
                 .onFalse(hood.setPosition(0));
 
         controller.povLeft().onTrue(hood.setPosition(0));
         controller.povRight().onTrue(hood.setPosition(0.65));
-
-        controller
-                .rightTrigger()
-                .whileTrue(Commands.parallel(
-                        miniIndexer.applyPower(MiniIndexerConfigs.MINI_INDEXER_SPEED),
-                        intake.applyPower(IntakeConfigs.ROLLER_SPEED),
-                        rollerBed.applyPower(RollerBedConfigs.ROLLER_BED_SPEED),
-                        singulator.applyPower(1),
-                        shooter.switchSlot(1)))
-                .onFalse(shooter.switchSlot(0));
 
     }
 
