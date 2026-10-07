@@ -16,7 +16,7 @@ public class Singulator extends SubsystemBase {
         this.singIO = io;
     }
 
-    public Command usePower(double power) {
+    public Command applyPower(double power) {
         return runEnd(() -> singIO.usePower(power), () -> singIO.usePower(0));
     }
 
