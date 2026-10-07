@@ -297,6 +297,11 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
         Logger.recordOutput("SwerveChassisSpeeds/Measured", getChassisSpeeds());
     }
 
+
+    public double getPigeonPitch(){
+        return getPigeon2().getPitch().getValueAsDouble();
+    }
+
     private void startSimThread() {
         m_lastSimTime = Utils.getCurrentTimeSeconds();
 
