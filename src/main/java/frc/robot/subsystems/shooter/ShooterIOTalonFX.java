@@ -13,15 +13,15 @@ public class ShooterIOTalonFX implements ShooterIO {
     private final MotionMagicVelocityTorqueCurrentFOC magicRequest = new MotionMagicVelocityTorqueCurrentFOC(0);
 
     public ShooterIOTalonFX() {
-        motorOne = new TalonFX(ShooterConfigs.FIRST_MOTOR_ID);
-        motorTwo = new TalonFX(ShooterConfigs.SECOND_MOTOR_ID);
+        motorOne = new TalonFX(ShooterConfigs.LEFT_MOTOR_ID);
+        motorTwo = new TalonFX(ShooterConfigs.RIGHT_MOTOR_ID);
         if (Robot.isSimulation()) {
             PhysicsSim.getInstance().addTalonFX(motorOne);
             PhysicsSim.getInstance().addTalonFX(motorTwo);
         }
         motorOne.getConfigurator().apply(ShooterConfigs.TOP_MOTOR_CONFIGS);
         motorTwo.getConfigurator().apply(ShooterConfigs.BOTTOM_MOTOR_CONFIGS);
-        motorTwo.setControl(new Follower(ShooterConfigs.FIRST_MOTOR_ID, true));
+        motorTwo.setControl(new Follower(ShooterConfigs.LEFT_MOTOR_ID, true));
     }
 
     @Override

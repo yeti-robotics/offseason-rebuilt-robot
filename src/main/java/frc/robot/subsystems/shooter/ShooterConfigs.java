@@ -8,8 +8,8 @@ import edu.wpi.first.units.Units;
 import frc.robot.util.ShooterStateData;
 
 public class ShooterConfigs {
-    public static final int FIRST_MOTOR_ID = 14;
-    public static final int SECOND_MOTOR_ID = 10;
+    public static final int LEFT_MOTOR_ID = 21;
+    public static final int RIGHT_MOTOR_ID = 16;
     static final double ROTOR_TO_SENSOR = 1;
     static final double SENSOR_TO_MECHANISM = 1;
 

@@ -1,6 +1,7 @@
 package frc.robot.subsystems.turret;
 
 import com.ctre.phoenix6.configs.*;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -14,10 +15,10 @@ import static edu.wpi.first.units.Units.Rotations;
 
 public class TurretConfigs {
 
-    // Need to change IDs
-    static final int TURRET_MOTOR_ID = 78;
-    static final int MOTOR_TO_SENSOR_RATIO = 89;
-    static final int SENSOR_TO_MEHCANISM_RATIO = 64;
+    static final int TURRET_MOTOR_ID = 56;
+    static final int TURRET_ENCODER_ID = 0;
+    static final int MOTOR_TO_SENSOR_RATIO = 0;
+    static final int SENSOR_TO_MEHCANISM_RATIO = 0;
 
     public static final Translation2d turretOffset =
             new Translation2d(Units.inchesToMeters(10.5625), Units.inchesToMeters(4.66145));
@@ -48,10 +49,6 @@ public class TurretConfigs {
 
     static final TalonFXConfiguration TURRET_CONFIGS = new TalonFXConfiguration()
             .withSlot0(SLOT_0_CONFIGS)
-            .withFeedback(new FeedbackConfigs()
-                    .withRotorToSensorRatio(MOTOR_TO_SENSOR_RATIO)
-                    .withSensorToMechanismRatio(SENSOR_TO_MEHCANISM_RATIO)
-                    .withFeedbackRotorOffset(TURRET_START_ABS_POS))
             .withMotionMagic(new MotionMagicConfigs()
                     .withMotionMagicAcceleration(2)
                     .withMotionMagicCruiseVelocity(1)
@@ -63,5 +60,10 @@ public class TurretConfigs {
                     .withReverseSoftLimitThreshold(MIN_ANGLE.in(Rotations))
                     .withReverseSoftLimitEnable(true)
                     .withForwardSoftLimitThreshold(MAX_ANGLE.in(Rotations))
-                    .withForwardSoftLimitEnable(true));
+                    .withForwardSoftLimitEnable(true))
+            .withFeedback(new FeedbackConfigs()
+                    .withFeedbackRemoteSensorID(TURRET_ENCODER_ID)
+                    .withFeedbackSensorSource(FeedbackSensorSourceValue.FusedCANcoder)
+                    .withSensorToMechanismRatio(SENSOR_TO_MEHCANISM_RATIO)
+                    .withRotorToSensorRatio(MOTOR_TO_SENSOR_RATIO));
 }
