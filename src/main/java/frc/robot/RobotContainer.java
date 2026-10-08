@@ -137,7 +137,7 @@ public class RobotContainer {
 
         autoFactory = new AutoFactory(() -> drive.getState().Pose, drive::resetPose, drive::followPath, true, drive);
         autoCommands =
-                new AutoCommands(drive, hood, intake, linslide, miniIndexer, rollerBed, shooter, turret, autoFactory);
+                new AutoCommands(drive, hood, intake, linslide, miniIndexer, rollerBed, shooter, turret, autoFactory, sotmCommand);
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
         autoChooser.addOption("Left Choreo", autoCommands.autoLeftChoreo());
