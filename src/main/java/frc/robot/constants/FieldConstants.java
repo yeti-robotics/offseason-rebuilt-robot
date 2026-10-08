@@ -19,7 +19,9 @@ public class FieldConstants {
 
     /** Whether the given field-frame x coordinate is within the current alliance's own zone. */
     public static boolean isInOwnAllianceZone(double fieldX) {
-        boolean isRed = DriverStation.getAlliance().filter(alliance -> alliance == Alliance.Red).isPresent();
+        boolean isRed = DriverStation.getAlliance()
+                .filter(alliance -> alliance == Alliance.Red)
+                .isPresent();
         return isRed ? fieldX >= FIELD_LENGTH - ALLIANCE_ZONE_LENGTH : fieldX <= ALLIANCE_ZONE_LENGTH;
     }
 

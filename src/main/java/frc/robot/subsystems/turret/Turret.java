@@ -90,7 +90,8 @@ public class Turret extends SubsystemBase {
 
             Rotation2d desiredFieldHeading = aimTarget.minus(turretPosition).getAngle();
             Rotation2d desiredTurretHeading = desiredFieldHeading.minus(robotPose.getRotation());
-            Angle targetTurretAngle = resolveReachableTurretAngle(desiredTurretHeading, getPosition().in(Units.Rotations));
+            Angle targetTurretAngle = resolveReachableTurretAngle(
+                    desiredTurretHeading, getPosition().in(Units.Rotations));
 
             moveTo(targetTurretAngle);
         });

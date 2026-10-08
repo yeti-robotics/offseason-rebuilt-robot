@@ -57,5 +57,4 @@ public class ShooterConfigs {
     static {
         SHUTTLE_MAP.put(0.0, new ShooterStateData(Units.Rotations.of(0), 0, 0.0));
     }
-
 }

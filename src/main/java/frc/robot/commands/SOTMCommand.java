@@ -84,14 +84,14 @@ public class SOTMCommand extends Command {
 
         Translation2d allianceTarget = AllianceFlipUtil.apply(target);
 
-        double timeOfFlight = ShooterConfigs.SHOOTER_MAP
-                .get(allianceTarget.getDistance(turretPosition))
-                .timeOfFlight;
+        double timeOfFlight = ShooterConfigs.SHOOTER_MAP.get(allianceTarget.getDistance(turretPosition)).timeOfFlight;
 
-        Rotation2d releaseRobotRotation = robotPose.getRotation()
+        Rotation2d releaseRobotRotation = robotPose
+                .getRotation()
                 .plus(Rotation2d.fromRadians(robotRelativeSpeeds.omega * ShooterConfigs.SHOOTER_LATENCY_COMP));
         ChassisSpeeds currentFieldSpeeds = robotRelativeSpeeds.toFieldRelative(robotPose.getRotation());
-        Translation2d releaseRobotTranslation = robotPose.getTranslation()
+        Translation2d releaseRobotTranslation = robotPose
+                .getTranslation()
                 .plus(new Translation2d(currentFieldSpeeds.vx, currentFieldSpeeds.vy)
                         .times(ShooterConfigs.SHOOTER_LATENCY_COMP));
         Pose2d releasePose = new Pose2d(releaseRobotTranslation, releaseRobotRotation);

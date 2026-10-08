@@ -5,6 +5,7 @@
 
 package frc.robot;
 
+import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 import static frc.robot.constants.FieldConstants.Hub.centerHubOpening;
 
 import com.ctre.phoenix6.swerve.SwerveModule;
@@ -49,8 +50,6 @@ import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIO;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
 import frc.robot.util.AllianceFlipUtil;
-
-import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -177,14 +176,14 @@ public class RobotContainer {
                 .rightTrigger()
                 .whileTrue(Commands.parallel(
                         Commands.either(
-                            sotmCommand,
-                            sotmCommand,
+                                sotmCommand,
+                                sotmCommand,
                                 () -> AllianceFlipUtil.apply(
-                                        drive.getState().Pose.getX())
+                                                drive.getState().Pose.getX())
                                         < 4.9),
                         linslide.applyPower(LinslideConfigs.DEPLOY_SPEED),
-                        Commands.wait(1.0).andThen(
-                                Commands.parallel(
+                        Commands.wait(1.0)
+                                .andThen(Commands.parallel(
                                         miniIndexer.applyPower(MiniIndexerConfigs.MINI_INDEXER_SPEED),
                                         intake.applyPower(IntakeConfigs.ROLLER_SPEED),
                                         rollerBed.applyPower(RollerBedConfigs.ROLLER_BED_SPEED),
@@ -193,7 +192,6 @@ public class RobotContainer {
 
         controller.povLeft().onTrue(hood.setPosition(0));
         controller.povRight().onTrue(hood.setPosition(0.65));
-
     }
 
     private void configureDebugBindings() {
