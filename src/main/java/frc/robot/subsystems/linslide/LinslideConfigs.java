@@ -7,8 +7,8 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import frc.robot.Robot;
 
 public class LinslideConfigs {
-    static final int MOTOR_ID = 60;
-    static final int SECONDARY_MOTOR_ID = 61;
+    static final int MOTOR_ID = 61;
+    static final int SECONDARY_MOTOR_ID = 60;
 
     public static final double DEPLOY_SPEED = 0.35;
 
@@ -38,8 +38,8 @@ public class LinslideConfigs {
                     .withInverted(InvertedValue.CounterClockwise_Positive) // Might change later
                     .withNeutralMode(NeutralModeValue.Brake))
             .withSoftwareLimitSwitch(new SoftwareLimitSwitchConfigs()
-                    .withReverseSoftLimitThreshold(0)
+                    .withReverseSoftLimitThreshold(0.06)
                     .withReverseSoftLimitEnable(true)
-                    .withForwardSoftLimitThreshold(10) // will need to change later
+                    .withForwardSoftLimitThreshold(10.516113)
                     .withForwardSoftLimitEnable(true));
 }

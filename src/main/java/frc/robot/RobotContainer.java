@@ -130,7 +130,6 @@ public class RobotContainer {
 
         sotmCommand2 = new SOTMCommand(drive, shooter, hood, turret, centerHubOpening.toTranslation2d());
 
-
         configureBindings();
         configureDebugBindings();
     }
@@ -201,8 +200,8 @@ public class RobotContainer {
     private void configureDebugBindings() {
         debugController.a().whileTrue(intake.applyPower(0.5));
         debugController.b().whileTrue(turret.applyPower(0.5));
-        debugController.x().whileTrue(linslide.applyPower(0.5));
-        debugController.y().whileTrue(miniIndexer.applyPower(0.5));
+        debugController.x().whileTrue(linslide.applyPower(0.1));
+        debugController.y().whileTrue(linslide.applyPower(-0.1));
         debugController.leftTrigger().whileTrue(shooter.applyPower(0.5));
         debugController.rightTrigger().whileTrue(hood.applyPower(0.5));
         debugController.povDown().whileTrue(rollerBed.applyPower(0.5));
