@@ -10,6 +10,9 @@ public class LinslideConfigs {
     static final int MOTOR_ID = 60;
     static final int SECONDARY_MOTOR_ID = 61;
 
+    public static final double DEPLOY_SPEED = 0.35;
+
+
     private static Slot0Configs SLOT_0_CONFIGS = Robot.isReal()
             ? new Slot0Configs()
                     .withKP(0.0)

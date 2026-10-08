@@ -6,13 +6,12 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 
 public class IntakeConfigs {
-    // Need to change IDs for motors
+    static final int LEFT_INTAKE_MOTOR_ID = 11;
     static final int RIGHT_INTAKE_MOTOR_ID = 13;
-    static final int LEFT_INTAKE_MOTOR_ID = 12;
-    // Need to change values for voltage
+
     static final double INTAKE_VOLTAGE = 7.0;
     static final double OUTTAKE_VOLTAGE = 8.0;
-    // Need to change values for roll in
+
     public static double ROLL_IN_SPEED = 3.0;
     public static double ROLL_IN_SLOWER = 2.0;
 

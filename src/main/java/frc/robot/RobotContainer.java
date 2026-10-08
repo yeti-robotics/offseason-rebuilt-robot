@@ -5,38 +5,56 @@
 
 package frc.robot;
 
+import static frc.robot.constants.FieldConstants.Hub.centerHubOpening;
+
+import choreo.auto.AutoFactory;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AutoCommands;
+import frc.robot.commands.SOTMCommand;
 import frc.robot.constants.Constants;
 // import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.TunerConstants;
 import frc.robot.subsystems.hood.Hood;
+import frc.robot.subsystems.hood.HoodIO;
 import frc.robot.subsystems.hood.HoodIOTalonFX;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeConfigs;
 import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.linslide.Linslide;
+import frc.robot.subsystems.linslide.LinslideConfigs;
 import frc.robot.subsystems.linslide.LinslideIO;
 import frc.robot.subsystems.linslide.LinslideIOTalonFX;
 import frc.robot.subsystems.miniindexer.MiniIndexer;
+import frc.robot.subsystems.miniindexer.MiniIndexerConfigs;
 import frc.robot.subsystems.miniindexer.MiniIndexerIO;
 import frc.robot.subsystems.miniindexer.MiniIndexerIOTalonFX;
 import frc.robot.subsystems.rollerbed.RollerBed;
+import frc.robot.subsystems.rollerbed.RollerBedConfigs;
 import frc.robot.subsystems.rollerbed.RollerBedIO;
 import frc.robot.subsystems.rollerbed.RollerBedIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterConfigs;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import frc.robot.subsystems.singulator.Singulator;
+import frc.robot.subsystems.singulator.SingulatorConfigs;
 import frc.robot.subsystems.singulator.SingulatorIO;
 import frc.robot.subsystems.singulator.SingulatorIOTalonFX;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIO;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import frc.robot.util.AllianceFlipUtil;
+
+import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -58,7 +76,13 @@ public class RobotContainer {
     private final Shooter shooter;
     private final Singulator singulator;
 
+    private final AutoFactory autoFactory;
+    private final AutoCommands autoCommands;
+    private final LoggedDashboardChooser<Command> autoChooser;
+
     private final CommandSwerveDrivetrain drive;
+
+    private final SOTMCommand sotmCommand;
 
     private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric()
             .withDeadband(TunerConstants.MAX_VELOCITY_METERS_PER_SECOND * 0.1)
@@ -103,12 +127,25 @@ public class RobotContainer {
                 intake = new Intake(new IntakeIO() {});
                 rollerBed = new RollerBed(new RollerBedIO() {});
                 miniIndexer = new MiniIndexer(new MiniIndexerIO() {});
-                hood = new Hood(new HoodIOTalonFX());
+                hood = new Hood(new HoodIO() {});
                 turret = new Turret(new TurretIO() {});
                 shooter = new Shooter(new ShooterIO() {});
                 singulator = new Singulator(new SingulatorIO() {});
                 break;
         }
+        sotmCommand = new SOTMCommand(drive, shooter, hood, turret, centerHubOpening.toTranslation2d());
+
+        autoFactory = new AutoFactory(() -> drive.getState().Pose, drive::resetPose, drive::followPath, true, drive);
+        autoCommands =
+                new AutoCommands(drive, hood, intake, linslide, miniIndexer, rollerBed, shooter, turret, autoFactory, sotmCommand);
+        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+
+        autoChooser.addOption("Left Choreo", autoCommands.autoLeftChoreo());
+        autoChooser.addOption("Right Choreo", autoCommands.autoRightChoreo());
+        autoChooser.addOption("Left PathPlanner", autoCommands.leftAutoPathPlanner());
+        autoChooser.addOption("Right PathPlanner", autoCommands.rightAutoPathPlanner());
+
+
 
         configureBindings();
         configureDebugBindings();
@@ -138,7 +175,7 @@ public class RobotContainer {
         debugController.leftTrigger().whileTrue(shooter.applyPower(0.5));
         debugController.rightTrigger().whileTrue(hood.applyPower(0.5));
         debugController.povDown().whileTrue(rollerBed.applyPower(0.5));
-        debugController.povUp().whileTrue(singulator.usePower(0.5));
+        debugController.povUp().whileTrue(singulator.applyPower(0.5));
     }
 
     /**
@@ -147,6 +184,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return null;
+        return autoChooser.get();
     }
 }

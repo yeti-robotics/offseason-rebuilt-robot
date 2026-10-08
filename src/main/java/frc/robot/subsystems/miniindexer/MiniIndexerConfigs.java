@@ -6,7 +6,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 
 public class MiniIndexerConfigs {
     // Might need to change IDs for the motor
-    static final int MINI_INDEXER_ID = 2;
+    static final int MINI_INDEXER_ID = 8;
     public static final double MINI_INDEXER_SPEED = 1.0;
     public static final Slot0Configs SLOT_0_CONFIGS =
             new Slot0Configs().withKP(0).withKI(0).withKD(0).withKV(0).withKA(0).withKS(0);
