@@ -16,6 +16,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -63,6 +64,11 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
     private static final Rotation2d kRedAlliancePerspectiveRotation = Rotation2d.k180deg;
     /* Keep track if we've ever applied the operator perspective before or not */
     private boolean m_hasAppliedOperatorPerspective = false;
+
+    private final SwerveRequest.ApplyFieldSpeeds pathApplyFieldSpeeds = new SwerveRequest.ApplyFieldSpeeds();
+    private final PIDController pathXController = new PIDController(10, 0, 0);
+    private final PIDController pathYController = new PIDController(10, 0, 0);
+    private final PIDController pathThetaController = new PIDController(7, 0, 0);
 
     /* Swerve requests to apply during SysId characterization */
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization =
@@ -315,6 +321,22 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
             updateSimState(deltaTime, RobotController.getBatteryVoltage());
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
+    }
+
+    public void followPath(SwerveSample sample) {
+        pathThetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+        var pose = getState().Pose;
+
+        var targetSpeeds = sample.getChassisSpeeds();
+        targetSpeeds.vx += pathXController.calculate(pose.getX(), sample.x);
+        targetSpeeds.vy += pathYController.calculate(pose.getY(), sample.y);
+        targetSpeeds.omega += pathThetaController.calculate(pose.getRotation().getRadians(), sample.heading);
+
+        setControl(pathApplyFieldSpeeds
+                .withSpeeds(targetSpeeds)
+                .withWheelForceFeedforwardsX(sample.moduleForcesX())
+                .withWheelForceFeedforwardsY(sample.moduleForcesY()));
     }
 
     /**
