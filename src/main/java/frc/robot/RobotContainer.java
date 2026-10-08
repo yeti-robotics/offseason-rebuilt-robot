@@ -74,6 +74,7 @@ public class RobotContainer {
     private final CommandSwerveDrivetrain drive;
 
     private final SOTMCommand sotmCommand;
+    private final SOTMCommand sotmCommand2;
 
     private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric()
             .withDeadband(TunerConstants.MAX_VELOCITY_METERS_PER_SECOND * 0.1)
@@ -127,6 +128,9 @@ public class RobotContainer {
 
         sotmCommand = new SOTMCommand(drive, shooter, hood, turret, centerHubOpening.toTranslation2d());
 
+        sotmCommand2 = new SOTMCommand(drive, shooter, hood, turret, centerHubOpening.toTranslation2d());
+
+
         configureBindings();
         configureDebugBindings();
     }
@@ -177,7 +181,7 @@ public class RobotContainer {
                 .whileTrue(Commands.parallel(
                         Commands.either(
                                 sotmCommand,
-                                sotmCommand,
+                                sotmCommand2,
                                 () -> AllianceFlipUtil.apply(
                                                 drive.getState().Pose.getX())
                                         < 4.9),
