@@ -18,6 +18,8 @@ import frc.robot.subsystems.turret.Turret;
 import frc.robot.util.PathPlannerUtils;
 import java.util.Optional;
 
+import static edu.wpi.first.wpilibj2.command.Commands.runEnd;
+
 public class AutoCommands {
     private final CommandSwerveDrivetrain drivetrain;
     private final Hood hood;
@@ -28,6 +30,7 @@ public class AutoCommands {
     private final Shooter shooter;
     private final Turret turret;
     private final AutoFactory autoFactory;
+    private final SOTMCommand sotmCommand;
 
     public AutoCommands(
             CommandSwerveDrivetrain drivetrain,
@@ -38,7 +41,7 @@ public class AutoCommands {
             RollerBed rollerBed,
             Shooter shooter,
             Turret turret,
-            AutoFactory autoFactory) {
+            AutoFactory autoFactory, SOTMCommand sotmCommand) {
         this.drivetrain = drivetrain;
         this.hood = hood;
         this.intake = intake;
@@ -48,6 +51,7 @@ public class AutoCommands {
         this.shooter = shooter;
         this.turret = turret;
         this.autoFactory = autoFactory;
+        this.sotmCommand = sotmCommand;
     }
 
     public Command linSlideOut() {
@@ -79,8 +83,8 @@ public class AutoCommands {
     }
 
     public Command shoot() {
-        // Filler vaulues
-        return shooter.shoot(0);
+        // Filler values
+        return sotmCommand.onlyIf(() -> drivetrain.getPigeonPitch() == 0);
     }
 
     public Boolean trajectoryValid(AutoTrajectory trajectory) {

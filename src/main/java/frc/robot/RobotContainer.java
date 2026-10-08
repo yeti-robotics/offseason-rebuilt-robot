@@ -133,6 +133,7 @@ public class RobotContainer {
                 singulator = new Singulator(new SingulatorIO() {});
                 break;
         }
+        sotmCommand = new SOTMCommand(drive, shooter, hood, turret, centerHubOpening.toTranslation2d());
 
         autoFactory = new AutoFactory(() -> drive.getState().Pose, drive::resetPose, drive::followPath, true, drive);
         autoCommands =
@@ -144,7 +145,7 @@ public class RobotContainer {
         autoChooser.addOption("Left PathPlanner", autoCommands.leftAutoPathPlanner());
         autoChooser.addOption("Right PathPlanner", autoCommands.rightAutoPathPlanner());
 
-        sotmCommand = new SOTMCommand(drive, shooter, hood, turret, centerHubOpening.toTranslation2d());
+
 
         configureBindings();
         configureDebugBindings();
@@ -164,54 +165,6 @@ public class RobotContainer {
                 .withVelocityX(-controller.getLeftY() * TunerConstants.kSpeedAt12Volts.magnitude())
                 .withVelocityY(-controller.getLeftX() * TunerConstants.kSpeedAt12Volts.magnitude())
                 .withRotationalRate(-controller.getRightX() * TunerConstants.MaFxAngularRate)));
-        turret.setDefaultCommand(turret.defaultCommand(drive));
-
-        controller.start().onTrue(runOnce(drive::seedFieldCentric, drive));
-
-        controller.x().whileTrue(linslide.applyPower(LinslideConfigs.DEPLOY_SPEED));
-        controller
-                .b()
-                .whileTrue(linslide.applyPower(-LinslideConfigs.DEPLOY_SPEED)
-                        .alongWith(intake.applyPower(IntakeConfigs.ROLLER_SPEED)));
-
-        controller
-                .leftTrigger()
-                .whileTrue(intake.applyPower(IntakeConfigs.ROLLER_SPEED)
-                        .alongWith(linslide.applyPower(LinslideConfigs.DEPLOY_SPEED)
-                                .until(linslide::isDeployed)
-                                .andThen(linslide.applyPower(0.15))));
-
-        controller
-                .y()
-                .whileTrue(Commands.parallel(
-                        intake.applyPower(-IntakeConfigs.ROLLER_SPEED),
-                        rollerBed.applyPower(-RollerBedConfigs.ROLLER_BED_SPEED),
-                        miniIndexer.applyPower(-MiniIndexerConfigs.MINI_INDEXER_SPEED),
-                        singulator.applyPower(-SingulatorConfigs.INDEXER_SPEED),
-                        shooter.applyPower(-ShooterConfigs.SHOOTER_SPEED),
-                        linslide.applyPower(LinslideConfigs.DEPLOY_SPEED)));
-
-        controller
-                .rightTrigger()
-                .whileTrue(Commands.parallel(
-                        Commands.either(
-                            sotmCommand,
-                            sotmCommand,
-                                () -> AllianceFlipUtil.apply(
-                                        drive.getState().Pose.getX())
-                                        < 4.9),
-                        linslide.applyPower(LinslideConfigs.DEPLOY_SPEED),
-                        Commands.wait(1.0).andThen(
-                                Commands.parallel(
-                                        miniIndexer.applyPower(MiniIndexerConfigs.MINI_INDEXER_SPEED),
-                                        intake.applyPower(IntakeConfigs.ROLLER_SPEED),
-                                        rollerBed.applyPower(RollerBedConfigs.ROLLER_BED_SPEED),
-                                        singulator.applyPower(1)))))
-                .onFalse(hood.setPosition(0));
-
-        controller.povLeft().onTrue(hood.setPosition(0));
-        controller.povRight().onTrue(hood.setPosition(0.65));
-
     }
 
     private void configureDebugBindings() {
