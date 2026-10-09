@@ -49,6 +49,7 @@ import frc.robot.subsystems.singulator.SingulatorIOTalonFX;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIO;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
+import frc.robot.subsystems.vision.*;
 import frc.robot.util.AllianceFlipUtil;
 
 /**
@@ -70,6 +71,7 @@ public class RobotContainer {
     private final Turret turret;
     private final Shooter shooter;
     private final Singulator singulator;
+    // private final Vision vision;
 
     private final CommandSwerveDrivetrain drive;
 
@@ -99,6 +101,15 @@ public class RobotContainer {
                 turret = new Turret(new TurretIOTalonFX());
                 shooter = new Shooter(new ShooterIOTalonFX());
                 singulator = new Singulator(new SingulatorIOTalonFX());
+                //                vision = new Vision(
+                //                        drive,
+                //                        new VisionIOPhotonVision(VisionConstants.backCam,
+                // VisionConstants.backCamTrans),
+                //                        new VisionIOPhotonVision(VisionConstants.leftCam,
+                // VisionConstants.leftCamTrans),
+                //                        new VisionIOPhotonVision(VisionConstants.rightCam,
+                // VisionConstants.rightCamTrans));
+
                 break;
 
             case SIM:
@@ -111,6 +122,18 @@ public class RobotContainer {
                 turret = new Turret(new TurretIOTalonFX());
                 shooter = new Shooter(new ShooterIOTalonFX());
                 singulator = new Singulator(new SingulatorIOTalonFX());
+                //                vision = new Vision(
+                //                        drive,
+                //                        new VisionIOPhotonVisionSim(
+                //                                VisionConstants.backCam, VisionConstants.backCamTrans, () ->
+                // drive.getState().Pose),
+                //                        new VisionIOPhotonVisionSim(
+                //                                VisionConstants.leftCam, VisionConstants.leftCamTrans, () ->
+                // drive.getState().Pose),
+                //                        new VisionIOPhotonVisionSim(
+                //                                VisionConstants.rightCam, VisionConstants.rightCamTrans, () ->
+                // drive.getState().Pose));
+
                 break;
 
             default:
@@ -123,6 +146,8 @@ public class RobotContainer {
                 turret = new Turret(new TurretIO() {});
                 shooter = new Shooter(new ShooterIO() {});
                 singulator = new Singulator(new SingulatorIO() {});
+                //                vision = new Vision(drive, new VisionIO() {});
+
                 break;
         }
 
@@ -199,13 +224,26 @@ public class RobotContainer {
 
     private void configureDebugBindings() {
         debugController.a().whileTrue(intake.applyPower(0.5));
-        debugController.b().whileTrue(turret.applyPower(0.5));
+        debugController.b().whileTrue(intake.applyPower(-0.5));
+        // debugController.b().whileTrue(turret.applyPower(0.5));
         debugController.x().whileTrue(linslide.applyPower(0.1));
         debugController.y().whileTrue(linslide.applyPower(-0.1));
         debugController.leftTrigger().whileTrue(shooter.applyPower(0.5));
         debugController.rightTrigger().whileTrue(hood.applyPower(0.5));
-        debugController.povDown().whileTrue(rollerBed.applyPower(0.5));
+        debugController
+                .povDown()
+                .whileTrue(Commands.parallel(
+                        rollerBed.applyPower(-0.5), singulator.applyPower(1), miniIndexer.applyPower(-1)));
+        debugController
+                .povLeft()
+                .whileTrue(Commands.parallel(
+                        rollerBed.applyPower(-0.5),
+                        singulator.applyPower(1),
+                        miniIndexer.applyPower(-1),
+                        intake.applyPower(-0.5),
+                        shooter.applyPower(1)));
         debugController.povUp().whileTrue(singulator.applyPower(0.5));
+        debugController.rightBumper().whileTrue(shooter.applyPower(.8));
     }
 
     /**

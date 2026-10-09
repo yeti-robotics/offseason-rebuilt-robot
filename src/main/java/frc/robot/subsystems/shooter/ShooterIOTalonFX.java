@@ -3,6 +3,7 @@ package frc.robot.subsystems.shooter;
 import com.ctre.phoenix6.controls.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import frc.robot.Robot;
+import frc.robot.constants.Constants;
 import frc.robot.util.sim.PhysicsSim;
 
 public class ShooterIOTalonFX implements ShooterIO {
@@ -13,8 +14,8 @@ public class ShooterIOTalonFX implements ShooterIO {
     private final MotionMagicVelocityTorqueCurrentFOC magicRequest = new MotionMagicVelocityTorqueCurrentFOC(0);
 
     public ShooterIOTalonFX() {
-        motorOne = new TalonFX(ShooterConfigs.LEFT_MOTOR_ID);
-        motorTwo = new TalonFX(ShooterConfigs.RIGHT_MOTOR_ID);
+        motorOne = new TalonFX(ShooterConfigs.LEFT_MOTOR_ID, Constants.CAN_S1);
+        motorTwo = new TalonFX(ShooterConfigs.RIGHT_MOTOR_ID, Constants.CAN_S1);
         if (Robot.isSimulation()) {
             PhysicsSim.getInstance().addTalonFX(motorOne);
             PhysicsSim.getInstance().addTalonFX(motorTwo);
