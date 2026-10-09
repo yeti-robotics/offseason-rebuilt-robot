@@ -84,7 +84,7 @@ public class Turret extends SubsystemBase {
      */
     public Command defaultCommand(CommandSwerveDrivetrain drive) {
         return run(() -> {
-            Pose2d robotPose = drive.getState().Pose;
+            Pose2d robotPose = drive.getPose();
             Translation2d turretPosition = getTurretPosition(robotPose);
             Translation2d aimTarget = getAimTarget(robotPose);
 

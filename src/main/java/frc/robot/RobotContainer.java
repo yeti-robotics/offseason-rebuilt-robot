@@ -8,8 +8,6 @@ package frc.robot;
 import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 import static frc.robot.constants.FieldConstants.Hub.centerHubOpening;
 
-import com.ctre.phoenix6.swerve.SwerveModule;
-import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -78,11 +76,6 @@ public class RobotContainer {
     private final SOTMCommand sotmCommand;
     private final SOTMCommand sotmCommand2;
 
-    private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric()
-            .withDeadband(TunerConstants.MAX_VELOCITY_METERS_PER_SECOND * 0.1)
-            .withRotationalDeadband(TunerConstants.MaFxAngularRate * 0.1)
-            .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
-
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
@@ -126,13 +119,13 @@ public class RobotContainer {
                 //                        drive,
                 //                        new VisionIOPhotonVisionSim(
                 //                                VisionConstants.backCam, VisionConstants.backCamTrans, () ->
-                // drive.getState().Pose),
+                // drive.getPose()),
                 //                        new VisionIOPhotonVisionSim(
                 //                                VisionConstants.leftCam, VisionConstants.leftCamTrans, () ->
-                // drive.getState().Pose),
+                // drive.getPose()),
                 //                        new VisionIOPhotonVisionSim(
                 //                                VisionConstants.rightCam, VisionConstants.rightCamTrans, () ->
-                // drive.getState().Pose));
+                // drive.getPose()));
 
                 break;
 
@@ -169,10 +162,10 @@ public class RobotContainer {
      * joysticks}.
      */
     private void configureBindings() {
-        drive.setDefaultCommand(drive.applyRequest(() -> driveRequest
-                .withVelocityX(-controller.getLeftY() * TunerConstants.kSpeedAt12Volts.magnitude())
-                .withVelocityY(-controller.getLeftX() * TunerConstants.kSpeedAt12Volts.magnitude())
-                .withRotationalRate(-controller.getRightX() * TunerConstants.MaFxAngularRate)));
+        drive.setDefaultCommand(drive.driveFieldRelative(
+                () -> -controller.getLeftY() * TunerConstants.kSpeedAt12Volts.magnitude(),
+                () -> -controller.getLeftX() * TunerConstants.kSpeedAt12Volts.magnitude(),
+                () -> -controller.getRightX() * TunerConstants.MaFxAngularRate));
         turret.setDefaultCommand(turret.defaultCommand(drive));
 
         controller.start().onTrue(runOnce(drive::seedFieldCentric, drive));
@@ -206,9 +199,7 @@ public class RobotContainer {
                         Commands.either(
                                 sotmCommand,
                                 sotmCommand2,
-                                () -> AllianceFlipUtil.apply(
-                                                drive.getState().Pose.getX())
-                                        < 4.9),
+                                () -> AllianceFlipUtil.apply(drive.getPose().getX()) < 4.9),
                         linslide.applyPower(LinslideConfigs.DEPLOY_SPEED),
                         Commands.wait(1.0)
                                 .andThen(Commands.parallel(

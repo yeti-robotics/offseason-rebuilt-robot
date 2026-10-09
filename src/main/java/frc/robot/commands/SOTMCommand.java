@@ -78,8 +78,8 @@ public class SOTMCommand extends Command {
 
     @Override
     public void execute() {
-        Pose2d robotPose = drive.getState().Pose;
-        ChassisSpeeds robotRelativeSpeeds = drive.getState().Speeds;
+        Pose2d robotPose = drive.getPose();
+        ChassisSpeeds robotRelativeSpeeds = drive.getChassisSpeeds();
         Translation2d turretPosition = getTurretPosition(robotPose);
 
         Translation2d allianceTarget = AllianceFlipUtil.apply(target);

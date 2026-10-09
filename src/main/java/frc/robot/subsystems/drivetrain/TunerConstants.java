@@ -111,6 +111,9 @@ public class TunerConstants {
     private static final boolean kInvertRightSide = true;
 
     private static final int kPigeonId = 30;
+    // The real gyro is separate from CTRE's module bus.
+    public static final CANBus kPigeonCANBus = CANBus.systemCore(4);
+    public static final int kExternalPigeonId = kPigeonId;
 
     // These are only used for simulation
     private static final MomentOfInertia kSteerInertia = KilogramSquareMeters.of(0.01);
@@ -119,6 +122,8 @@ public class TunerConstants {
     private static final Voltage kSteerFrictionVoltage = Volts.of(0.2);
     private static final Voltage kDriveFrictionVoltage = Volts.of(0.2);
 
+    // Phoenix still creates an internal gyro on can_s3. Its pose is unused;
+    // CommandSwerveDrivetrain owns the authoritative estimator using the can_s4 gyro.
     public static final SwerveDrivetrainConstants DrivetrainConstants = new SwerveDrivetrainConstants()
             .withCANBusName(kCANBus.getName())
             .withPigeon2Id(kPigeonId)

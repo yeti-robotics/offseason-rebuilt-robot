@@ -1,12 +1,15 @@
 package frc.robot.subsystems.drivetrain;
 
+import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
+import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -16,10 +19,13 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -27,12 +33,14 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.subsystems.vision.Vision;
 import java.io.IOException;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import org.json.simple.parser.ParseException;
 import org.littletonrobotics.junction.Logger;
@@ -48,6 +56,16 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
     RobotConfig config;
+
+    @NotLogged
+    private final Pigeon2 externalPigeon = new Pigeon2(TunerConstants.kExternalPigeonId, TunerConstants.kPigeonCANBus);
+
+    @NotLogged
+    private SwerveDrivePoseEstimator poseEstimator;
+
+    private Rotation2d operatorForward = Rotation2d.kZero;
+    private final SwerveRequest.ApplyRobotSpeeds teleopRequest =
+            new SwerveRequest.ApplyRobotSpeeds().withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
 
     @NotLogged
     SwerveDriveKinematics m_kinematics;
@@ -74,7 +92,7 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
 
     @Logged(name = "spin")
     public AngularVelocity getSpin() {
-        return this.getPigeon2().getAngularVelocityZWorld().getValue();
+        return externalPigeon.getAngularVelocityZWorld().getValue();
     }
 
     public boolean isMotionBlur() {
@@ -149,6 +167,7 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
     public CommandSwerveDrivetrain(
             SwerveDrivetrainConstants drivetrainConstants, SwerveModuleConstants<?, ?, ?>... modules) {
         super(drivetrainConstants, modules);
+        initializePoseEstimator();
         if (Utils.isSimulation()) {
             startSimThread();
         }
@@ -157,14 +176,12 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
         {
             try {
                 config = RobotConfig.fromGUISettings();
-                m_kinematics = new SwerveDriveKinematics(config.moduleLocations);
-
             } catch (IOException | ParseException e) {
                 throw new RuntimeException(e);
             }
 
             AutoBuilder.configure(
-                    () -> this.getState().Pose,
+                    this::getPose,
                     this::resetPose,
                     this::getChassisSpeeds,
                     (ChassisSpeeds speeds) -> this.setControl(AutoReq.withSpeeds(speeds)),
@@ -193,6 +210,7 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
             double odometryUpdateFrequency,
             SwerveModuleConstants<?, ?, ?>... modules) {
         super(drivetrainConstants, odometryUpdateFrequency, modules);
+        initializePoseEstimator();
         if (Utils.isSimulation()) {
             startSimThread();
         }
@@ -225,9 +243,84 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
                 odometryStandardDeviation,
                 visionStandardDeviation,
                 modules);
+        initializePoseEstimator();
+        poseEstimator = new SwerveDrivePoseEstimator(
+                m_kinematics,
+                getExternalHeading(),
+                getModulePositions(),
+                new Pose2d(),
+                odometryStandardDeviation,
+                visionStandardDeviation);
         if (Utils.isSimulation()) {
             startSimThread();
         }
+    }
+
+    private void initializePoseEstimator() {
+        // Use CTRE's actual module ordering and geometry, not PathPlanner GUI geometry.
+        m_kinematics = new SwerveDriveKinematics(getModuleLocations());
+        externalPigeon.getYaw().refresh();
+        externalPigeon.getYaw().setUpdateFrequency(100);
+        externalPigeon.getAngularVelocityZWorld().setUpdateFrequency(100);
+        poseEstimator =
+                new SwerveDrivePoseEstimator(m_kinematics, getExternalHeading(), getModulePositions(), new Pose2d());
+    }
+
+    private SwerveModulePosition[] getModulePositions() {
+        var positions = new SwerveModulePosition[getModuleLocations().length];
+        for (int i = 0; i < positions.length; i++) {
+            positions[i] = getModule(i).getPosition(true).copy();
+        }
+        return positions;
+    }
+
+    private Rotation2d getExternalHeading() {
+        return Rotation2d.fromDegrees(externalPigeon.getYaw().getValueAsDouble());
+    }
+
+    /** Authoritative field pose. CTRE getState().Pose still uses its internal gyro on the module bus. */
+    public Pose2d getPose() {
+        return poseEstimator.getEstimatedPosition();
+    }
+
+    @Override
+    public void resetPose(Pose2d pose) {
+        externalPigeon.getYaw().refresh();
+        poseEstimator.resetPosition(getExternalHeading(), getModulePositions(), pose);
+    }
+
+    @Override
+    public void resetRotation(Rotation2d rotation) {
+        resetPose(new Pose2d(getPose().getTranslation(), rotation));
+    }
+
+    @Override
+    public void resetTranslation(Translation2d translation) {
+        resetPose(new Pose2d(translation, getPose().getRotation()));
+    }
+
+    @Override
+    public void seedFieldCentric() {
+        operatorForward = getPose().getRotation();
+    }
+
+    /** Driver velocities use the operator perspective; autonomous uses robot-relative requests. */
+    public Command driveFieldRelative(
+            DoubleSupplier velocityX, DoubleSupplier velocityY, DoubleSupplier rotationalRate) {
+        return run(() -> {
+            double vx = velocityX.getAsDouble();
+            double vy = velocityY.getAsDouble();
+            double omega = rotationalRate.getAsDouble();
+            if (Math.hypot(vx, vy) < TunerConstants.MAX_VELOCITY_METERS_PER_SECOND * 0.1) {
+                vx = 0;
+                vy = 0;
+            }
+            if (Math.abs(omega) < TunerConstants.MaFxAngularRate * 0.1) {
+                omega = 0;
+            }
+            setControl(teleopRequest.withSpeeds(new ChassisSpeeds(vx, vy, omega)
+                    .toRobotRelative(getPose().getRotation().minus(operatorForward))));
+        });
     }
 
     private boolean isWheelZeroed(CANcoder wheel) {
@@ -278,20 +371,27 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
          */
         if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
             DriverStation.getAlliance().ifPresent(allianceColor -> {
-                setOperatorPerspectiveForward(
-                        allianceColor == Alliance.Red
-                                ? kRedAlliancePerspectiveRotation
-                                : kBlueAlliancePerspectiveRotation);
+                operatorForward = allianceColor == Alliance.Red
+                        ? kRedAlliancePerspectiveRotation
+                        : kBlueAlliancePerspectiveRotation;
                 m_hasAppliedOperatorPerspective = true;
             });
         }
+        var yaw = externalPigeon.getYaw().refresh();
+        externalPigeon.getAngularVelocityZWorld().refresh();
+        var modulePositions = getModulePositions();
+        if (yaw.getStatus().isOK()) {
+            poseEstimator.updateWithTime(Timer.getFPGATimestamp(), getExternalHeading(), modulePositions);
+        }
+        Logger.recordOutput("Drive/Gyro/RawYawDegrees", yaw.getValueAsDouble());
+        Logger.recordOutput("Drive/Gyro/YawStatus", yaw.getStatus().toString());
         Logger.recordOutput("Drive/ChassisSpeeds", getChassisSpeeds());
-        Logger.recordOutput("Drive/Gyro/Connected", getPigeon2().isConnected());
-        Logger.recordOutput("Drive/Gyro/YawPosition", getState().Pose.getRotation());
+        Logger.recordOutput("Drive/Gyro/Connected", externalPigeon.isConnected());
+        Logger.recordOutput("Drive/Gyro/YawPosition", getExternalHeading());
         Logger.recordOutput(
                 "Drive/Gyro/YawVelocityRadPerSec",
-                getPigeon2().getAngularVelocityZWorld().getValueAsDouble());
-        Logger.recordOutput("Odometry/Robot", getState().Pose);
+                externalPigeon.getAngularVelocityZWorld().getValue().in(RadiansPerSecond));
+        Logger.recordOutput("Odometry/Robot", getPose());
         Logger.recordOutput("Drive/OdometryPeriod", getState().OdometryPeriod);
         Logger.recordOutput("SwerveStates/Measured", getState().ModuleStates);
         Logger.recordOutput("SwerveChassisSpeeds/Measured", getChassisSpeeds());
@@ -308,6 +408,10 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
 
             /* use the measured time delta, get battery voltage from WPILib */
             updateSimState(deltaTime, RobotController.getBatteryVoltage());
+            externalPigeon.getSimState().setRawYaw(getPigeon2().getYaw().getValueAsDouble());
+            externalPigeon
+                    .getSimState()
+                    .setAngularVelocityZ(getPigeon2().getAngularVelocityZWorld().getValueAsDouble());
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
@@ -321,7 +425,7 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
      */
     @Override
     public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
-        super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds));
+        poseEstimator.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds);
     }
 
     /**
@@ -340,8 +444,12 @@ public class CommandSwerveDrivetrain extends TunerConstants.TunerSwerveDrivetrai
     @Override
     public void addVisionMeasurement(
             Pose2d visionRobotPoseMeters, double timestampSeconds, Matrix<N3, N1> visionMeasurementStdDevs) {
-        super.addVisionMeasurement(
-                visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds), visionMeasurementStdDevs);
+        poseEstimator.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
+    }
+
+    @Override
+    public void setVisionMeasurementStdDevs(Matrix<N3, N1> visionMeasurementStdDevs) {
+        poseEstimator.setVisionMeasurementStdDevs(visionMeasurementStdDevs);
     }
 
     @Override
