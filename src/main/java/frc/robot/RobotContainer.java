@@ -127,6 +127,8 @@ public class RobotContainer {
         autoChooser.addOption("Right Choreo", autoCommands.autoRightChoreo());
         autoChooser.addOption("Left PathPlanner", autoCommands.leftAutoPathPlanner());
         autoChooser.addOption("Right PathPlanner", autoCommands.rightAutoPathPlanner());
+        autoChooser.addOption("Left Choreo Hub to Neutral", autoCommands.hub_neutral_l1());
+        autoChooser.addOption("Right Choreo Hub to Neutral", autoCommands.hub_neutral_r1());
 
         configureBindings();
         configureDebugBindings();

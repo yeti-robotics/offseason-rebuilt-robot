@@ -162,6 +162,36 @@ public class AutoCommands {
         return autoRoutine.cmd();
     }
 
+    public Command hub_neutral_l1() {
+
+        AutoRoutine autoRoutine = autoFactory.newRoutine("hub_neutral_l1");
+        AutoTrajectory hub_neutral_l1 = autoRoutine.trajectory("hub_neutral_l1");
+
+        autoRoutine
+                .active()
+                .onTrue(Commands.sequence(
+                                hub_neutral_l1.resetOdometry(),
+                                hub_neutral_l1.cmd()
+                        .onlyIf(() -> trajectoryValid(hub_neutral_l1))));
+
+        return autoRoutine.cmd();
+    }
+
+    public Command hub_neutral_r1() {
+
+        AutoRoutine autoRoutine = autoFactory.newRoutine("hub_neutral_r1");
+        AutoTrajectory hub_neutral_r1 = autoRoutine.trajectory("hub_neutral_r1");
+
+        autoRoutine
+                .active()
+                .onTrue(Commands.sequence(
+                        hub_neutral_r1.resetOdometry(),
+                        hub_neutral_r1.cmd()
+                                .onlyIf(() -> trajectoryValid(hub_neutral_r1))));
+
+        return autoRoutine.cmd();
+    }
+
     public Command leftAutoPathPlanner() {
         Optional<PathPlannerPath> Trench_Neutral_L1 = PathPlannerUtils.loadPathByName("Trench_Neutral_L1");
         Optional<PathPlannerPath> Neutral_Shoot_L2 = PathPlannerUtils.loadPathByName("Trench_Neutral_L2");
