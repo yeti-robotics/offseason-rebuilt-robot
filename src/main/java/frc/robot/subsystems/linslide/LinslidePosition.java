@@ -5,7 +5,7 @@ import edu.wpi.first.units.measure.Angle;
 
 public enum LinslidePosition {
     STOWED(0),
-    DEPLOYED(10);
+    DEPLOYED(9.517090);
 
     private Angle position;
 

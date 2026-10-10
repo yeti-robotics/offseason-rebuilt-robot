@@ -13,7 +13,7 @@ public class HoodIOTalonFX implements HoodIO {
     private DutyCycleOut dutyRequest = new DutyCycleOut(0);
 
     public HoodIOTalonFX() {
-        hoodMotor = new TalonFX(HoodConfigs.MOTOR_ID, Constants.CAN_S3);
+        hoodMotor = new TalonFX(HoodConfigs.MOTOR_ID, Constants.CAN_S1);
         hoodMotor.getConfigurator().apply(HoodConfigs.HOOD_MOTOR_CONFIGS);
         if (Robot.isSimulation()) {
             PhysicsSim.getInstance().addTalonFX(hoodMotor);

@@ -16,8 +16,8 @@ public class LinslideIOTalonFX implements LinslideIO {
     public DutyCycleOut dutyCycleOut = new DutyCycleOut(0);
 
     public LinslideIOTalonFX() {
-        linslideMotor = new TalonFX(LinslideConfigs.MOTOR_ID, Constants.CAN_S1);
-        secondaryLinslideMotor = new TalonFX(LinslideConfigs.SECONDARY_MOTOR_ID, Constants.CAN_S1);
+        linslideMotor = new TalonFX(LinslideConfigs.MOTOR_ID, Constants.CAN_S2);
+        secondaryLinslideMotor = new TalonFX(LinslideConfigs.SECONDARY_MOTOR_ID, Constants.CAN_S2);
 
         linslideMotor.getConfigurator().apply(LinslideConfigs.linslideTalonFXConfigurations);
         secondaryLinslideMotor.setControl(new Follower(LinslideConfigs.MOTOR_ID, true));

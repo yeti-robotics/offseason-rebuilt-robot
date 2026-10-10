@@ -46,9 +46,9 @@ public class Robot extends LoggedRobot {
         switch (Constants.currentMode) {
             case REAL:
                 // Running on a real robot, log to a USB stick ("/U/logs")
-                Logger.addDataReceiver(new WPILOGWriter());
+                Logger.addDataReceiver(new WPILOGWriter("/systemcore"));
                 Logger.addDataReceiver(new NT4Publisher());
-                Logger.recordOutput("Roborio Serial Number", System.getenv("serialnum"));
+                Logger.recordOutput("SystemCore Serial Number", System.getenv("serialnum"));
                 break;
 
             case SIM:

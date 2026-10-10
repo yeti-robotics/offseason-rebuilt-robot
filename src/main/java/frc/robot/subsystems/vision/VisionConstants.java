@@ -24,9 +24,9 @@ public class VisionConstants {
     public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
     // Camera names, must match names configured on coprocessor
-    public static String frontCam = "limelight-frontkjnhouhu";
-    public static String leftCam = "limelight-left";
-    public static String rightCam = "limelight-right";
+    public static String backCam = "back-camera";
+    public static String leftCam = "left-shooter";
+    public static String rightCam = "right-shooter";
 
     // Basic filtering thresholds
     public static double maxAmbiguity = 0.3;
@@ -51,7 +51,7 @@ public class VisionConstants {
     public static double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
     public static double angularStdDevMegatag2Factor = Double.POSITIVE_INFINITY; // No rotation data available
 
-    public static Transform3d frontCamTrans = new Transform3d(
+    public static Transform3d backCamTrans = new Transform3d(
             new Translation3d(0.4, 0, 0.33655), new Rotation3d(0, Math.toRadians(15), Math.toRadians(0)));
     public static Transform3d leftCamTrans = new Transform3d(
             new Translation3d(0.3429, -0.0381, 0.5715), new Rotation3d(0, Math.toRadians(15), Math.toRadians(90)));
