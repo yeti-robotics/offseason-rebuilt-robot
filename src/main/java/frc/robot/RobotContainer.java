@@ -171,11 +171,14 @@ public class RobotContainer {
         controller.start().onTrue(runOnce(drive::seedFieldCentric, drive));
 
         controller.x().whileTrue(linslide.applyPower(LinslideConfigs.DEPLOY_SPEED));
-        controller
-                .b()
-                .whileTrue(linslide.applyPower(-LinslideConfigs.DEPLOY_SPEED)
-                        .alongWith(intake.applyPower(IntakeConfigs.ROLLER_SPEED)));
+        controller.b().whileTrue(linslide.applyPower(-LinslideConfigs.DEPLOY_SPEED));
 
+        controller
+                .rightBumper()
+                .whileTrue((linslide.applyPower(LinslideConfigs.DEPLOY_SPEED)
+                        .withTimeout(.3)
+                        .andThen(intake.applyPower(IntakeConfigs.ROLLER_SPEED)
+                                .alongWith(rollerBed.spinRollerBed(RollerBedConfigs.ROLLER_BED_SPEED)))));
         controller
                 .leftTrigger()
                 .whileTrue(intake.applyPower(IntakeConfigs.ROLLER_SPEED)
@@ -218,7 +221,7 @@ public class RobotContainer {
         debugController.b().whileTrue(intake.applyPower(-0.5));
         // debugController.b().whileTrue(turret.applyPower(0.5));
         debugController.x().whileTrue(linslide.applyPower(0.1));
-        debugController.y().whileTrue(linslide.applyPower(-0.1));
+        debugController.y().whileTrue(linslide.deploy());
         debugController.leftTrigger().whileTrue(shooter.applyPower(0.5));
         debugController.rightTrigger().whileTrue(hood.applyPower(0.5));
         debugController

@@ -7,7 +7,7 @@ import com.ctre.phoenix6.signals.GravityTypeValue;
 
 public class RollerBedConfigs {
     static final int ROLLER_BED_ID = 50;
-    public static final double ROLLER_BED_SPEED = 1;
+    public static final double ROLLER_BED_SPEED = 10;
 
     public static final Slot0Configs SLOT_0_CONFIGS = new Slot0Configs()
             .withKP(0)
