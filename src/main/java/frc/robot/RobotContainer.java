@@ -123,10 +123,6 @@ public class RobotContainer {
                 new AutoCommands(drive, hood, intake, linslide, miniIndexer, rollerBed, shooter, turret, autoFactory);
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
-        autoChooser.addOption("Left Choreo", autoCommands.autoLeftChoreo());
-        autoChooser.addOption("Right Choreo", autoCommands.autoRightChoreo());
-        autoChooser.addOption("Left PathPlanner", autoCommands.leftAutoPathPlanner());
-        autoChooser.addOption("Right PathPlanner", autoCommands.rightAutoPathPlanner());
         autoChooser.addOption("Left Choreo Hub to Neutral", autoCommands.hub_neutral_l1());
         autoChooser.addOption("Right Choreo Hub to Neutral", autoCommands.hub_neutral_r1());
 
