@@ -8,6 +8,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.Constants;
+import frc.robot.util.Elastic;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -98,7 +99,9 @@ public class Robot extends LoggedRobot {
 
     /** This method is called once each time the robot enters Disabled mode. */
     @Override
-    public void disabledInit() {}
+    public void disabledInit() {
+        Elastic.selectTab("Prematch");
+    }
 
     @Override
     public void disabledPeriodic() {}
@@ -115,6 +118,7 @@ public class Robot extends LoggedRobot {
             CommandScheduler.getInstance().schedule(autonomousCommand); // new version
             // autonomousCommand.schedule(); // deprecated version (revert to this if new one doesn't behave right)
         }
+        Elastic.selectTab("Autonomous");
     }
 
     /** This method is called periodically during autonomous. */
@@ -130,6 +134,7 @@ public class Robot extends LoggedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
+        Elastic.selectTab("Teleoperated");
     }
 
     /** This method is called periodically during operator control. */
