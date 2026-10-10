@@ -173,12 +173,12 @@ public class RobotContainer {
         controller.x().whileTrue(linslide.applyPower(LinslideConfigs.DEPLOY_SPEED));
         controller.b().whileTrue(linslide.applyPower(-LinslideConfigs.DEPLOY_SPEED));
 
-        controller
-                .rightBumper()
-                .whileTrue((linslide.applyPower(LinslideConfigs.DEPLOY_SPEED)
-                        .withTimeout(.3)
-                        .andThen(intake.applyPower(IntakeConfigs.ROLLER_SPEED)
-                                .alongWith(rollerBed.spinRollerBed(RollerBedConfigs.ROLLER_BED_SPEED)))));
+//        controller
+//                .rightBumper()
+//                .whileTrue((linslide.applyPower(LinslideConfigs.DEPLOY_SPEED)
+//                        .withTimeout(.3)
+//                        .andThen(intake.applyPower(IntakeConfigs.ROLLER_SPEED)
+//                                .alongWith(rollerBed.spinRollerBed(RollerBedConfigs.ROLLER_BED_SPEED)))));
         controller
                 .leftTrigger()
                 .whileTrue(intake.applyPower(IntakeConfigs.ROLLER_SPEED)
@@ -187,7 +187,7 @@ public class RobotContainer {
                                 .andThen(linslide.applyPower(0.15))));
 
         controller
-                .y()
+                .rightTrigger()
                 .whileTrue(Commands.parallel(
                         intake.applyPower(-IntakeConfigs.ROLLER_SPEED),
                         rollerBed.applyPower(-RollerBedConfigs.ROLLER_BED_SPEED),
@@ -196,21 +196,23 @@ public class RobotContainer {
                         shooter.applyPower(-ShooterConfigs.SHOOTER_SPEED),
                         linslide.applyPower(LinslideConfigs.DEPLOY_SPEED)));
 
-        controller
-                .rightTrigger()
-                .whileTrue(Commands.parallel(
-                        Commands.either(
-                                sotmCommand,
-                                sotmCommand2,
-                                () -> AllianceFlipUtil.apply(drive.getPose().getX()) < 4.9),
-                        linslide.applyPower(LinslideConfigs.DEPLOY_SPEED),
-                        Commands.wait(1.0)
-                                .andThen(Commands.parallel(
-                                        miniIndexer.applyPower(MiniIndexerConfigs.MINI_INDEXER_SPEED),
-                                        intake.applyPower(IntakeConfigs.ROLLER_SPEED),
-                                        rollerBed.applyPower(RollerBedConfigs.ROLLER_BED_SPEED),
-                                        singulator.applyPower(1)))))
-                .onFalse(hood.setPosition(0));
+
+        // saving this for when shooter works
+//        controller
+//                .rightTrigger()
+//                .whileTrue(Commands.parallel(
+//                        Commands.either(
+//                                sotmCommand,
+//                                sotmCommand2,
+//                                () -> AllianceFlipUtil.apply(drive.getPose().getX()) < 4.9),
+//                        linslide.applyPower(LinslideConfigs.DEPLOY_SPEED),
+//                        Commands.wait(1.0)
+//                                .andThen(Commands.parallel(
+//                                        miniIndexer.applyPower(MiniIndexerConfigs.MINI_INDEXER_SPEED),
+//                                        intake.applyPower(IntakeConfigs.ROLLER_SPEED),
+//                                        rollerBed.applyPower(RollerBedConfigs.ROLLER_BED_SPEED),
+//                                        singulator.applyPower(1)))))
+//                .onFalse(hood.setPosition(0));
 
         controller.povLeft().onTrue(hood.setPosition(0));
         controller.povRight().onTrue(hood.setPosition(0.65));
